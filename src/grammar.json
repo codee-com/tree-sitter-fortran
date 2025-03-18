@@ -9458,13 +9458,8 @@
           ]
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "identifier"
-          },
-          "named": true,
-          "value": "module_name"
+          "type": "SYMBOL",
+          "name": "module_name"
         },
         {
           "type": "CHOICE",
@@ -10454,16 +10449,11 @@
                   {
                     "type": "ALIAS",
                     "content": {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "PATTERN",
-                        "value": "[sS][eE][qQ][uU][eE][nN][cC][eE]"
-                      },
-                      "named": false,
-                      "value": "sequence"
+                      "type": "PATTERN",
+                      "value": "[sS][eE][qQ][uU][eE][nN][cC][eE]"
                     },
-                    "named": true,
-                    "value": "sequence_statement"
+                    "named": false,
+                    "value": "sequence"
                   },
                   {
                     "type": "SYMBOL",
@@ -11052,13 +11042,8 @@
       ]
     },
     "method_name": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "identifier"
-      },
-      "named": false,
-      "value": "method_name"
+      "type": "SYMBOL",
+      "name": "_name"
     },
     "procedure_kind": {
       "type": "CHOICE",
@@ -15651,15 +15636,10 @@
             {
               "type": "ALIAS",
               "content": {
-                "type": "ALIAS",
-                "content": {
-                  "type": "PATTERN",
-                  "value": "[dD][eE][fF][aA][uU][lL][tT]"
-                },
-                "named": false,
-                "value": "default"
+                "type": "PATTERN",
+                "value": "[dD][eE][fF][aA][uU][lL][tT]"
               },
-              "named": true,
+              "named": false,
               "value": "default"
             }
           ]
@@ -15795,13 +15775,8 @@
               ]
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_class_default"
-              },
-              "named": true,
-              "value": "default"
+              "type": "SYMBOL",
+              "name": "_class_default"
             }
           ]
         },
@@ -15933,15 +15908,10 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[dD][eE][fF][aA][uU][lL][tT]"
-                  },
-                  "named": false,
-                  "value": "default"
+                  "type": "PATTERN",
+                  "value": "[dD][eE][fF][aA][uU][lL][tT]"
                 },
-                "named": true,
+                "named": false,
                 "value": "default"
               }
             ]

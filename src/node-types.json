@@ -2420,10 +2420,6 @@
           "named": true
         },
         {
-          "type": "default",
-          "named": true
-        },
-        {
           "type": "do_label_statement",
           "named": true
         },
@@ -4513,11 +4509,6 @@
     }
   },
   {
-    "type": "default",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "defined_io_procedure",
     "named": true,
     "fields": {}
@@ -4620,10 +4611,6 @@
         },
         {
           "type": "public_statement",
-          "named": true
-        },
-        {
-          "type": "sequence_statement",
           "named": true
         },
         {
@@ -8978,7 +8965,17 @@
   {
     "type": "method_name",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "module",
@@ -9121,7 +9118,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "name",
@@ -12388,10 +12385,6 @@
           "named": true
         },
         {
-          "type": "default",
-          "named": true
-        },
-        {
           "type": "do_label_statement",
           "named": true
         },
@@ -14248,10 +14241,6 @@
           "named": true
         },
         {
-          "type": "default",
-          "named": true
-        },
-        {
           "type": "do_label_statement",
           "named": true
         },
@@ -15781,10 +15770,6 @@
   {
     "type": "sequence",
     "named": false
-  },
-  {
-    "type": "sequence_statement",
-    "named": true
   },
   {
     "type": "shared",

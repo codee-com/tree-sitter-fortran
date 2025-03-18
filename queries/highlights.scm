@@ -46,7 +46,7 @@
  ] @keyword.function
 
 [
- (default)
+ "default"
  (procedure_qualifier)
  "abstract"
  "bind"

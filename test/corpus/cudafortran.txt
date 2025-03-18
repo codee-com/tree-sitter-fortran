@@ -55,7 +55,8 @@ end function
       (end_of_statement))
     (comment)
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (assignment_statement
       (identifier)

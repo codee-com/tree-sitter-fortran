@@ -132,47 +132,57 @@ END PROGRAM
       (name)
       (end_of_statement))
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (identifier)
         (identifier)))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (identifier)))
     (end_of_statement)
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (use_alias
           (local_name)
           (identifier))))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (use_alias
         (local_name)
         (identifier)))
     (end_of_statement)
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (use_alias
         (local_name)
         (identifier)))
@@ -1712,7 +1722,6 @@ END PROGRAM
             (string_literal)))
         (end_of_statement))
       (case_statement
-        (default)
         (end_of_statement)
         (write_statement
           (unit_identifier)
@@ -2347,7 +2356,6 @@ end subroutine print_decorated_numbers
               (type_member))))
         (end_of_statement))
       (type_statement
-        (default)
         (end_of_statement)
         (write_statement
           (unit_identifier)
@@ -2502,7 +2510,6 @@ end subroutine assumed_rank
             (string_literal)))
         (end_of_statement))
       (rank_statement
-        (default)
         (end_of_statement)
         (stop_statement
           (string_literal))
@@ -2697,7 +2704,8 @@ end module
       (name)
       (end_of_statement))
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (defined_io_procedure)
         (defined_io_procedure)))
@@ -2717,7 +2725,8 @@ end module
         (end_of_statement))
       (procedure_statement
         (procedure_kind)
-        (method_name)
+        (method_name
+          (name))
         (end_of_statement))
       (end_interface_statement
         (end_of_statement)))
@@ -2727,7 +2736,8 @@ end module
         (end_of_statement))
       (procedure_statement
         (procedure_kind)
-        (method_name)
+        (method_name
+          (name))
         (end_of_statement))
       (end_interface_statement
         (defined_io_procedure)
@@ -2745,7 +2755,8 @@ end module
           (binding
             (binding_name
               (defined_io_procedure))
-            (method_name))
+            (method_name
+              (name)))
           (end_of_statement))
         (comment)
         (procedure_statement
@@ -2754,7 +2765,8 @@ end module
           (binding
             (binding_name
               (identifier))
-            (method_name))
+            (method_name
+              (name)))
           (end_of_statement)))
       (end_type_statement
         (name)

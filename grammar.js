@@ -576,7 +576,7 @@ module.exports = grammar({
         ),
         optional('::')
       ),
-      alias($.identifier, $.module_name),
+      $.module_name,
       optional(
         choice(
           seq(',', commaSep1($.use_alias)),
@@ -700,10 +700,7 @@ module.exports = grammar({
       repeat(choice(
         $.public_statement,
         $.private_statement,
-        seq(
-            alias(caseInsensitive('sequence'), $.sequence_statement),
-            $.end_of_statement
-        ),
+        seq(caseInsensitive('sequence'), $.end_of_statement),
         $.include_statement,
         seq($.variable_declaration, $.end_of_statement),
         $.preproc_include,
@@ -791,7 +788,7 @@ module.exports = grammar({
       $.identifier,
       $._generic_procedure
     ),
-    method_name: $ => alias($.identifier, 'method_name'),
+    method_name: $ => $._name,
 
     procedure_kind: $ => choice(
       caseInsensitive('generic'),
@@ -1505,7 +1502,7 @@ module.exports = grammar({
       caseInsensitive('case'),
       choice(
         seq('(', $.case_value_range_list, ')'),
-        alias(caseInsensitive('default'), $.default)
+        caseInsensitive('default')
       ),
       optional($._block_label),
       $.end_of_statement,
@@ -1523,7 +1520,7 @@ module.exports = grammar({
             seq('(', field('type', choice($.intrinsic_type, $.identifier)), ')'),
           ),
         ),
-        alias($._class_default, $.default)
+        $._class_default
       ),
       optional($._block_label),
       $.end_of_statement,
@@ -1542,7 +1539,7 @@ module.exports = grammar({
       caseInsensitive('rank'),
       choice(
         seq('(', $.case_value_range_list, ')'),
-        alias(caseInsensitive('default'), $.default)
+        caseInsensitive('default')
       ),
       optional($._block_label),
       $.end_of_statement,

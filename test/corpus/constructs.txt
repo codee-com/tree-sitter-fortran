@@ -82,7 +82,8 @@ end module
     (private_statement
       (end_of_statement))
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (interface
       (interface_statement
@@ -90,11 +91,13 @@ end module
         (end_of_statement))
       (procedure_statement
         (procedure_kind)
-        (method_name)
+        (method_name
+          (name))
         (end_of_statement))
       (procedure_statement
         (procedure_kind)
-        (method_name)
+        (method_name
+          (name))
         (end_of_statement))
       (end_interface_statement
         (end_of_statement)))
@@ -380,11 +383,13 @@ end interface
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (end_interface_statement
       (end_of_statement))))
@@ -415,11 +420,13 @@ end interface operator (.not.)
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (end_interface_statement
       (operator)
@@ -430,7 +437,8 @@ end interface operator (.not.)
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (function
       (function_statement
@@ -470,7 +478,8 @@ end interface assignment (=)
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (end_interface_statement
       (assignment)
@@ -491,7 +500,8 @@ interface operator(+) ; module procedure test_plus ; end interface
       (end_of_statement))
     (procedure_statement
       (procedure_kind)
-      (method_name)
+      (method_name
+        (name))
       (end_of_statement))
     (end_interface_statement
       (end_of_statement))))
@@ -514,7 +524,8 @@ end module
       (name)
       (end_of_statement))
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (operator)
         (assignment)))
@@ -723,7 +734,8 @@ end function
       (end_of_statement))
     (comment)
     (use_statement
-      (module_name))
+      (module_name
+        (name)))
     (end_of_statement)
     (assignment_statement
       (identifier)
@@ -978,7 +990,6 @@ end program
         (access_specifier)
         (type_name)
         (end_of_statement))
-      (sequence_statement)
       (end_of_statement)
       (private_statement
         (end_of_statement))
@@ -1022,12 +1033,14 @@ end program
           (procedure_kind)
           (procedure_attribute)
           (procedure_attribute)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement))
         (comment)
         (procedure_statement
           (procedure_kind)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement))
         (comment)
         (procedure_statement
@@ -1035,7 +1048,8 @@ end program
           (procedure_attribute)
           (procedure_attribute
             (identifier))
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
@@ -1043,8 +1057,10 @@ end program
           (binding
             (binding_name
               (identifier))
-            (method_name))
-          (method_name)
+            (method_name
+              (name)))
+          (method_name
+            (name))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
@@ -1052,7 +1068,8 @@ end program
           (binding
             (binding_name
               (assignment))
-            (method_name))
+            (method_name
+              (name)))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
@@ -1060,19 +1077,23 @@ end program
           (binding
             (binding_name
               (operator))
-            (method_name))
+            (method_name
+              (name)))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
-          (method_name)
+          (method_name
+            (name))
           (binding
             (binding_name
               (identifier))
-            (method_name))
+            (method_name
+              (name)))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement)))
       (end_type_statement
         (name)
@@ -1192,7 +1213,8 @@ end program
           (procedure_kind)
           (procedure_interface)
           (procedure_attribute)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement)))
       (end_type_statement
         (end_of_statement)))
@@ -1241,12 +1263,14 @@ end program test
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement))
         (procedure_statement
           (procedure_kind)
           (procedure_attribute)
-          (method_name)
+          (method_name
+            (name))
           (end_of_statement)))
       (end_type_statement
         (name)

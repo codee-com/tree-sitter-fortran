@@ -26,14 +26,16 @@ end program example_padl
       (name)
       (end_of_statement))
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (identifier)
         (assignment)
         (defined_io_procedure)))
     (end_of_statement)
     (use_statement
-      (module_name)
+      (module_name
+        (name))
       (included_items
         (identifier)))
     (end_of_statement)
