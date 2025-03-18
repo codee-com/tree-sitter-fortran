@@ -2356,6 +2356,7 @@ end subroutine print_decorated_numbers
               (type_member))))
         (end_of_statement))
       (type_statement
+        (class_default)
         (end_of_statement)
         (write_statement
           (unit_identifier)

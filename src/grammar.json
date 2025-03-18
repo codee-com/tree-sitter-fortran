@@ -15776,7 +15776,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_class_default"
+              "name": "class_default"
             }
           ]
         },
@@ -15805,7 +15805,7 @@
         }
       ]
     },
-    "_class_default": {
+    "class_default": {
       "type": "CHOICE",
       "members": [
         {

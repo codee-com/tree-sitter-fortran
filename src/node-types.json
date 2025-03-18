@@ -2631,6 +2631,11 @@
     "fields": {}
   },
   {
+    "type": "class_default",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "close_statement",
     "named": true,
     "fields": {},
@@ -14222,6 +14227,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "class_default",
           "named": true
         },
         {
