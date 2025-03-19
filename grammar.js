@@ -1430,7 +1430,7 @@ module.exports = grammar({
       whiteSpacedKeyword('select', 'case'),
       $.selector,
       $._end_of_statement,
-      repeat1(choice(
+      repeat(choice(
         $.case_statement,
         $.preproc_include,
         $.preproc_def,

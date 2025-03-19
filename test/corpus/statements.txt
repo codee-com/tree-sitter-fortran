@@ -1423,6 +1423,9 @@ PROGRAM TEST
   CASE DEFAULT
     WRITE(*,*)  'Other characters, which may not be letters'
   END SELECT
+
+  SELECT CASE (c)
+  END SELECT
 END PROGRAM
 
 --------------------------------------------------------------------------------
@@ -1503,6 +1506,10 @@ END PROGRAM
           (format_identifier)
           (output_item_list
             (string_literal))))
+      (end_select_statement))
+    (select_case_statement
+      (selector
+        (identifier))
       (end_select_statement))
     (end_program_statement)))
 
