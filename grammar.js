@@ -291,7 +291,11 @@ module.exports = grammar({
       $.end_program_statement
     ),
 
-    program_statement: $ => seq(caseInsensitive('program'), $._name, $._end_of_statement),
+    program_statement: $ => seq(
+      caseInsensitive('program'),
+      field('name', $._name),
+      $._end_of_statement
+    ),
     end_program_statement: $ => blockStructureEnding($, 'program'),
 
     module: $ => seq(
@@ -307,7 +311,11 @@ module.exports = grammar({
       $.end_module_statement
     ),
 
-    module_statement: $ => seq(caseInsensitive('module'), $._name, $._end_of_statement),
+    module_statement: $ => seq(
+      caseInsensitive('module'),
+      field('name', $._name),
+      $._end_of_statement
+    ),
     end_module_statement: $ => blockStructureEnding($, 'module'),
 
     submodule: $ => seq(
@@ -331,7 +339,7 @@ module.exports = grammar({
         ':', field('parent', $.module_name)
       )),
       ')',
-      $._name,
+      field('name', $._name),
       $._end_of_statement,
     ),
     end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
@@ -363,7 +371,7 @@ module.exports = grammar({
     interface_statement: $ => seq(
       optional($.abstract_specifier),
       caseInsensitive('interface'),
-      optional(choice($._name, $._generic_procedure)),
+      optional(choice(field('name', $._name), $._generic_procedure)),
       $._end_of_statement,
     ),
 
@@ -734,8 +742,13 @@ module.exports = grammar({
       optional($.statement_label),
       caseInsensitive('type'),
       choice(
-        seq(optional('::'), $._type_name),
-        seq(',', commaSep1($._derived_type_qualifier), '::', $._type_name)
+        seq(optional('::'), field('name', $._type_name)),
+        seq(
+          ',',
+          commaSep1($._derived_type_qualifier),
+          '::',
+          field('name', $._type_name)
+        )
       ),
       optional(alias($.argument_list, $.derived_type_parameter_list)),
       $._end_of_statement
@@ -1960,7 +1973,7 @@ module.exports = grammar({
     // precedence is used to prevent conflict with assignment expression
     keyword_argument: $ => prec(1, seq(
       field("name",$.identifier),
-      '=',
+      field("equal", '='),
       field("value",choice($._expression, $.assumed_size, $.assumed_shape))
     )),
 

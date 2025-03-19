@@ -158,7 +158,7 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (assignment_statement
       left: (identifier)
       right: (string_literal))
@@ -237,7 +237,7 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (variable_declaration
       type: (intrinsic_type)
       declarator: (init_declarator
@@ -712,7 +712,7 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (assignment_statement
       left: (identifier)
       right: (call_expression

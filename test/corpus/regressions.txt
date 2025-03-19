@@ -168,7 +168,7 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (assignment_statement
       left: (call_expression
         (identifier)

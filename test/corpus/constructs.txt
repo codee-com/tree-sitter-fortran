@@ -980,12 +980,12 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (derived_type_definition
       (derived_type_statement
         access: (access_specifier)
         (abstract_specifier)
-        (type_name))
+        name: (type_name))
       (end_type_statement
         (name)))
     (derived_type_definition
@@ -993,7 +993,7 @@ end program
         access: (access_specifier)
         base: (base_type_specifier
           (identifier))
-        (type_name))
+        name: (type_name))
       (end_type_statement
         (name)))
     (end_program_statement)))

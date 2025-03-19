@@ -434,7 +434,7 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (use_statement
       (module_name)
       (included_items
@@ -522,7 +522,7 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      (name))
+      name: (name))
     (internal_procedures
       (contains_statement)
       (subroutine
@@ -572,7 +572,7 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      (name))
+      name: (name))
     (internal_procedures
       (contains_statement)
       (subroutine
@@ -632,7 +632,7 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      (name))
+      name: (name))
     (internal_procedures
       (contains_statement)
       (subroutine

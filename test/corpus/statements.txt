@@ -277,7 +277,7 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (variable_declaration
       type: (intrinsic_type)
       attribute: (type_qualifier)
@@ -787,7 +787,7 @@ END PROGRAM TEST
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (variable_declaration
       type: (intrinsic_type)
       attribute: (type_qualifier
@@ -1935,7 +1935,7 @@ END PROGRAM test
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (enum
       (enum_statement
         (language_binding
@@ -2661,7 +2661,7 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      name: (name))
     (allocate_statement
       allocation: (sized_allocation
         (identifier)
