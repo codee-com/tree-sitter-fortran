@@ -14,6 +14,12 @@
 // since the parser doesn't support the ^ regex token, a using a seq
 // might work as long as the label is optional.
 //
+
+// This annotation tells typescript where to find the DSL. Useful for LSP
+// navigation and hover documentation
+/// <reference types="tree-sitter-cli/dsl" />
+// @ts-check
+
 const PREC = {
   ASSIGNMENT: -10,
   DEFAULT: 0,
