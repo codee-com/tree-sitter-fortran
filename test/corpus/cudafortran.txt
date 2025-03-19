@@ -13,19 +13,24 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (type_qualifier)
       (identifier))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (identifier))
+    (end_of_statement)
     (variable_modification
       (variable_attributes)
       (identifier))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Functions (with attributes)
@@ -46,16 +51,20 @@ end function
       (intrinsic_type
         (kind
           (number_literal)))
-      (name))
+      (name)
+      (end_of_statement))
     (comment)
     (use_statement
       (module_name))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (call_expression
         (identifier)
         (argument_list)))
-    (end_function_statement)))
+    (end_of_statement)
+    (end_function_statement
+      (end_of_statement))))
 
 ================================================================================
 Cuda Kernel Call Expressions
@@ -75,7 +84,8 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (subroutine_call
       (identifier)
       (cuda_kernel_argument_list
@@ -83,6 +93,7 @@ end program
         (identifier))
       (argument_list
         (identifier)))
+    (end_of_statement)
     (subroutine_call
       (identifier)
       (cuda_kernel_argument_list
@@ -95,6 +106,7 @@ end program
             (identifier))))
       (argument_list
         (identifier)))
+    (end_of_statement)
     (subroutine_call
       (identifier)
       (cuda_kernel_argument_list
@@ -107,4 +119,6 @@ end program
             (identifier))))
       (argument_list
         (identifier)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))

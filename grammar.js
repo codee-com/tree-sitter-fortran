@@ -294,7 +294,7 @@ module.exports = grammar({
     program_statement: $ => seq(
       caseInsensitive('program'),
       field('name', $._name),
-      $._end_of_statement
+      $.end_of_statement
     ),
     end_program_statement: $ => blockStructureEnding($, 'program'),
 
@@ -314,7 +314,7 @@ module.exports = grammar({
     module_statement: $ => seq(
       caseInsensitive('module'),
       field('name', $._name),
-      $._end_of_statement
+      $.end_of_statement
     ),
     end_module_statement: $ => blockStructureEnding($, 'module'),
 
@@ -340,7 +340,7 @@ module.exports = grammar({
       )),
       ')',
       field('name', $._name),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
     end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
     module_name: $ => $._name,
@@ -372,13 +372,13 @@ module.exports = grammar({
       optional($.abstract_specifier),
       caseInsensitive('interface'),
       optional(choice(field('name', $._name), $._generic_procedure)),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
 
     end_interface_statement: $ => prec.right(seq(
       whiteSpacedKeyword('end', 'interface'),
       optional(choice($._name, $._generic_procedure)),
-      $._end_of_statement
+      $.end_of_statement
     )),
 
     // Obsolescent feature
@@ -397,7 +397,7 @@ module.exports = grammar({
     block_data_statement: $ => seq(
       whiteSpacedKeyword('block', 'data'),
       optional($._name),
-      $._end_of_statement
+      $.end_of_statement
     ),
 
     // Can't use `blockStructureEnding` because it's two keywords
@@ -411,7 +411,7 @@ module.exports = grammar({
             caseInsensitive('end' + structType, false)),
           'end' + structType),
         optional($._name),
-        $._end_of_statement))
+        $.end_of_statement))
     },
 
     assignment: $ => seq(caseInsensitive('assignment'), '(', '=', ')'),
@@ -436,7 +436,7 @@ module.exports = grammar({
       field('name', $._name),
       optional(field('parameters',$._parameters)),
       optional($.language_binding),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
 
     end_subroutine_statement: $ => blockStructureEnding($, 'subroutine'),
@@ -447,7 +447,7 @@ module.exports = grammar({
       optional($._callable_interface_qualifers),
       seq(caseInsensitive('module'), caseInsensitive('procedure')),
       field('name', $._name),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
 
     end_module_procedure_statement: $ => blockStructureEnding($, 'procedure'),
@@ -463,7 +463,7 @@ module.exports = grammar({
         $.language_binding,
         $.function_result
       ))),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
 
     language_binding: $ => seq(
@@ -517,7 +517,7 @@ module.exports = grammar({
 
     internal_procedures: $ => seq(
       $.contains_statement,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._internal_procedures)
     ),
 
@@ -540,25 +540,25 @@ module.exports = grammar({
 
     _specification_part: $ => prec(1, choice(
       $.include_statement,
-      seq($.use_statement, $._end_of_statement),
-      seq($.implicit_statement, $._end_of_statement),
-      seq($.save_statement, $._end_of_statement),
-      seq($.import_statement, $._end_of_statement),
+      seq($.use_statement, $.end_of_statement),
+      seq($.implicit_statement, $.end_of_statement),
+      seq($.save_statement, $.end_of_statement),
+      seq($.import_statement, $.end_of_statement),
       $.public_statement,
       $.private_statement,
       $.enum,
       $.enumeration_type,
       $.interface,
       $.derived_type_definition,
-      seq($.namelist_statement, $._end_of_statement),
-      seq($.common_statement, $._end_of_statement),
-      seq($.variable_declaration, $._end_of_statement),
-      seq($.variable_modification, $._end_of_statement),
-      seq($.parameter_statement, $._end_of_statement),
-      seq($.equivalence_statement, $._end_of_statement),
-      seq($.data_statement, $._end_of_statement),
-      seq($.assignment_statement, $._end_of_statement),
-      prec(1, seq($.statement_label, $.format_statement, $._end_of_statement)),
+      seq($.namelist_statement, $.end_of_statement),
+      seq($.common_statement, $.end_of_statement),
+      seq($.variable_declaration, $.end_of_statement),
+      seq($.variable_modification, $.end_of_statement),
+      seq($.parameter_statement, $.end_of_statement),
+      seq($.equivalence_statement, $.end_of_statement),
+      seq($.data_statement, $.end_of_statement),
+      seq($.assignment_statement, $.end_of_statement),
+      prec(1, seq($.statement_label, $.format_statement, $.end_of_statement)),
       $.preproc_include,
       $.preproc_def,
       $.preproc_function_def,
@@ -643,7 +643,7 @@ module.exports = grammar({
         optional('::'),
         commaSep1(choice($.identifier, $._generic_procedure))
       )),
-      $._end_of_statement,
+      $.end_of_statement,
     )),
 
     public_statement: $ => prec.right(1, seq(
@@ -652,7 +652,7 @@ module.exports = grammar({
         optional('::'),
         commaSep1(choice($.identifier, $._generic_procedure))
       )),
-      $._end_of_statement,
+      $.end_of_statement,
     )),
 
     namelist_statement: $ => seq(
@@ -702,10 +702,10 @@ module.exports = grammar({
         $.private_statement,
         seq(
             alias(caseInsensitive('sequence'), $.sequence_statement),
-            $._end_of_statement
+            $.end_of_statement
         ),
         $.include_statement,
-        seq($.variable_declaration, $._end_of_statement),
+        seq($.variable_declaration, $.end_of_statement),
         $.preproc_include,
         $.preproc_def,
         $.preproc_function_def,
@@ -751,7 +751,7 @@ module.exports = grammar({
         )
       ),
       optional(alias($.argument_list, $.derived_type_parameter_list)),
-      $._end_of_statement
+      $.end_of_statement
     ),
 
     end_type_statement: $ => blockStructureEnding($, 'type'),
@@ -784,7 +784,7 @@ module.exports = grammar({
         $.method_name,
         $.binding,
       ))),
-      $._end_of_statement,
+      $.end_of_statement,
     ),
     binding: $ => seq($.binding_name, '=>', $.method_name),
     binding_name: $ => choice(
@@ -1063,7 +1063,7 @@ module.exports = grammar({
       seq(
         optional($.statement_label),
         $._statements,
-        $._end_of_statement
+        $.end_of_statement
       ),
       $.include_statement,
       ';'
@@ -1177,7 +1177,7 @@ module.exports = grammar({
     include_statement: $ => prec(1, seq(
       caseInsensitive('include'),
       field("path", alias($.string_literal, $.filename)),
-      $._end_of_statement,
+      $.end_of_statement,
     )),
 
     data_statement: $ => seq(
@@ -1222,7 +1222,7 @@ module.exports = grammar({
         $.loop_control_expression,
         $.concurrent_statement
       )),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       optional($.statement_label),
       $.end_do_loop_statement
@@ -1331,7 +1331,7 @@ module.exports = grammar({
       $.parenthesized_expression,
       caseInsensitive('then'),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       repeat($.elseif_clause),
       optional($.else_clause),
@@ -1349,14 +1349,14 @@ module.exports = grammar({
       $.parenthesized_expression,
       caseInsensitive('then'),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     ),
 
     else_clause: $ => seq(
       caseInsensitive('else'),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     ),
 
@@ -1375,7 +1375,7 @@ module.exports = grammar({
       optional($.block_label_start_expression),
       caseInsensitive('where'),
       $.parenthesized_expression,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       repeat($.elsewhere_clause),
       $.end_where_statement
@@ -1390,7 +1390,7 @@ module.exports = grammar({
       whiteSpacedKeyword('else', 'where'),
       optional($.parenthesized_expression),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     ),
 
@@ -1427,7 +1427,7 @@ module.exports = grammar({
     _block_forall_statement: $ => seq(
       optional($.block_label_start_expression),
       $._forall_control_expression,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       optional($.statement_label),
       $.end_forall_statement
@@ -1442,7 +1442,7 @@ module.exports = grammar({
       optional($.block_label_start_expression),
       whiteSpacedKeyword('select', 'case'),
       $.selector,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat(choice(
         $.case_statement,
         $.preproc_include,
@@ -1460,7 +1460,7 @@ module.exports = grammar({
       optional($.block_label_start_expression),
       whiteSpacedKeyword('select', 'type'),
       $.selector,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat1(choice(
         $.type_statement,
         $.preproc_include,
@@ -1478,7 +1478,7 @@ module.exports = grammar({
       optional($.block_label_start_expression),
       whiteSpacedKeyword('select', 'rank'),
       $.selector,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat1(choice(
         $.rank_statement,
         $.preproc_include,
@@ -1508,7 +1508,7 @@ module.exports = grammar({
         alias(caseInsensitive('default'), $.default)
       ),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     ),
 
@@ -1526,7 +1526,7 @@ module.exports = grammar({
         alias($._class_default, $.default)
       ),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     ),
 
@@ -1545,14 +1545,14 @@ module.exports = grammar({
         alias(caseInsensitive('default'), $.default)
       ),
       optional($._block_label),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement)
     )),
 
     block_construct: $ => seq(
       optional($.block_label_start_expression),
       caseInsensitive('block'),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._specification_part),
       repeat($._statement),
       $.end_block_construct_statement
@@ -1569,7 +1569,7 @@ module.exports = grammar({
       '(',
       commaSep1($.association),
       ')',
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       $.end_associate_statement
     ),
@@ -1677,21 +1677,21 @@ module.exports = grammar({
       $.enum_statement,
       repeat($.enumerator_statement),
       $.end_enum_statement,
-      $._end_of_statement
+      $.end_of_statement
     ),
 
     enum_statement: $ => seq(
       caseInsensitive('enum'),
       ',',
       $.language_binding,
-      $._end_of_statement,
+      $.end_of_statement,
     ),
 
     enumeration_type: $ => seq(
       $.enumeration_type_statement,
       repeat($.enumerator_statement),
       $.end_enumeration_type_statement,
-      $._end_of_statement
+      $.end_of_statement
     ),
 
     enumeration_type_statement: $ => seq(
@@ -2154,7 +2154,7 @@ module.exports = grammar({
       caseInsensitive('change'),
       caseInsensitive('team'),
       $.argument_list,
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       $.end_coarray_team_statement,
     ),
@@ -2169,7 +2169,7 @@ module.exports = grammar({
       optional($.block_label_start_expression),
       caseInsensitive('critical'),
       optional($.argument_list),
-      $._end_of_statement,
+      $.end_of_statement,
       repeat($._statement),
       $.end_coarray_critical_statement,
     ),
@@ -2259,7 +2259,7 @@ module.exports = grammar({
 
     comment: $ => token(seq('!', /.*/)),
 
-    _end_of_statement: $ => choice(';', $._external_end_of_statement),
+    end_of_statement: $ => choice(';', $._external_end_of_statement),
 
     _newline: $ => '\n',
   }
@@ -2307,7 +2307,7 @@ function blockStructureEnding ($, structType) {
       caseInsensitive('end' + structType, false)),
     'end' + structType),
     optional($._name),
-    $._end_of_statement
+    $.end_of_statement
   ))
   return obj
 }

@@ -13,7 +13,8 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (write_statement
       (unit_identifier)
       (format_identifier
@@ -25,7 +26,9 @@ end program
       (keyword_argument
         (identifier)
         (identifier)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Line continuations with comment and blank lines
@@ -48,7 +51,8 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (write_statement
       (unit_identifier)
       (format_identifier
@@ -60,7 +64,9 @@ end program
       (keyword_argument
         (identifier)
         (identifier)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Line continuation before comma
@@ -76,14 +82,17 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (identifier)
       (comment)
       (identifier))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Line continuation before function suffix
@@ -103,9 +112,11 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (function
         (function_statement
           (name)
@@ -113,14 +124,18 @@ end program test
             (identifier))
           (comment)
           (function_result
-            (identifier)))
+            (identifier))
+          (end_of_statement))
         (variable_declaration
           (intrinsic_type)
           (identifier))
+        (end_of_statement)
         (end_function_statement
-          (name))))
+          (name)
+          (end_of_statement))))
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Empty Write with FMT
@@ -137,16 +152,20 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (write_statement
       (unit_identifier)
       (format_identifier
         (statement_label_reference)))
+    (end_of_statement)
     (statement_label)
     (format_statement
       (transfer_items
         (string_literal)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Inline comments
@@ -168,27 +187,34 @@ end program ! comment
   (comment)
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (comment)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (comment)
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (comment)
       (subroutine
         (subroutine_statement
-          (name))
+          (name)
+          (end_of_statement))
         (comment)
         (end_subroutine_statement
-          (name))))
+          (name)
+          (end_of_statement))))
     (comment)
-    (end_program_statement))
+    (end_program_statement
+      (end_of_statement)))
   (comment)
   (comment))
 
@@ -213,31 +239,38 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (print_statement
       (format_identifier)
       (output_item_list
         (string_literal)))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
         (string_literal)))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
         (string_literal)))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
         (concatenation_expression
           (string_literal)
           (string_literal))))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
         (string_literal)
         (string_literal)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Line continuation in hollerith constants
@@ -256,20 +289,25 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (statement_label)
     (format_statement
       (transfer_items
         (edit_descriptor)
         (hollerith_constant)))
+    (end_of_statement)
     (statement_label)
     (format_statement
       (transfer_items
         (edit_descriptor)
         (hollerith_constant)))
+    (end_of_statement)
     (statement_label)
     (format_statement
       (transfer_items
         (edit_descriptor)
         (hollerith_constant)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))

@@ -127,16 +127,20 @@ end subroutine foo3
     name: (identifier)
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name))))
+        (name)
+        (end_of_statement))))
   (preproc_ifdef
     name: (identifier)
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     (preproc_def
       name: (identifier)
       value: (preproc_arg))
@@ -146,9 +150,11 @@ end subroutine foo3
       alternative: (preproc_else
         (subroutine
           (subroutine_statement
-            name: (name))
+            name: (name)
+            (end_of_statement))
           (end_subroutine_statement
-            (name)))
+            (name)
+            (end_of_statement)))
         (preproc_def
           name: (identifier)
           value: (preproc_arg))))
@@ -184,36 +190,46 @@ end subroutine foo5
     name: (identifier)
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))))
+          (name)
+          (end_of_statement)))))
   (preproc_ifdef
     name: (identifier)
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       alternative: (preproc_else
         (subroutine
           (subroutine_statement
-            name: (name))
+            name: (name)
+            (end_of_statement))
           (end_subroutine_statement
-            (name)))))))
+            (name)
+            (end_of_statement)))))))
 
 ================================================================================
 Mixing #elif and #elifdef
@@ -245,38 +261,48 @@ end subroutine e
     name: (identifier)
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     alternative: (preproc_elif
       condition: (preproc_defined
         (identifier))
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))))
+          (name)
+          (end_of_statement)))))
   (preproc_if
     condition: (preproc_defined
       (identifier))
     (subroutine
       (subroutine_statement
-        name: (name))
+        name: (name)
+        (end_of_statement))
       (end_subroutine_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       alternative: (preproc_else
         (subroutine
           (subroutine_statement
-            name: (name))
+            name: (name)
+            (end_of_statement))
           (end_subroutine_statement
-            (name)))))))
+            (name)
+            (end_of_statement)))))))
 
 ================================================================================
 General if blocks
@@ -388,34 +414,40 @@ end program test
     (preproc_arg))
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (preproc_call
       (preproc_directive)
       (preproc_arg))
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (preproc_call
         (preproc_directive)
         (preproc_arg))
       (subroutine
         (subroutine_statement
-          (name))
+          (name)
+          (end_of_statement))
         (preproc_call
           (preproc_directive)
           (preproc_arg))
         (variable_declaration
           (intrinsic_type)
           (identifier))
+        (end_of_statement)
         (preproc_call
           (preproc_directive)
           (preproc_arg))
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       (preproc_call
         (preproc_directive)
         (preproc_arg)))
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 If directives in use statements
@@ -434,19 +466,23 @@ end program
 (translation_unit
   (program
     (program_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (use_statement
       (module_name)
       (included_items
         (identifier)
         (identifier)))
+    (end_of_statement)
     (preproc_if
       condition: (binary_expression
         left: (identifier)
         right: (number_literal))
       (use_statement
-        (module_name)))
-    (end_program_statement)))
+        (module_name))
+      (end_of_statement))
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 If directives in derived types
@@ -471,15 +507,18 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      (name))
+      (name)
+      (end_of_statement))
     (derived_type_definition
       (derived_type_statement
-        (type_name))
+        (type_name)
+        (end_of_statement))
       (preproc_include
         (string_literal))
       (variable_declaration
         (intrinsic_type)
         (identifier))
+      (end_of_statement)
       (preproc_if
         (identifier)
         (variable_declaration
@@ -491,11 +530,14 @@ end module foo
           (identifier)
           (procedure_statement
             (procedure_kind)
-            (method_name))))
+            (method_name)
+            (end_of_statement))))
       (end_type_statement
-        (name)))
+        (name)
+        (end_of_statement)))
     (end_module_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 If directives around procedures
@@ -522,28 +564,37 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       (preproc_ifdef
         name: (identifier)
         (subroutine
           (subroutine_statement
-            name: (name))
+            name: (name)
+            (end_of_statement))
           (end_subroutine_statement
-            (name))))
+            (name)
+            (end_of_statement))))
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name))))
+          (name)
+          (end_of_statement))))
     (end_module_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 If directive splitting specification part
@@ -572,39 +623,50 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (variable_declaration
           type: (intrinsic_type)
           declarator: (identifier))
+        (end_of_statement)
         (preproc_ifdef
           name: (identifier)
           (variable_declaration
             type: (intrinsic_type)
             declarator: (identifier))
+          (end_of_statement)
           (assignment_statement
             left: (identifier)
             right: (math_expression
               left: (identifier)
-              right: (number_literal))))
+              right: (number_literal)))
+          (end_of_statement))
         (assignment_statement
           left: (identifier)
           right: (math_expression
             left: (identifier)
             right: (number_literal)))
+        (end_of_statement)
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name))))
+          (name)
+          (end_of_statement))))
     (end_module_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Whitespace after if directive
@@ -632,34 +694,44 @@ end module foo
 (translation_unit
   (module
     (module_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (internal_procedures
       (contains_statement)
+      (end_of_statement)
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (variable_declaration
           type: (intrinsic_type)
           declarator: (identifier))
+        (end_of_statement)
         (assignment_statement
           left: (identifier)
           right: (number_literal
             kind: (identifier)))
+        (end_of_statement)
         (preproc_ifdef
           name: (identifier)
           (assignment_statement
             left: (identifier)
             right: (number_literal
-              kind: (identifier))))
+              kind: (identifier)))
+          (end_of_statement))
         (end_subroutine_statement
-          (name)))
+          (name)
+          (end_of_statement)))
       (subroutine
         (subroutine_statement
-          name: (name))
+          name: (name)
+          (end_of_statement))
         (end_subroutine_statement
-          (name))))
+          (name)
+          (end_of_statement))))
     (end_module_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Preprocessor in select statements
@@ -693,9 +765,11 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (implicit_statement
       (none))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type
         (kind
@@ -703,23 +777,29 @@ end program
             (identifier)
             (number_literal))))
       (identifier))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (identifier))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (string_literal))
+    (end_of_statement)
     (select_case_statement
       (selector
         (identifier))
+      (end_of_statement)
       (preproc_ifdef
         (identifier)
         (case_statement
           (case_value_range_list
             (string_literal))
+          (end_of_statement)
           (assignment_statement
             (identifier)
-            (number_literal))))
+            (number_literal))
+          (end_of_statement)))
       (preproc_if
         (binary_expression
           (identifier)
@@ -727,18 +807,24 @@ end program
         (case_statement
           (case_value_range_list
             (string_literal))
+          (end_of_statement)
           (assignment_statement
             (identifier)
-            (number_literal))))
+            (number_literal))
+          (end_of_statement)))
       (case_statement
         (default)
+        (end_of_statement)
         (preproc_ifdef
           (identifier)
           (assignment_statement
             (identifier)
-            (number_literal))))
+            (number_literal))
+          (end_of_statement)))
       (end_select_statement))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Preprocessor in interface
@@ -758,20 +844,26 @@ end module
 (translation_unit
   (module
     (module_statement
-      (name))
+      (name)
+      (end_of_statement))
     (interface
       (interface_statement
-        (name))
+        (name)
+        (end_of_statement))
       (procedure_statement
         (procedure_kind)
-        (method_name))
+        (method_name)
+        (end_of_statement))
       (preproc_ifdef
         (identifier)
         (procedure_statement
           (procedure_kind)
-          (method_name)))
-      (end_interface_statement))
-    (end_module_statement)))
+          (method_name)
+          (end_of_statement)))
+      (end_interface_statement
+        (end_of_statement)))
+    (end_module_statement
+      (end_of_statement))))
 
 ================================================================================
 Preprocessor in specification part
@@ -802,9 +894,11 @@ Preprocessor in specification part
 (translation_unit
   (subroutine
     (subroutine_statement
-      (name))
+      (name)
+      (end_of_statement))
     (implicit_statement
       (none))
+    (end_of_statement)
     (preproc_ifdef
       (identifier)
       (preproc_ifdef
@@ -818,6 +912,7 @@ Preprocessor in specification part
                   (identifier)
                   (number_literal))))
             (identifier))
+          (end_of_statement)
           (variable_declaration
             (intrinsic_type
               (kind
@@ -825,6 +920,7 @@ Preprocessor in specification part
                   (identifier)
                   (number_literal))))
             (identifier))
+          (end_of_statement)
           (variable_declaration
             (intrinsic_type
               (kind
@@ -835,19 +931,23 @@ Preprocessor in specification part
               (identifier)
               (unary_expression
                 (number_literal))))
+          (end_of_statement)
           (preproc_else
             (variable_declaration
               (intrinsic_type)
               (identifier))
+            (end_of_statement)
             (variable_declaration
               (intrinsic_type)
               (identifier))
+            (end_of_statement)
             (variable_declaration
               (intrinsic_type)
               (init_declarator
                 (identifier)
                 (unary_expression
-                  (number_literal))))))
+                  (number_literal))))
+            (end_of_statement)))
         (assignment_statement
           (identifier)
           (call_expression
@@ -856,6 +956,7 @@ Preprocessor in specification part
               (number_literal)
               (identifier)
               (identifier))))
+        (end_of_statement)
         (assignment_statement
           (identifier)
           (call_expression
@@ -863,6 +964,8 @@ Preprocessor in specification part
             (argument_list
               (number_literal)
               (identifier)
-              (identifier))))))
+              (identifier))))
+        (end_of_statement)))
     (end_subroutine_statement
-      (name))))
+      (name)
+      (end_of_statement))))

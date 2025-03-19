@@ -36,103 +36,131 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (complex_literal
         (number_literal)
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (complex_literal
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (complex_literal
         (unary_expression
           (number_literal))
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (complex_literal
         (number_literal)
         (unary_expression
           (number_literal))))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (boolean_literal
         (identifier)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 String Literals
@@ -158,31 +186,40 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (concatenation_expression
@@ -192,11 +229,14 @@ END PROGRAM
           right: (concatenation_expression
             left: (identifier)
             right: (identifier)))))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (string_literal
         kind: (identifier)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Boolean Literals
@@ -212,14 +252,18 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (boolean_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (boolean_literal))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Array Literals
@@ -237,7 +281,8 @@ end program
 (translation_unit
   (program
     (program_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (variable_declaration
       type: (intrinsic_type)
       declarator: (init_declarator
@@ -249,6 +294,7 @@ end program
           (number_literal)
           (number_literal)
           (number_literal))))
+    (end_of_statement)
     (variable_declaration
       type: (intrinsic_type
         kind: (kind
@@ -273,6 +319,7 @@ end program
             (identifier)
             (argument_list
               (number_literal))))))
+    (end_of_statement)
     (variable_declaration
       type: (intrinsic_type
         kind: (kind
@@ -287,6 +334,7 @@ end program
             argument: (number_literal))
           (number_literal)
           (number_literal))))
+    (end_of_statement)
     (subroutine_call
       subroutine: (identifier)
       (argument_list
@@ -296,7 +344,9 @@ end program
             (identifier)
             (argument_list
               (number_literal))))))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Array Slicing
@@ -318,19 +368,22 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (number_literal)))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (extent_specifier)))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -339,6 +392,7 @@ END PROGRAM
             (number_literal)
             (number_literal))))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -348,6 +402,7 @@ END PROGRAM
             (number_literal)
             (number_literal))))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -355,6 +410,7 @@ END PROGRAM
           (extent_specifier
             (number_literal))))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -369,6 +425,7 @@ END PROGRAM
               (identifier))
             (identifier))))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -383,6 +440,7 @@ END PROGRAM
                 (argument_list
                   (identifier)))))))
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -396,7 +454,9 @@ END PROGRAM
                   (number_literal))))
             (identifier))))
       (number_literal))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Pointer Assignment
@@ -413,22 +473,27 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (pointer_association_statement
       (identifier)
       (identifier))
+    (end_of_statement)
     (pointer_association_statement
       (call_expression
         (identifier)
         (argument_list
           (number_literal)))
       (identifier))
+    (end_of_statement)
     (pointer_association_statement
       (derived_type_member_expression
         (identifier)
         (type_member))
       (identifier))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Derived Type Member Access
@@ -445,17 +510,20 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (derived_type_member_expression
         (identifier)
         (type_member))
       (identifier))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (derived_type_member_expression
         (identifier)
         (type_member)))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (derived_type_member_expression
@@ -466,7 +534,9 @@ END PROGRAM
             (number_literal)
             (number_literal))))
       (identifier))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Mathematical Expressions
@@ -489,40 +559,48 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (math_expression
         (identifier)
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
         (identifier)
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (unary_expression
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (unary_expression
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
@@ -536,6 +614,7 @@ END PROGRAM
               (unary_expression
                 (number_literal)))))
         (number_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (math_expression
@@ -546,7 +625,9 @@ END PROGRAM
               (identifier)
               (identifier)))
           (number_literal))))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Logical Expressions
@@ -580,91 +661,109 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
         (identifier)
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
         (identifier)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (parenthesized_expression
@@ -672,6 +771,7 @@ END PROGRAM
           (relational_expression
             (identifier)
             (identifier)))))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
@@ -686,12 +786,15 @@ END PROGRAM
                 (identifier)
                 (identifier)))))
         (boolean_literal)))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (relational_expression
         (number_literal)
         (number_literal)))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Function and Subroutine Call Expressions
@@ -712,12 +815,14 @@ END PROGRAM
 (translation_unit
   (program
     (program_statement
-      name: (name))
+      name: (name)
+      (end_of_statement))
     (assignment_statement
       left: (identifier)
       right: (call_expression
         (identifier)
         (argument_list)))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (call_expression
@@ -730,6 +835,7 @@ END PROGRAM
             right: (math_expression
               left: (identifier)
               right: (identifier))))))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (math_expression
@@ -746,17 +852,20 @@ END PROGRAM
                   (number_literal)))
               right: (number_literal))))
         right: (number_literal)))
+    (end_of_statement)
     (subroutine_call
       subroutine: (identifier)
       (argument_list
         (identifier)
         (identifier)))
+    (end_of_statement)
     (open_statement
       (unit_identifier
         (number_literal))
       (keyword_argument
         name: (identifier)
         value: (string_literal)))
+    (end_of_statement)
     (assignment_statement
       left: (derived_type_member_expression
         (identifier)
@@ -770,6 +879,7 @@ END PROGRAM
               (extent_specifier
                 (number_literal)
                 (identifier)))))))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (call_expression
@@ -789,7 +899,9 @@ END PROGRAM
                     right: (number_literal)))))
             (argument_list
               (number_literal))))))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Call Type-Bound Procedure
@@ -805,12 +917,14 @@ end program use_type_bound_procedures
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (subroutine_call
       (derived_type_member_expression
         (identifier)
         (type_member))
       (argument_list))
+    (end_of_statement)
     (subroutine_call
       (derived_type_member_expression
         (derived_type_member_expression
@@ -821,8 +935,10 @@ end program use_type_bound_procedures
           (type_member))
         (type_member))
       (argument_list))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Line Continuation
@@ -843,7 +959,8 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (write_statement
       (unit_identifier)
       (format_identifier
@@ -859,9 +976,12 @@ end program
       (keyword_argument
         (identifier)
         (identifier)))
+    (end_of_statement)
     (comment)
     (stop_statement)
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Line Continuation in String Literal
@@ -877,13 +997,16 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (print_statement
       (format_identifier)
       (output_item_list
         (string_literal)))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Line Continuation in Number Literals
@@ -906,13 +1029,15 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (type_qualifier)
       (init_declarator
         (identifier)
         (number_literal)))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier
@@ -923,6 +1048,7 @@ end program
         (array_literal
           (number_literal)
           (number_literal))))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier
@@ -933,7 +1059,9 @@ end program
         (array_literal
           (number_literal)
           (number_literal))))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Array Constructors
@@ -958,12 +1086,15 @@ end program array_constructors
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (implicit_statement
       (none))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (identifier))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier
@@ -978,12 +1109,14 @@ end program array_constructors
               (identifier)
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier
         (argument_list
           (number_literal)))
       (identifier))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (array_literal
@@ -1001,10 +1134,12 @@ end program array_constructors
             (identifier)
             (number_literal)
             (number_literal)))))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (array_literal
         (intrinsic_type)))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
@@ -1019,6 +1154,7 @@ end program array_constructors
               (number_literal)
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
@@ -1030,6 +1166,7 @@ end program array_constructors
               (number_literal)
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
@@ -1042,8 +1179,10 @@ end program array_constructors
           (string_literal)
           (string_literal)
           (string_literal))))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Keywords As Identifiers
@@ -1068,46 +1207,56 @@ end program
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (identifier)
       (identifier)
       (identifier)
       (identifier))
+    (end_of_statement)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier
         (argument_list
           (number_literal)))
       (identifier))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (assignment_statement
       (identifier)
       (number_literal))
+    (end_of_statement)
     (if_statement
       (parenthesized_expression
         (relational_expression
           (identifier)
           (number_literal)))
+      (end_of_statement)
       (assignment_statement
         (identifier)
         (number_literal))
+      (end_of_statement)
       (assignment_statement
         (identifier)
         (math_expression
           (identifier)
           (identifier)))
+      (end_of_statement)
       (elseif_clause
         (parenthesized_expression
           (relational_expression
             (identifier)
             (number_literal)))
+        (end_of_statement)
         (assignment_statement
           (call_expression
             (identifier)
@@ -1116,12 +1265,16 @@ end program
           (math_expression
             (identifier)
             (identifier)))
+        (end_of_statement)
         (print_statement
           (format_identifier)
           (output_item_list
-            (identifier))))
+            (identifier)))
+        (end_of_statement))
       (end_if_statement))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
 
 ================================================================================
 Conditional expressions
@@ -1142,16 +1295,19 @@ end subroutine test
       name: (name)
       parameters: (parameters
         (identifier)
-        (identifier)))
+        (identifier))
+      (end_of_statement))
     (variable_declaration
       type: (intrinsic_type)
       attribute: (type_qualifier)
       declarator: (identifier))
+    (end_of_statement)
     (variable_declaration
       type: (intrinsic_type)
       attribute: (type_qualifier)
       attribute: (type_qualifier)
       declarator: (identifier))
+    (end_of_statement)
     (assignment_statement
       left: (identifier)
       right: (conditional_expression
@@ -1161,6 +1317,7 @@ end subroutine test
             (identifier)))
         consequence: (identifier)
         alternative: (number_literal)))
+    (end_of_statement)
     (subroutine_call
       subroutine: (identifier)
       (argument_list
@@ -1170,8 +1327,10 @@ end subroutine test
             right: (number_literal))
           consequence: (identifier)
           alternative: (nil_literal))))
+    (end_of_statement)
     (end_subroutine_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Multiple subscripts
@@ -1192,7 +1351,8 @@ end program test
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (assignment_statement
       (identifier)
       (call_expression
@@ -1202,6 +1362,7 @@ end program test
             (array_literal
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (comment)
     (assignment_statement
       (identifier)
@@ -1214,6 +1375,7 @@ end program test
               (number_literal)
               (number_literal)))
           (number_literal))))
+    (end_of_statement)
     (comment)
     (assignment_statement
       (identifier)
@@ -1225,6 +1387,7 @@ end program test
           (extent_specifier)
           (multiple_subscript
             (identifier)))))
+    (end_of_statement)
     (comment)
     (comment)
     (assignment_statement
@@ -1242,6 +1405,7 @@ end program test
             (array_literal
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (comment)
     (assignment_statement
       (identifier)
@@ -1256,6 +1420,7 @@ end program test
               (number_literal)
               (number_literal))
             (number_literal)))))
+    (end_of_statement)
     (comment)
     (assignment_statement
       (identifier)
@@ -1269,9 +1434,11 @@ end program test
             (array_literal
               (number_literal)
               (number_literal))))))
+    (end_of_statement)
     (comment)
     (end_program_statement
-      (name))))
+      (name)
+      (end_of_statement))))
 
 ================================================================================
 Reserved keyword as a symbol name
@@ -1287,7 +1454,8 @@ end
 (translation_unit
   (program
     (program_statement
-      (name))
+      (name)
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (sized_declarator
@@ -1295,6 +1463,7 @@ end
         (size
           (number_literal)
           (number_literal))))
+    (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
@@ -1302,4 +1471,6 @@ end
           (number_literal)
           (number_literal)))
       (number_literal))
-    (end_program_statement)))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
