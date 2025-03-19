@@ -863,10 +863,9 @@ end function test
       (intrinsic_type)
       (init_declarator
         (identifier)
-        (parenthesized_expression
-          (relational_expression
-            (identifier)
-            (identifier)))))
+        (relational_expression
+          (identifier)
+          (identifier))))
     (end_of_statement)
     (internal_procedures
       (contains_statement)

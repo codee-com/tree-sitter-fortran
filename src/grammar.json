@@ -6330,7 +6330,7 @@
             "name": "preproc_parenthesized_expression"
           },
           "named": true,
-          "value": "parenthesized_expression"
+          "value": "_parenthesized_expression"
         }
       ]
     },
@@ -12144,7 +12144,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "parenthesized_expression"
+                  "name": "_parenthesized_expression"
                 }
               ]
             }
@@ -14080,7 +14080,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parenthesized_expression"
+          "name": "_parenthesized_expression"
         }
       ]
     },
@@ -14439,15 +14439,15 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_inline_if_statement"
+          "name": "inline_if_statement"
         },
         {
           "type": "SYMBOL",
-          "name": "_block_if_statement"
+          "name": "block_if_statement"
         }
       ]
     },
-    "_inline_if_statement": {
+    "inline_if_statement": {
       "type": "PREC_RIGHT",
       "value": 2,
       "content": {
@@ -14464,7 +14464,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "parenthesized_expression"
+            "name": "_parenthesized_expression"
           },
           {
             "type": "SYMBOL",
@@ -14490,7 +14490,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "parenthesized_expression"
+            "name": "_parenthesized_expression"
           },
           {
             "type": "SYMBOL",
@@ -14515,7 +14515,7 @@
         ]
       }
     },
-    "_block_if_statement": {
+    "block_if_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -14541,7 +14541,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parenthesized_expression"
+          "name": "_parenthesized_expression"
         },
         {
           "type": "ALIAS",
@@ -14688,7 +14688,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parenthesized_expression"
+          "name": "_parenthesized_expression"
         },
         {
           "type": "ALIAS",
@@ -14766,15 +14766,15 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_inline_where_statement"
+          "name": "inline_where_statement"
         },
         {
           "type": "SYMBOL",
-          "name": "_block_where_statement"
+          "name": "block_where_statement"
         }
       ]
     },
-    "_inline_where_statement": {
+    "inline_where_statement": {
       "type": "PREC_RIGHT",
       "value": 0,
       "content": {
@@ -14791,7 +14791,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "parenthesized_expression"
+            "name": "_parenthesized_expression"
           },
           {
             "type": "SYMBOL",
@@ -14800,7 +14800,7 @@
         ]
       }
     },
-    "_block_where_statement": {
+    "block_where_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -14826,7 +14826,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parenthesized_expression"
+          "name": "_parenthesized_expression"
         },
         {
           "type": "SYMBOL",
@@ -14931,7 +14931,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "parenthesized_expression"
+              "name": "_parenthesized_expression"
             },
             {
               "type": "BLANK"
@@ -14968,11 +14968,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_inline_forall_statement"
+          "name": "inline_forall_statement"
         },
         {
           "type": "SYMBOL",
-          "name": "_block_forall_statement"
+          "name": "block_forall_statement"
         }
       ]
     },
@@ -15099,7 +15099,7 @@
         }
       ]
     },
-    "_inline_forall_statement": {
+    "inline_forall_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -15112,7 +15112,7 @@
         }
       ]
     },
-    "_block_forall_statement": {
+    "block_forall_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -17343,7 +17343,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "parenthesized_expression"
+            "name": "_parenthesized_expression"
           },
           {
             "type": "SYMBOL",
@@ -17774,7 +17774,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "parenthesized_expression"
+          "name": "_parenthesized_expression"
         },
         {
           "type": "SYMBOL",
@@ -17794,7 +17794,7 @@
         }
       ]
     },
-    "parenthesized_expression": {
+    "_parenthesized_expression": {
       "type": "SEQ",
       "members": [
         {
@@ -20566,7 +20566,7 @@
     ],
     [
       "_argument_list",
-      "parenthesized_expression"
+      "_parenthesized_expression"
     ],
     [
       "case_statement"

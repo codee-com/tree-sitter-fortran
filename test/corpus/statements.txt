@@ -860,8 +860,7 @@ END PROGRAM
     (end_of_statement)
     (do_loop_statement
       (while_statement
-        (parenthesized_expression
-          (identifier)))
+        (identifier))
       (end_of_statement)
       (assignment_statement
         (identifier)
@@ -876,10 +875,10 @@ END PROGRAM
         (number_literal))
       (end_of_statement)
       (if_statement
-        (parenthesized_expression
-          (identifier))
-        (keyword_statement
-          (statement_label_reference)))
+        (inline_if_statement
+          (identifier)
+          (keyword_statement
+            (statement_label_reference))))
       (end_of_statement)
       (statement_label)
       (end_do_loop_statement))
@@ -1139,29 +1138,29 @@ END PROGRAM
       (name)
       (end_of_statement))
     (if_statement
-      (parenthesized_expression
+      (inline_if_statement
         (relational_expression
           (identifier)
-          (number_literal)))
-      (assignment_statement
-        (identifier)
-        (number_literal)))
+          (number_literal))
+        (assignment_statement
+          (identifier)
+          (number_literal))))
     (end_of_statement)
     (if_statement
-      (parenthesized_expression
+      (inline_if_statement
         (logical_expression
           (relational_expression
             (identifier)
             (number_literal))
           (relational_expression
             (number_literal)
-            (identifier))))
-      (assignment_statement
-        (identifier)
-        (number_literal)))
+            (identifier)))
+        (assignment_statement
+          (identifier)
+          (number_literal))))
     (end_of_statement)
     (if_statement
-      (parenthesized_expression
+      (block_if_statement
         (relational_expression
           (call_expression
             (identifier)
@@ -1172,14 +1171,13 @@ END PROGRAM
           (call_expression
             (identifier)
             (argument_list
-              (string_literal)))))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (number_literal))
-      (end_of_statement)
-      (elseif_clause
-        (parenthesized_expression
+              (string_literal))))
+        (end_of_statement)
+        (assignment_statement
+          (identifier)
+          (number_literal))
+        (end_of_statement)
+        (elseif_clause
           (relational_expression
             (call_expression
               (identifier)
@@ -1193,14 +1191,13 @@ END PROGRAM
                 (call_expression
                   (identifier)
                   (argument_list
-                    (number_literal)))))))
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement))
-      (elseif_clause
-        (parenthesized_expression
+                    (number_literal))))))
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (number_literal))
+          (end_of_statement))
+        (elseif_clause
           (relational_expression
             (call_expression
               (identifier)
@@ -1214,68 +1211,67 @@ END PROGRAM
                 (call_expression
                   (identifier)
                   (argument_list
-                    (number_literal)))))))
-        (end_of_statement))
-      (else_clause
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement))
-      (end_if_statement))
+                    (number_literal))))))
+          (end_of_statement))
+        (else_clause
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (number_literal))
+          (end_of_statement))
+        (end_if_statement)))
     (end_of_statement)
     (if_statement
-      (block_label_start_expression)
-      (parenthesized_expression
+      (block_if_statement
+        (block_label_start_expression)
         (relational_expression
           (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (number_literal))
-      (end_of_statement)
-      (elseif_clause
-        (parenthesized_expression
-          (relational_expression
-            (identifier)
-            (number_literal)))
-        (block_label)
+          (number_literal))
         (end_of_statement)
         (assignment_statement
           (identifier)
           (number_literal))
         (end_of_statement)
-        (if_statement
-          (parenthesized_expression
-            (call_expression
-              (identifier)
-              (argument_list
-                (extent_specifier
-                  (number_literal)
-                  (number_literal)))))
+        (elseif_clause
+          (relational_expression
+            (identifier)
+            (number_literal))
+          (block_label)
           (end_of_statement)
           (assignment_statement
             (identifier)
             (number_literal))
           (end_of_statement)
-          (else_clause
-            (end_of_statement)
-            (assignment_statement
-              (identifier)
-              (number_literal))
-            (end_of_statement))
-          (end_if_statement))
-        (end_of_statement))
-      (else_clause
-        (block_label)
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement))
-      (end_if_statement
-        (block_label)))
+          (if_statement
+            (block_if_statement
+              (call_expression
+                (identifier)
+                (argument_list
+                  (extent_specifier
+                    (number_literal)
+                    (number_literal))))
+              (end_of_statement)
+              (assignment_statement
+                (identifier)
+                (number_literal))
+              (end_of_statement)
+              (else_clause
+                (end_of_statement)
+                (assignment_statement
+                  (identifier)
+                  (number_literal))
+                (end_of_statement))
+              (end_if_statement)))
+          (end_of_statement))
+        (else_clause
+          (block_label)
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (number_literal))
+          (end_of_statement))
+        (end_if_statement
+          (block_label))))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -1315,37 +1311,25 @@ end program
       (name)
       (end_of_statement))
     (where_statement
-      (parenthesized_expression
+      (inline_where_statement
         (relational_expression
           (identifier)
-          (number_literal)))
-      (assignment_statement
-        (identifier)
-        (math_expression
+          (number_literal))
+        (assignment_statement
           (identifier)
-          (identifier))))
+          (math_expression
+            (identifier)
+            (identifier)))))
     (end_of_statement)
     (where_statement
-      (parenthesized_expression
+      (block_where_statement
         (relational_expression
           (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (math_expression
+          (number_literal))
+        (end_of_statement)
+        (assignment_statement
           (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (math_expression
-          (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (elsewhere_clause
-        (parenthesized_expression
-          (relational_expression
+          (math_expression
             (identifier)
             (number_literal)))
         (end_of_statement)
@@ -1354,50 +1338,60 @@ end program
           (math_expression
             (identifier)
             (number_literal)))
-        (end_of_statement))
-      (elsewhere_clause
         (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (boolean_literal))
-        (end_of_statement))
-      (end_where_statement))
-    (end_of_statement)
-    (where_statement
-      (block_label_start_expression)
-      (parenthesized_expression
-        (relational_expression
-          (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (math_expression
-          (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (elsewhere_clause
-        (parenthesized_expression
+        (elsewhere_clause
           (relational_expression
             (identifier)
-            (number_literal)))
-        (block_label)
+            (number_literal))
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (math_expression
+              (identifier)
+              (number_literal)))
+          (end_of_statement))
+        (elsewhere_clause
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (boolean_literal))
+          (end_of_statement))
+        (end_where_statement)))
+    (end_of_statement)
+    (where_statement
+      (block_where_statement
+        (block_label_start_expression)
+        (relational_expression
+          (identifier)
+          (number_literal))
         (end_of_statement)
         (assignment_statement
           (identifier)
           (math_expression
             (identifier)
             (number_literal)))
-        (end_of_statement))
-      (elsewhere_clause
-        (block_label)
         (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (boolean_literal))
-        (end_of_statement))
-      (end_where_statement
-        (block_label)))
+        (elsewhere_clause
+          (relational_expression
+            (identifier)
+            (number_literal))
+          (block_label)
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (math_expression
+              (identifier)
+              (number_literal)))
+          (end_of_statement))
+        (elsewhere_clause
+          (block_label)
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (boolean_literal))
+          (end_of_statement))
+        (end_where_statement
+          (block_label))))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -1432,79 +1426,22 @@ END PROGRAM
       (name)
       (end_of_statement))
     (forall_statement
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (identifier))
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (identifier))
-      (relational_expression
-        (call_expression
+      (inline_forall_statement
+        (triplet_spec
           (identifier)
-          (argument_list
-            (identifier)
-            (identifier)))
-        (number_literal))
-      (assignment_statement
-        (call_expression
-          (identifier)
-          (argument_list
-            (identifier)
-            (identifier)))
-        (math_expression
           (number_literal)
-          (call_expression
-            (identifier)
-            (argument_list
-              (identifier)
-              (identifier))))))
-    (end_of_statement)
-    (forall_statement
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (number_literal))
-      (pointer_association_statement
-        (derived_type_member_expression
-          (call_expression
-            (identifier)
-            (argument_list
-              (identifier)))
-          (type_member))
-        (call_expression
+          (identifier))
+        (triplet_spec
           (identifier)
-          (argument_list
-            (math_expression
-              (number_literal)
-              (call_expression
-                (identifier)
-                (argument_list
-                  (math_expression
-                    (identifier)
-                    (number_literal))
-                  (number_literal))))))))
-    (end_of_statement)
-    (forall_statement
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (identifier))
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (identifier))
-      (end_of_statement)
-      (where_statement
-        (parenthesized_expression
-          (relational_expression
-            (call_expression
+          (number_literal)
+          (identifier))
+        (relational_expression
+          (call_expression
+            (identifier)
+            (argument_list
               (identifier)
-              (argument_list
-                (identifier)
-                (identifier)))
-            (number_literal)))
+              (identifier)))
+          (number_literal))
         (assignment_statement
           (call_expression
             (identifier)
@@ -1517,82 +1454,143 @@ END PROGRAM
               (identifier)
               (argument_list
                 (identifier)
-                (identifier))))))
-      (end_of_statement)
-      (end_forall_statement))
+                (identifier)))))))
     (end_of_statement)
     (forall_statement
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (math_expression
+      (inline_forall_statement
+        (triplet_spec
           (identifier)
-          (number_literal)))
-      (triplet_spec
-        (identifier)
-        (number_literal)
-        (math_expression
-          (identifier)
-          (number_literal)))
-      (relational_expression
-        (call_expression
-          (identifier)
-          (argument_list
+          (number_literal)
+          (number_literal))
+        (pointer_association_statement
+          (derived_type_member_expression
+            (call_expression
+              (identifier)
+              (argument_list
+                (identifier)))
+            (type_member))
+          (call_expression
             (identifier)
-            (identifier)))
-        (number_literal))
-      (end_of_statement)
-      (assignment_statement
-        (call_expression
+            (argument_list
+              (math_expression
+                (number_literal)
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (math_expression
+                      (identifier)
+                      (number_literal))
+                    (number_literal)))))))))
+    (end_of_statement)
+    (forall_statement
+      (block_forall_statement
+        (triplet_spec
           (identifier)
-          (argument_list
+          (number_literal)
+          (identifier))
+        (triplet_spec
+          (identifier)
+          (number_literal)
+          (identifier))
+        (end_of_statement)
+        (where_statement
+          (inline_where_statement
+            (relational_expression
+              (call_expression
+                (identifier)
+                (argument_list
+                  (identifier)
+                  (identifier)))
+              (number_literal))
+            (assignment_statement
+              (call_expression
+                (identifier)
+                (argument_list
+                  (identifier)
+                  (identifier)))
+              (math_expression
+                (number_literal)
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (identifier)
+                    (identifier)))))))
+        (end_of_statement)
+        (end_forall_statement)))
+    (end_of_statement)
+    (forall_statement
+      (block_forall_statement
+        (triplet_spec
+          (identifier)
+          (number_literal)
+          (math_expression
             (identifier)
-            (identifier)))
-        (math_expression
+            (number_literal)))
+        (triplet_spec
+          (identifier)
+          (number_literal)
+          (math_expression
+            (identifier)
+            (number_literal)))
+        (relational_expression
+          (call_expression
+            (identifier)
+            (argument_list
+              (identifier)
+              (identifier)))
+          (number_literal))
+        (end_of_statement)
+        (assignment_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (identifier)
+              (identifier)))
           (math_expression
             (math_expression
+              (math_expression
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (identifier)
+                    (math_expression
+                      (identifier)
+                      (number_literal))))
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (identifier)
+                    (math_expression
+                      (identifier)
+                      (number_literal)))))
               (call_expression
                 (identifier)
                 (argument_list
-                  (identifier)
                   (math_expression
                     (identifier)
-                    (number_literal))))
-              (call_expression
-                (identifier)
-                (argument_list
-                  (identifier)
-                  (math_expression
-                    (identifier)
-                    (number_literal)))))
+                    (number_literal))
+                  (identifier))))
             (call_expression
               (identifier)
               (argument_list
                 (math_expression
                   (identifier)
                   (number_literal))
-                (identifier))))
+                (identifier)))))
+        (end_of_statement)
+        (assignment_statement
           (call_expression
             (identifier)
             (argument_list
-              (math_expression
-                (identifier)
-                (number_literal))
-              (identifier)))))
-      (end_of_statement)
-      (assignment_statement
-        (call_expression
-          (identifier)
-          (argument_list
+              (identifier)
+              (identifier)))
+          (call_expression
             (identifier)
-            (identifier)))
-        (call_expression
-          (identifier)
-          (argument_list
-            (identifier)
-            (identifier))))
-      (end_of_statement)
-      (end_forall_statement))
+            (argument_list
+              (identifier)
+              (identifier))))
+        (end_of_statement)
+        (end_forall_statement)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -2962,16 +2960,14 @@ end program
     (end_of_statement)
     (file_position_statement
       (unit_identifier
-        (parenthesized_expression
-          (number_literal))))
+        (number_literal)))
     (end_of_statement)
     (file_position_statement
       (unit_identifier
-        (parenthesized_expression
-          (call_expression
-            (identifier)
-            (argument_list
-              (identifier))))))
+        (call_expression
+          (identifier)
+          (argument_list
+            (identifier)))))
     (end_of_statement)
     (file_position_statement
       (string_literal))
@@ -3119,8 +3115,7 @@ end
 (translation_unit
   (program
     (arithmetic_if_statement
-      (parenthesized_expression
-        (identifier))
+      (identifier)
       (statement_label_reference)
       (statement_label_reference)
       (statement_label_reference))
@@ -3390,19 +3385,19 @@ end program test
         (identifier)))
     (end_of_statement)
     (if_statement
-      (parenthesized_expression
+      (inline_if_statement
         (relational_expression
           (identifier)
-          (number_literal)))
-      (assignment_statement
-        (coarray_expression
-          (identifier)
-          (coarray_index
-            (number_literal)
-            (keyword_argument
-              (identifier)
-              (identifier))))
-        (identifier)))
+          (number_literal))
+        (assignment_statement
+          (coarray_expression
+            (identifier)
+            (coarray_index
+              (number_literal)
+              (keyword_argument
+                (identifier)
+                (identifier))))
+          (identifier))))
     (end_of_statement)
     (allocate_statement
       (coarray_allocation

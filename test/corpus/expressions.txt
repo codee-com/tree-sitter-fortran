@@ -610,9 +610,8 @@ END PROGRAM
             (identifier))
           (math_expression
             (identifier)
-            (parenthesized_expression
-              (unary_expression
-                (number_literal)))))
+            (unary_expression
+              (number_literal))))
         (number_literal)))
     (end_of_statement)
     (assignment_statement
@@ -620,10 +619,9 @@ END PROGRAM
       (math_expression
         (number_literal)
         (math_expression
-          (parenthesized_expression
-            (math_expression
-              (identifier)
-              (identifier)))
+          (math_expression
+            (identifier)
+            (identifier))
           (number_literal))))
     (end_of_statement)
     (end_program_statement
@@ -766,25 +764,21 @@ END PROGRAM
     (end_of_statement)
     (assignment_statement
       (identifier)
-      (parenthesized_expression
-        (logical_expression
-          (relational_expression
-            (identifier)
-            (identifier)))))
+      (logical_expression
+        (relational_expression
+          (identifier)
+          (identifier))))
     (end_of_statement)
     (assignment_statement
       (identifier)
       (logical_expression
-        (parenthesized_expression
-          (logical_expression
-            (parenthesized_expression
-              (relational_expression
-                (identifier)
-                (identifier)))
-            (parenthesized_expression
-              (relational_expression
-                (identifier)
-                (identifier)))))
+        (logical_expression
+          (relational_expression
+            (identifier)
+            (identifier))
+          (relational_expression
+            (identifier)
+            (identifier)))
         (boolean_literal)))
     (end_of_statement)
     (assignment_statement
@@ -1121,15 +1115,14 @@ end program array_constructors
       (identifier)
       (array_literal
         (implied_do_loop_expression
-          (parenthesized_expression
-            (math_expression
-              (call_expression
-                (identifier)
-                (argument_list
-                  (math_expression
-                    (identifier)
-                    (number_literal))))
-              (number_literal)))
+          (math_expression
+            (call_expression
+              (identifier)
+              (argument_list
+                (math_expression
+                  (identifier)
+                  (number_literal))))
+            (number_literal))
           (loop_control_expression
             (identifier)
             (number_literal)
@@ -1236,42 +1229,41 @@ end program
       (number_literal))
     (end_of_statement)
     (if_statement
-      (parenthesized_expression
+      (block_if_statement
         (relational_expression
           (identifier)
-          (number_literal)))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (number_literal))
-      (end_of_statement)
-      (assignment_statement
-        (identifier)
-        (math_expression
-          (identifier)
-          (identifier)))
-      (end_of_statement)
-      (elseif_clause
-        (parenthesized_expression
-          (relational_expression
-            (identifier)
-            (number_literal)))
+          (number_literal))
         (end_of_statement)
         (assignment_statement
-          (call_expression
-            (identifier)
-            (argument_list
-              (identifier)))
+          (identifier)
+          (number_literal))
+        (end_of_statement)
+        (assignment_statement
+          (identifier)
           (math_expression
             (identifier)
             (identifier)))
         (end_of_statement)
-        (print_statement
-          (format_identifier)
-          (output_item_list
-            (identifier)))
-        (end_of_statement))
-      (end_if_statement))
+        (elseif_clause
+          (relational_expression
+            (identifier)
+            (number_literal))
+          (end_of_statement)
+          (assignment_statement
+            (call_expression
+              (identifier)
+              (argument_list
+                (identifier)))
+            (math_expression
+              (identifier)
+              (identifier)))
+          (end_of_statement)
+          (print_statement
+            (format_identifier)
+            (output_item_list
+              (identifier)))
+          (end_of_statement))
+        (end_if_statement)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))

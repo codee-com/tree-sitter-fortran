@@ -97,23 +97,23 @@ end program foo
       (name)
       (end_of_statement))
     (if_statement
-      (block_label_start_expression)
-      (parenthesized_expression
-        (boolean_literal))
-      (end_of_statement)
-      (subroutine_call
-        (identifier)
-        (argument_list))
-      (end_of_statement)
-      (else_clause
-        (block_label)
+      (block_if_statement
+        (block_label_start_expression)
+        (boolean_literal)
         (end_of_statement)
         (subroutine_call
           (identifier)
           (argument_list))
-        (end_of_statement))
-      (end_if_statement
-        (block_label)))
+        (end_of_statement)
+        (else_clause
+          (block_label)
+          (end_of_statement)
+          (subroutine_call
+            (identifier)
+            (argument_list))
+          (end_of_statement))
+        (end_if_statement
+          (block_label))))
     (end_of_statement)
     (end_program_statement
       (name)
@@ -140,14 +140,13 @@ end program
       (name)
       (end_of_statement))
     (if_statement
-      (parenthesized_expression
-        (boolean_literal))
-      (end_of_statement)
-      (elseif_clause
-        (parenthesized_expression
-          (boolean_literal))
-        (end_of_statement))
-      (end_if_statement))
+      (block_if_statement
+        (boolean_literal)
+        (end_of_statement)
+        (elseif_clause
+          (boolean_literal)
+          (end_of_statement))
+        (end_if_statement)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))

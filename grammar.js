@@ -84,7 +84,7 @@ module.exports = grammar({
 
   conflicts: $ => [
     [$._expression, $.complex_literal],
-    [$._argument_list, $.parenthesized_expression],
+    [$._argument_list, $._parenthesized_expression],
     [$.case_statement],
     [$.data_set, $._expression],
     [$.data_statement, $.identifier],
@@ -203,7 +203,7 @@ module.exports = grammar({
       $.preproc_defined,
       alias($.preproc_unary_expression, $.unary_expression),
       alias($.preproc_binary_expression, $.binary_expression),
-      alias($.preproc_parenthesized_expression, $.parenthesized_expression),
+      alias($.preproc_parenthesized_expression, $._parenthesized_expression),
     ),
 
     preproc_parenthesized_expression: $ => seq(
@@ -952,7 +952,7 @@ module.exports = grammar({
 
     kind: $ => choice(
       seq(optional(alias('*', $.assumed_size)), $._argument_list),
-      seq('*', choice(alias(/\d+/, $.number_literal), $.parenthesized_expression))
+      seq('*', choice(alias(/\d+/, $.number_literal), $._parenthesized_expression))
     ),
 
     character_length: $ => seq(
@@ -1252,7 +1252,7 @@ module.exports = grammar({
     )),
 
     while_statement: $ => seq(caseInsensitive('while'),
-      $.parenthesized_expression),
+      $._parenthesized_expression),
 
     concurrent_statement: $ => seq(
       $.concurrent_header,
@@ -1311,13 +1311,13 @@ module.exports = grammar({
 
     inline_if_statement: $ => prec.right(2, seq(
       caseInsensitive('if'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $._statements
     )),
 
     arithmetic_if_statement: $ => prec.right(seq(
       caseInsensitive('if'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $.statement_label_reference,
       ',',
       $.statement_label_reference,
@@ -1328,7 +1328,7 @@ module.exports = grammar({
     block_if_statement: $ => seq(
       optional($.block_label_start_expression),
       caseInsensitive('if'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       caseInsensitive('then'),
       optional($._block_label),
       $.end_of_statement,
@@ -1346,7 +1346,7 @@ module.exports = grammar({
 
     elseif_clause: $ => seq(
       whiteSpacedKeyword('else', 'if'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       caseInsensitive('then'),
       optional($._block_label),
       $.end_of_statement,
@@ -1367,14 +1367,14 @@ module.exports = grammar({
 
     inline_where_statement: $ => prec.right(seq(
       caseInsensitive('where'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $._statements
     )),
 
     block_where_statement: $ => seq(
       optional($.block_label_start_expression),
       caseInsensitive('where'),
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $.end_of_statement,
       repeat($._statement),
       repeat($.elsewhere_clause),
@@ -1388,7 +1388,7 @@ module.exports = grammar({
 
     elsewhere_clause: $ => seq(
       whiteSpacedKeyword('else', 'where'),
-      optional($.parenthesized_expression),
+      optional($._parenthesized_expression),
       optional($._block_label),
       $.end_of_statement,
       repeat($._statement)
@@ -1753,7 +1753,7 @@ module.exports = grammar({
       $.derived_type_member_expression,
       $.concatenation_expression,
       $.math_expression,
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $.call_expression
     )),
 
@@ -1830,14 +1830,14 @@ module.exports = grammar({
       $.concatenation_expression,
       $.math_expression,
       $.unary_expression,
-      $.parenthesized_expression,
+      $._parenthesized_expression,
       $.call_expression,
       $.implied_do_loop_expression,
       $.coarray_expression,
       $.conditional_expression,
     ),
 
-    parenthesized_expression: $ => seq(
+    _parenthesized_expression: $ => seq(
       '(',
       $._expression,
       ')'
