@@ -224,7 +224,7 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
 
     // Semicolons and EOF always end the statement
     if (lexer->eof(lexer)) {
-        skip(lexer);
+        advance(lexer);
         lexer->result_symbol = END_OF_STATEMENT;
         return true;
     }
@@ -238,13 +238,13 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
     // '\r' to cover unix, MSDOS and old style Macintosh.
     // Handle comments here too, but don't consume them
     if (lexer->lookahead == '\r') {
-        skip(lexer);
+        advance(lexer);
         if (lexer->lookahead == '\n') {
-            skip(lexer);
+            advance(lexer);
         }
     } else {
         if (lexer->lookahead == '\n') {
-            skip(lexer);
+            advance(lexer);
         } else if (lexer->lookahead != '!') {
             // Not a newline and not a comment, so not an
             // end-of-statement
