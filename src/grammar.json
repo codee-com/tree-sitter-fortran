@@ -20218,558 +20218,268 @@
           "value": "[a-zA-Z_$][\\w$]*"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[aA][lL][lL][oO][cC][aA][tT][aA][bB][lL][eE]"
-          },
-          "named": false,
-          "value": "allocatable"
+          "type": "PATTERN",
+          "value": "[aA][lL][lL][oO][cC][aA][tT][aA][bB][lL][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[aA][uU][tT][oO][mM][aA][tT][iI][cC]"
-          },
-          "named": false,
-          "value": "automatic"
+          "type": "PATTERN",
+          "value": "[aA][uU][tT][oO][mM][aA][tT][iI][cC]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[bB][lL][oO][cC][kK]"
-          },
-          "named": false,
-          "value": "block"
+          "type": "PATTERN",
+          "value": "[bB][lL][oO][cC][kK]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[bB][yY][tT][eE]"
-          },
-          "named": false,
-          "value": "byte"
+          "type": "PATTERN",
+          "value": "[bB][yY][tT][eE]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[cC][aA][lL][lL]"
-            },
-            "named": false,
-            "value": "call"
+            "type": "PATTERN",
+            "value": "[cC][aA][lL][lL]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[cC][hH][aA][nN][gG][eE]"
-          },
-          "named": false,
-          "value": "change"
+          "type": "PATTERN",
+          "value": "[cC][hH][aA][nN][gG][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[cC][oO][nN][sS][tT][aA][nN][tT]"
-          },
-          "named": false,
-          "value": "constant"
+          "type": "PATTERN",
+          "value": "[cC][oO][nN][sS][tT][aA][nN][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[cC][oO][nN][tT][iI][gG][uU][oO][uU][sS]"
-          },
-          "named": false,
-          "value": "contiguous"
+          "type": "PATTERN",
+          "value": "[cC][oO][nN][tT][iI][gG][uU][oO][uU][sS]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[cC][rR][iI][tT][iI][cC][aA][lL]"
-          },
-          "named": false,
-          "value": "critical"
+          "type": "PATTERN",
+          "value": "[cC][rR][iI][tT][iI][cC][aA][lL]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[cC][yY][cC][lL][eE]"
-          },
-          "named": false,
-          "value": "cycle"
+          "type": "PATTERN",
+          "value": "[cC][yY][cC][lL][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[dD][aA][tT][aA]"
-          },
-          "named": false,
-          "value": "data"
+          "type": "PATTERN",
+          "value": "[dD][aA][tT][aA]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[dD][eE][vV][iI][cC][eE]"
-          },
-          "named": false,
-          "value": "device"
+          "type": "PATTERN",
+          "value": "[dD][eE][vV][iI][cC][eE]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[dD][iI][mM][eE][nN][sS][iI][oO][nN]"
-            },
-            "named": false,
-            "value": "dimension"
+            "type": "PATTERN",
+            "value": "[dD][iI][mM][eE][nN][sS][iI][oO][nN]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[dD][oO][uU][bB][lL][eE]"
-          },
-          "named": false,
-          "value": "double"
+          "type": "PATTERN",
+          "value": "[dD][oO][uU][bB][lL][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][lL][sS][eE][iI][fF]"
-          },
-          "named": false,
-          "value": "elseif"
+          "type": "PATTERN",
+          "value": "[eE][lL][sS][eE][iI][fF]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][nN][dD]"
-          },
-          "named": false,
-          "value": "end"
+          "type": "PATTERN",
+          "value": "[eE][nN][dD]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][nN][dD][iI][fF]"
-          },
-          "named": false,
-          "value": "endif"
+          "type": "PATTERN",
+          "value": "[eE][nN][dD][iI][fF]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][nN][tT][rR][yY]"
-          },
-          "named": false,
-          "value": "entry"
+          "type": "PATTERN",
+          "value": "[eE][nN][tT][rR][yY]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][rR][rR][oO][rR]"
-          },
-          "named": false,
-          "value": "error"
+          "type": "PATTERN",
+          "value": "[eE][rR][rR][oO][rR]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][vV][eE][nN][tT]"
-          },
-          "named": false,
-          "value": "event"
+          "type": "PATTERN",
+          "value": "[eE][vV][eE][nN][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][xX][iI][tT]"
-          },
-          "named": false,
-          "value": "exit"
+          "type": "PATTERN",
+          "value": "[eE][xX][iI][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[eE][xX][tT][eE][rR][nN][aA][lL]"
-          },
-          "named": false,
-          "value": "external"
+          "type": "PATTERN",
+          "value": "[eE][xX][tT][eE][rR][nN][aA][lL]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[fF][aA][iI][lL]"
-          },
-          "named": false,
-          "value": "fail"
+          "type": "PATTERN",
+          "value": "[fF][aA][iI][lL]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[fF][oO][rR][mM]"
-          },
-          "named": false,
-          "value": "form"
+          "type": "PATTERN",
+          "value": "[fF][oO][rR][mM]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[fF][oO][rR][mM][aA][tT]"
-          },
-          "named": false,
-          "value": "format"
+          "type": "PATTERN",
+          "value": "[fF][oO][rR][mM][aA][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[gG][oO]"
-          },
-          "named": false,
-          "value": "go"
+          "type": "PATTERN",
+          "value": "[gG][oO]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[iI][fF]"
-          },
-          "named": false,
-          "value": "if"
+          "type": "PATTERN",
+          "value": "[iI][fF]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[iI][nN][cC][lL][uU][dD][eE]"
-            },
-            "named": false,
-            "value": "include"
+            "type": "PATTERN",
+            "value": "[iI][nN][cC][lL][uU][dD][eE]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[iI][nN][qQ][uU][iI][rR][eE]"
-          },
-          "named": false,
-          "value": "inquire"
+          "type": "PATTERN",
+          "value": "[iI][nN][qQ][uU][iI][rR][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[iI][nN][tT][rR][iI][nN][sS][iI][cC]"
-          },
-          "named": false,
-          "value": "intrinsic"
+          "type": "PATTERN",
+          "value": "[iI][nN][tT][rR][iI][nN][sS][iI][cC]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[kK][iI][nN][dD]"
-          },
-          "named": false,
-          "value": "kind"
+          "type": "PATTERN",
+          "value": "[kK][iI][nN][dD]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[lL][eE][nN]"
-          },
-          "named": false,
-          "value": "len"
+          "type": "PATTERN",
+          "value": "[lL][eE][nN]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[lL][oO][cC][kK]"
-          },
-          "named": false,
-          "value": "lock"
+          "type": "PATTERN",
+          "value": "[lL][oO][cC][kK]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[nN][uU][lL][lL]"
-          },
-          "named": false,
-          "value": "null"
+          "type": "PATTERN",
+          "value": "[nN][uU][lL][lL]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[oO][pP][eE][nN]"
-            },
-            "named": false,
-            "value": "open"
+            "type": "PATTERN",
+            "value": "[oO][pP][eE][nN]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[oO][pP][tT][iI][oO][nN][aA][lL]"
-          },
-          "named": false,
-          "value": "optional"
+          "type": "PATTERN",
+          "value": "[oO][pP][tT][iI][oO][nN][aA][lL]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[pP][aA][rR][aA][mM][eE][tT][eE][rR]"
-          },
-          "named": false,
-          "value": "parameter"
+          "type": "PATTERN",
+          "value": "[pP][aA][rR][aA][mM][eE][tT][eE][rR]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[pP][oO][iI][nN][tT][eE][rR]"
-          },
-          "named": false,
-          "value": "pointer"
+          "type": "PATTERN",
+          "value": "[pP][oO][iI][nN][tT][eE][rR]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[pP][rR][iI][nN][tT]"
-            },
-            "named": false,
-            "value": "print"
+            "type": "PATTERN",
+            "value": "[pP][rR][iI][nN][tT]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[pP][rR][iI][vV][aA][tT][eE]"
-          },
-          "named": false,
-          "value": "private"
+          "type": "PATTERN",
+          "value": "[pP][rR][iI][vV][aA][tT][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[pP][uU][bB][lL][iI][cC]"
-          },
-          "named": false,
-          "value": "public"
+          "type": "PATTERN",
+          "value": "[pP][uU][bB][lL][iI][cC]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[rR][aA][nN][kK]"
-            },
-            "named": false,
-            "value": "rank"
+            "type": "PATTERN",
+            "value": "[rR][aA][nN][kK]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[rR][eE][aA][dD]"
-          },
-          "named": false,
-          "value": "read"
+          "type": "PATTERN",
+          "value": "[rR][eE][aA][dD]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[rR][eE][aA][lL]"
-          },
-          "named": false,
-          "value": "real"
+          "type": "PATTERN",
+          "value": "[rR][eE][aA][lL]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][aA][vV][eE]"
-          },
-          "named": false,
-          "value": "save"
+          "type": "PATTERN",
+          "value": "[sS][aA][vV][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][eE][lL][eE][cC][tT]"
-          },
-          "named": false,
-          "value": "select"
+          "type": "PATTERN",
+          "value": "[sS][eE][lL][eE][cC][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][eE][qQ][uU][eE][nN][cC][eE]"
-          },
-          "named": false,
-          "value": "sequence"
+          "type": "PATTERN",
+          "value": "[sS][eE][qQ][uU][eE][nN][cC][eE]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][hH][aA][rR][eE][dD]"
-          },
-          "named": false,
-          "value": "shared"
+          "type": "PATTERN",
+          "value": "[sS][hH][aA][rR][eE][dD]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][tT][aA][tT][iI][cC]"
-          },
-          "named": false,
-          "value": "static"
+          "type": "PATTERN",
+          "value": "[sS][tT][aA][tT][iI][cC]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][tT][oO][pP]"
-          },
-          "named": false,
-          "value": "stop"
+          "type": "PATTERN",
+          "value": "[sS][tT][oO][pP]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[sS][yY][nN][cC]"
-          },
-          "named": false,
-          "value": "sync"
+          "type": "PATTERN",
+          "value": "[sS][yY][nN][cC]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[tT][aA][rR][gG][eE][tT]"
-          },
-          "named": false,
-          "value": "target"
+          "type": "PATTERN",
+          "value": "[tT][aA][rR][gG][eE][tT]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[tT][eE][xX][tT][uU][rR][eE]"
-          },
-          "named": false,
-          "value": "texture"
+          "type": "PATTERN",
+          "value": "[tT][eE][xX][tT][uU][rR][eE]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[tT][yY][pP][eE]"
-            },
-            "named": false,
-            "value": "type"
+            "type": "PATTERN",
+            "value": "[tT][yY][pP][eE]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[uU][nN][lL][oO][cC][kK]"
-          },
-          "named": false,
-          "value": "unlock"
+          "type": "PATTERN",
+          "value": "[uU][nN][lL][oO][cC][kK]"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[vV][aA][lL][uU][eE]"
-          },
-          "named": false,
-          "value": "value"
+          "type": "PATTERN",
+          "value": "[vV][aA][lL][uU][eE]"
         },
         {
           "type": "PREC",
           "value": -1,
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[wW][hH][eE][rR][eE]"
-            },
-            "named": false,
-            "value": "where"
+            "type": "PATTERN",
+            "value": "[wW][hH][eE][rR][eE]"
           }
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[wW][rR][iI][tT][eE]"
-          },
-          "named": false,
-          "value": "write"
+          "type": "PATTERN",
+          "value": "[wW][rR][iI][tT][eE]"
         }
       ]
     },

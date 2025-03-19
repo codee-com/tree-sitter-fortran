@@ -14039,10 +14039,6 @@
     "named": false
   },
   {
-    "type": "double",
-    "named": false
-  },
-  {
     "type": "doublecomplex",
     "named": false
   },
@@ -14228,10 +14224,6 @@
   },
   {
     "type": "global",
-    "named": false
-  },
-  {
-    "type": "go",
     "named": false
   },
   {
@@ -14504,10 +14496,6 @@
   },
   {
     "type": "save",
-    "named": false
-  },
-  {
-    "type": "select",
     "named": false
   },
   {
