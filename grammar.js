@@ -401,18 +401,30 @@ module.exports = grammar({
     ),
 
     // Can't use `blockStructureEnding` because it's two keywords
-    end_block_data_statement: $ => {
-      const structType = whiteSpacedKeyword('block', 'data', false)
-      return prec.right(seq(
-        alias(choice(
-            seq(
-              caseInsensitive('end', false),
-              optional(structType)),
-            caseInsensitive('end' + structType, false)),
-          'end' + structType),
-        optional($._name),
-        $.end_of_statement))
-    },
+    end_block_data_statement: $ => seq(
+      alias(
+        choice(
+          caseInsensitive('end', false),
+          seq(
+            caseInsensitive('endblock', false),
+            caseInsensitive('data', false),
+          ),
+          seq(
+            caseInsensitive('end', false),
+            caseInsensitive('blockdata', false),
+          ),
+          seq(
+            caseInsensitive('end', false),
+            caseInsensitive('block', false),
+            caseInsensitive('data', false),
+          ),
+          caseInsensitive('endblockdata', false)
+        ),
+        'endblockdata'
+      ),
+      optional($._name),
+      $.end_of_statement
+    ),
 
     assignment: $ => seq(caseInsensitive('assignment'), '(', '=', ')'),
     operator: $ => seq(caseInsensitive('operator'), '(', /[^()]+/, ')'),

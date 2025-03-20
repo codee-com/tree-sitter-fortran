@@ -1658,6 +1658,51 @@ Block Data (Obsolescent)
       DATA ICASE /4/
       END
 
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      END BLOCK DATA
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      ENDBLOCK DATA
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      ENDBLOCKDATA
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      END BLOCKDATA
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      END COMBLA
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      END BLOCK DATA combla
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      ENDBLOCK DATA combla
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      ENDBLOCKDATA combla
+
+      BLOCK DATA combla
+      COMMON /COMBLA/ ICASE, N, INCX
+      DATA ICASE /4/
+      END BLOCKDATA combla
+
 --------------------------------------------------------------------------------
 
 (translation_unit
@@ -1679,4 +1724,180 @@ Block Data (Obsolescent)
           (number_literal))))
     (end_of_statement)
     (end_block_data_statement
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (name)
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (name)
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (name)
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (name)
+      (end_of_statement)))
+  (block_data
+    (block_data_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (data_statement
+      (data_set
+        (identifier)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (end_block_data_statement
+      (name)
       (end_of_statement))))
