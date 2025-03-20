@@ -1504,17 +1504,24 @@
   {
     "type": "block_data_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "end_of_statement",
-          "named": true
-        },
-        {
-          "type": "name",
           "named": true
         }
       ]
@@ -6282,17 +6289,24 @@
   {
     "type": "enumeration_type_statement",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
           "type": "access_specifier",
-          "named": true
-        },
-        {
-          "type": "type_name",
           "named": true
         }
       ]

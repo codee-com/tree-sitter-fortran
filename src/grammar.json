@@ -7894,8 +7894,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_name"
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_name"
+              }
             },
             {
               "type": "BLANK"
@@ -16910,8 +16914,12 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_type_name"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type_name"
+          }
         }
       ]
     },

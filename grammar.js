@@ -396,7 +396,7 @@ module.exports = grammar({
 
     block_data_statement: $ => seq(
       whiteSpacedKeyword('block', 'data'),
-      optional($._name),
+      optional(field('name', $._name)),
       $.end_of_statement
     ),
 
@@ -1696,7 +1696,7 @@ module.exports = grammar({
       caseInsensitive('type'),
       optional(seq(',', $.access_specifier)),
       optional('::'),
-      $._type_name,
+      field('name', $._type_name),
     ),
 
     enumerator_statement: $ => seq(
