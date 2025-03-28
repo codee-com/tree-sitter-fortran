@@ -2353,7 +2353,7 @@ function preprocIf(suffix, content, precedence = 0) {
       field('condition', $._preproc_expression),
       optional($.preproc_comment),
       '\n',
-      content($),
+      field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
       preprocessor('endif'),
       optional($.preproc_comment),
@@ -2363,7 +2363,7 @@ function preprocIf(suffix, content, precedence = 0) {
       choice(preprocessor('ifdef'), preprocessor('ifndef')),
       field('name', $.identifier),
       optional($.preproc_comment),
-      content($),
+      field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
       preprocessor('endif'),
       optional($.preproc_comment),
@@ -2372,7 +2372,7 @@ function preprocIf(suffix, content, precedence = 0) {
     ['preproc_else' + suffix]: $ => prec(precedence, seq(
       preprocessor('else'),
       optional($.preproc_comment),
-      content($),
+      field('content', content($)),
     )),
 
     ['preproc_elif' + suffix]: $ => prec(precedence, seq(
@@ -2380,7 +2380,7 @@ function preprocIf(suffix, content, precedence = 0) {
       optional($.preproc_comment),
       field('condition', $._preproc_expression),
       '\n',
-      content($),
+      field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
     )),
 
@@ -2388,7 +2388,7 @@ function preprocIf(suffix, content, precedence = 0) {
       choice(preprocessor('elifdef'), preprocessor('elifndef')),
       field('name', $.identifier),
       optional($.preproc_comment),
-      content($),
+      field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
     )),
   };

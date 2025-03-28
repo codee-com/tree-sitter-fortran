@@ -125,7 +125,7 @@ end subroutine foo3
 (translation_unit
   (preproc_ifdef
     name: (identifier)
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
@@ -134,28 +134,28 @@ end subroutine foo3
         (end_of_statement))))
   (preproc_ifdef
     name: (identifier)
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
         (name)
         (end_of_statement)))
-    (preproc_def
+    content: (preproc_def
       name: (identifier)
       value: (preproc_arg))
     alternative: (preproc_elif
       condition: (preproc_defined
         (identifier))
       alternative: (preproc_else
-        (subroutine
+        content: (subroutine
           (subroutine_statement
             name: (name)
             (end_of_statement))
           (end_subroutine_statement
             (name)
             (end_of_statement)))
-        (preproc_def
+        content: (preproc_def
           name: (identifier)
           value: (preproc_arg))))
     (preproc_comment)))
@@ -188,7 +188,7 @@ end subroutine foo5
 (translation_unit
   (preproc_ifdef
     name: (identifier)
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
@@ -197,7 +197,7 @@ end subroutine foo5
         (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
-      (subroutine
+      content: (subroutine
         (subroutine_statement
           name: (name)
           (end_of_statement))
@@ -206,7 +206,7 @@ end subroutine foo5
           (end_of_statement)))))
   (preproc_ifdef
     name: (identifier)
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
@@ -215,7 +215,7 @@ end subroutine foo5
         (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
-      (subroutine
+      content: (subroutine
         (subroutine_statement
           name: (name)
           (end_of_statement))
@@ -223,7 +223,7 @@ end subroutine foo5
           (name)
           (end_of_statement)))
       alternative: (preproc_else
-        (subroutine
+        content: (subroutine
           (subroutine_statement
             name: (name)
             (end_of_statement))
@@ -259,7 +259,7 @@ end subroutine e
 (translation_unit
   (preproc_ifdef
     name: (identifier)
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
@@ -269,7 +269,7 @@ end subroutine e
     alternative: (preproc_elif
       condition: (preproc_defined
         (identifier))
-      (subroutine
+      content: (subroutine
         (subroutine_statement
           name: (name)
           (end_of_statement))
@@ -279,7 +279,7 @@ end subroutine e
   (preproc_if
     condition: (preproc_defined
       (identifier))
-    (subroutine
+    content: (subroutine
       (subroutine_statement
         name: (name)
         (end_of_statement))
@@ -288,7 +288,7 @@ end subroutine e
         (end_of_statement)))
     alternative: (preproc_elifdef
       name: (identifier)
-      (subroutine
+      content: (subroutine
         (subroutine_statement
           name: (name)
           (end_of_statement))
@@ -296,7 +296,7 @@ end subroutine e
           (name)
           (end_of_statement)))
       alternative: (preproc_else
-        (subroutine
+        content: (subroutine
           (subroutine_statement
             name: (name)
             (end_of_statement))
@@ -327,22 +327,22 @@ General if blocks
         (identifier))
       right: (preproc_defined
         (identifier)))
-    (preproc_def
+    content: (preproc_def
       name: (identifier)
       value: (preproc_arg))
     alternative: (preproc_elif
       condition: (preproc_defined
         (identifier))
-      (preproc_def
+      content: (preproc_def
         name: (identifier))
       alternative: (preproc_elif
         condition: (unary_expression
           argument: (preproc_defined
             (identifier)))
-        (preproc_def
+        content: (preproc_def
           name: (identifier))
         alternative: (preproc_else
-          (preproc_include
+          content: (preproc_include
             path: (system_lib_string)))))))
 
 ================================================================================
@@ -360,7 +360,7 @@ Unary not
     condition: (unary_expression
       argument: (preproc_defined
         (identifier)))
-    (preproc_def
+    content: (preproc_def
       name: (identifier))))
 
 ================================================================================
@@ -479,10 +479,10 @@ end program
       condition: (binary_expression
         left: (identifier)
         right: (number_literal))
-      (use_statement
+      content: (use_statement
         (module_name
           (name)))
-      (end_of_statement))
+      content: (end_of_statement))
     (end_program_statement
       (end_of_statement))))
 
@@ -581,7 +581,7 @@ end module foo
           (end_of_statement)))
       (preproc_ifdef
         name: (identifier)
-        (subroutine
+        content: (subroutine
           (subroutine_statement
             name: (name)
             (end_of_statement))
@@ -641,16 +641,16 @@ end module foo
         (end_of_statement)
         (preproc_ifdef
           name: (identifier)
-          (variable_declaration
+          content: (variable_declaration
             type: (intrinsic_type)
             declarator: (identifier))
-          (end_of_statement)
-          (assignment_statement
+          content: (end_of_statement)
+          content: (assignment_statement
             left: (identifier)
             right: (math_expression
               left: (identifier)
               right: (number_literal)))
-          (end_of_statement))
+          content: (end_of_statement))
         (assignment_statement
           left: (identifier)
           right: (math_expression
@@ -717,11 +717,11 @@ end module foo
         (end_of_statement)
         (preproc_ifdef
           name: (identifier)
-          (assignment_statement
+          content: (assignment_statement
             left: (identifier)
             right: (number_literal
               kind: (identifier)))
-          (end_of_statement))
+          content: (end_of_statement))
         (end_subroutine_statement
           (name)
           (end_of_statement)))
