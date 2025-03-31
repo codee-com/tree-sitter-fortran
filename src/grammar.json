@@ -376,10 +376,6 @@
             ]
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -633,10 +629,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -805,10 +797,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -1145,10 +1133,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -1381,10 +1365,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -1742,10 +1722,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -1992,10 +1968,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -2332,10 +2304,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -2568,10 +2536,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -2908,10 +2872,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -3144,10 +3104,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -3433,10 +3389,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -3635,10 +3587,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -3924,10 +3872,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -4126,10 +4070,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -4415,10 +4355,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -4617,10 +4553,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -4906,10 +4838,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -5108,10 +5036,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -5388,10 +5312,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -5584,10 +5504,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -5864,10 +5780,6 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "\n"
-          },
-          {
             "type": "FIELD",
             "name": "content",
             "content": {
@@ -6060,10 +5972,6 @@
                 "type": "BLANK"
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -6338,10 +6246,6 @@
               "type": "SYMBOL",
               "name": "_preproc_expression"
             }
-          },
-          {
-            "type": "STRING",
-            "value": "\n"
           },
           {
             "type": "FIELD",
@@ -20843,12 +20747,16 @@
       "type_statement"
     ],
     [
-      "preproc_ifdef_in_specification_part",
+      "preproc_else_in_specification_part",
       "program"
     ],
     [
-      "preproc_else_in_specification_part",
+      "preproc_if_in_specification_part",
       "program"
+    ],
+    [
+      "_preproc_expression",
+      "_expression"
     ],
     [
       "coarray_critical_statement",
