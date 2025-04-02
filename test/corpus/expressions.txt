@@ -1030,6 +1030,8 @@ end program
       (type_qualifier)
       (init_declarator
         (identifier)
+        (ERROR
+          (number_literal))
         (number_literal)))
     (end_of_statement)
     (variable_declaration
@@ -1040,18 +1042,17 @@ end program
       (init_declarator
         (identifier)
         (array_literal
-          (number_literal)
-          (number_literal))))
-    (end_of_statement)
-    (variable_declaration
-      (intrinsic_type)
-      (type_qualifier
-        (argument_list
-          (number_literal)))
-      (init_declarator
-        (identifier)
-        (array_literal
-          (number_literal)
+          (ERROR
+            (number_literal))
+          (identifier)
+          (call_expression
+            (identifier)
+            (argument_list
+              (number_literal)))
+          (ERROR
+            (ERROR
+              (number_literal))
+            (number_literal))
           (number_literal))))
     (end_of_statement)
     (end_program_statement

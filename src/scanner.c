@@ -19,6 +19,16 @@ typedef struct {
     bool in_line_continuation;
 } Scanner;
 
+typedef enum {
+    False,
+    True,
+    Error,
+} BoolOrErr;
+
+static BoolOrErr bool_or_err_max(BoolOrErr lhs, BoolOrErr rhs) {
+    return lhs >= rhs ? lhs : rhs;
+}
+
 //  consume current character into current token and advance
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
 
@@ -54,44 +64,41 @@ static bool is_exp_sentinel(char chr) {
     }
 }
 
-static bool scan_int(TSLexer *lexer) {
+static BoolOrErr scan_int(TSLexer *lexer) {
     if (!iswdigit(lexer->lookahead)) {
-        return false;
+        return False;
     }
     // consume digits
     while (iswdigit(lexer->lookahead)) {
         advance(lexer); // store all digits
     }
-
-    // handle line continuations
-    if (lexer->lookahead == '&') {
-      skip(lexer);
-      while (iswspace(lexer->lookahead)) {
-        skip(lexer);
-      }
-      // second '&' required to continue the literal
-      if (lexer->lookahead == '&') {
-        skip(lexer);
-        // don't return here, as we may have finished literal on first
-        // line but still have second '&'
-        scan_int(lexer);
-      }
-    }
-
     lexer->mark_end(lexer);
-    return true;
+    // Return an error if a line continuation is found. This scanner cannot
+    // handle line continuations, particularly in cases like:
+    //
+    // ```fortran
+    // b = 6& ! foo
+    //   &7;
+    // ```
+    //
+    // Here, the scanner would need to return multiple tokens, but tree-sitter
+    // expects only a single token.
+    if (lexer->lookahead == '&') {
+        return Error;
+    }
+    return True;
 }
 
 /// Scan a number of the forms 1XXX, 1.0XXX, 0.1XXX, 1.XDX, etc.
-static bool scan_number(TSLexer *lexer) {
+static BoolOrErr scan_number(TSLexer *lexer) {
     lexer->result_symbol = INTEGER_LITERAL;
-    bool digits = scan_int(lexer);
+    BoolOrErr digits = scan_int(lexer);
     if (lexer->lookahead == '.') {
         advance(lexer);
         // exclude decimal if followed by any letter other than d/D and e/E
         // if no leading digits are present and a non-digit follows
         // the decimal it's a nonmatch.
-        if (digits && !iswalnum(lexer->lookahead)) {
+        if ((digits == True) && !iswalnum(lexer->lookahead)) {
             lexer->mark_end(lexer); // add decimal to token
         }
         lexer->result_symbol = FLOAT_LITERAL;
@@ -99,16 +106,21 @@ static bool scan_number(TSLexer *lexer) {
     // if next char isn't number return since we handle exp
     // notation and precision identifiers separately. If there are
     // no leading digit it's a nonmatch.
-    digits = scan_int(lexer) || digits;
-    if (digits) {
+    digits = bool_or_err_max(scan_int(lexer), digits);
+    if (digits == True) {
         // process exp notation
         if (is_exp_sentinel(lexer->lookahead)) {
             advance(lexer);
             if (lexer->lookahead == '+' || lexer->lookahead == '-') {
                 advance(lexer);
             }
-            if (!scan_int(lexer)) {
-                return true; // valid number token with junk after it
+            switch (scan_int(lexer)) {
+                case False:
+                    return True; // valid number token with junk after it
+                case True:
+                    break;
+                case Error:
+                    return Error;
             }
             lexer->mark_end(lexer);
             lexer->result_symbol = FLOAT_LITERAL;
@@ -429,8 +441,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     if (valid_symbols[INTEGER_LITERAL] || valid_symbols[FLOAT_LITERAL] ||
         valid_symbols[BOZ_LITERAL]) {
         // extract out root number from expression
-        if (scan_number(lexer)) {
-            return true;
+        switch (scan_number(lexer)) {
+            case False:
+                break;
+            case True:
+                return true;
+            case Error:
+                return false;
         }
         if (scan_boz(lexer)) {
             return true;
