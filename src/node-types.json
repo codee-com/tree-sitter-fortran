@@ -6976,7 +6976,17 @@
   {
     "type": "implicit_range",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "implicit_range_letter",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "implicit_statement",
@@ -9717,7 +9727,17 @@
   {
     "type": "operator",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "operator_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "output_item_list",
@@ -14684,7 +14704,17 @@
   {
     "type": "user_defined_operator",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "user_defined_operator_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "variable_attributes",
@@ -15586,6 +15616,10 @@
     "named": false
   },
   {
+    "type": "implicit_range_letter",
+    "named": true
+  },
+  {
     "type": "import",
     "named": false
   },
@@ -15708,6 +15742,10 @@
   {
     "type": "operator",
     "named": false
+  },
+  {
+    "type": "operator_name",
+    "named": true
   },
   {
     "type": "optional",
@@ -15920,6 +15958,10 @@
   {
     "type": "use",
     "named": false
+  },
+  {
+    "type": "user_defined_operator_name",
+    "named": true
   },
   {
     "type": "value",

@@ -1050,8 +1050,12 @@ end program
             (argument_list
               (number_literal)))
           (ERROR
+            (implicit_range_letter)
+            (implicit_range_letter)
+            (implicit_range_letter)
             (ERROR
               (number_literal))
+            (user_defined_operator_name)
             (number_literal))
           (number_literal))))
     (end_of_statement)

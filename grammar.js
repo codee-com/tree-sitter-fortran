@@ -428,7 +428,8 @@ module.exports = grammar({
     ),
 
     assignment: $ => seq(caseInsensitive('assignment'), '(', '=', ')'),
-    operator: $ => seq(caseInsensitive('operator'), '(', /[^()]+/, ')'),
+    operator: $ => seq(caseInsensitive('operator'), '(', $.operator_name, ')'),
+    operator_name: $ => /[^()]+/,
     defined_io_procedure: $ => seq(
       choice(caseInsensitive('read'), caseInsensitive('write')),
       '(',
@@ -689,9 +690,10 @@ module.exports = grammar({
     ),
 
     implicit_range: $ => seq(
-      /[a-zA-Z]/,
-      optional(seq('-', /[a-zA-Z]/))
+      $.implicit_range_letter,
+      optional(seq('-', $.implicit_range_letter))
     ),
+    implicit_range_letter: $ => /[a-zA-Z]/,
 
     import_statement: $ => prec.left(seq(
       caseInsensitive('import'),
@@ -1934,8 +1936,9 @@ module.exports = grammar({
     )),
 
     user_defined_operator: $ => prec.right(seq(
-      '.', /[a-zA-Z]+/, '.'
+      '.', $.user_defined_operator_name, '.'
     )),
+    user_defined_operator_name: $ => /[a-zA-Z]+/,
 
     // Due to the fact Fortran uses parentheses for both function calls and
     // array access there is no way to differentiate the two except for the

@@ -8181,14 +8181,18 @@
           "value": "("
         },
         {
-          "type": "PATTERN",
-          "value": "[^()]+"
+          "type": "SYMBOL",
+          "name": "operator_name"
         },
         {
           "type": "STRING",
           "value": ")"
         }
       ]
+    },
+    "operator_name": {
+      "type": "PATTERN",
+      "value": "[^()]+"
     },
     "defined_io_procedure": {
       "type": "SEQ",
@@ -10397,8 +10401,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z]"
+          "type": "SYMBOL",
+          "name": "implicit_range_letter"
         },
         {
           "type": "CHOICE",
@@ -10411,8 +10415,8 @@
                   "value": "-"
                 },
                 {
-                  "type": "PATTERN",
-                  "value": "[a-zA-Z]"
+                  "type": "SYMBOL",
+                  "name": "implicit_range_letter"
                 }
               ]
             },
@@ -10422,6 +10426,10 @@
           ]
         }
       ]
+    },
+    "implicit_range_letter": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z]"
     },
     "import_statement": {
       "type": "PREC_LEFT",
@@ -18858,8 +18866,8 @@
             "value": "."
           },
           {
-            "type": "PATTERN",
-            "value": "[a-zA-Z]+"
+            "type": "SYMBOL",
+            "name": "user_defined_operator_name"
           },
           {
             "type": "STRING",
@@ -18867,6 +18875,10 @@
           }
         ]
       }
+    },
+    "user_defined_operator_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z]+"
     },
     "call_expression": {
       "type": "PREC",

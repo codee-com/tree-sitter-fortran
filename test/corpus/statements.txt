@@ -209,17 +209,26 @@ END PROGRAM
       (end_of_statement))
     (implicit_statement
       (intrinsic_type)
-      (implicit_range)
+      (implicit_range
+        (implicit_range_letter)
+        (implicit_range_letter))
       (intrinsic_type
         (kind
           (number_literal)))
-      (implicit_range)
+      (implicit_range
+        (implicit_range_letter)
+        (implicit_range_letter))
       (intrinsic_type
         (kind
           (number_literal)))
-      (implicit_range)
-      (implicit_range)
-      (implicit_range))
+      (implicit_range
+        (implicit_range_letter)
+        (implicit_range_letter))
+      (implicit_range
+        (implicit_range_letter))
+      (implicit_range
+        (implicit_range_letter)
+        (implicit_range_letter)))
     (end_of_statement)
     (implicit_statement
       (none))
@@ -278,8 +287,10 @@ END MODULE
     (private_statement
       (identifier)
       (identifier)
-      (operator)
-      (operator)
+      (operator
+        (operator_name))
+      (operator
+        (operator_name))
       (end_of_statement))
     (end_module_statement
       (end_of_statement))))
@@ -305,8 +316,10 @@ END MODULE
     (public_statement
       (identifier)
       (identifier)
-      (operator)
-      (operator)
+      (operator
+        (operator_name))
+      (operator
+        (operator_name))
       (end_of_statement))
     (end_module_statement
       (end_of_statement))))
@@ -2604,7 +2617,8 @@ end program
       (end_of_statement))
     (interface
       (interface_statement
-        (operator)
+        (operator
+          (operator_name))
         (end_of_statement))
       (function
         (function_statement
@@ -2625,7 +2639,8 @@ end program
         (end_of_statement)))
     (interface
       (interface_statement
-        (operator)
+        (operator
+          (operator_name))
         (end_of_statement))
       (function
         (function_statement
@@ -2655,7 +2670,8 @@ end program
       (format_identifier)
       (output_item_list
         (unary_expression
-          (user_defined_operator)
+          (user_defined_operator
+            (user_defined_operator_name))
           (identifier))))
     (end_of_statement)
     (print_statement
@@ -2663,7 +2679,8 @@ end program
       (output_item_list
         (math_expression
           (identifier)
-          (user_defined_operator)
+          (user_defined_operator
+            (user_defined_operator_name))
           (identifier))))
     (end_of_statement)
     (end_program_statement
