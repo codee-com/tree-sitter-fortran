@@ -15966,26 +15966,31 @@
       ]
     },
     "class_default": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[cC][lL][aA][sS][sS]"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[dD][eE][fF][aA][uU][lL][tT]"
-            }
-          ]
-        },
-        {
-          "type": "PATTERN",
-          "value": "[cC][lL][aA][sS][sS][dD][eE][fF][aA][uU][lL][tT]"
-        }
-      ]
+      "type": "ALIAS",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "[cC][lL][aA][sS][sS]"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[dD][eE][fF][aA][uU][lL][tT]"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": "[cC][lL][aA][sS][sS][dD][eE][fF][aA][uU][lL][tT]"
+          }
+        ]
+      },
+      "named": false,
+      "value": "classdefault"
     },
     "case_value_range_list": {
       "type": "SEQ",

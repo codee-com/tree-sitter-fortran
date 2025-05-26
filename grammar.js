@@ -1543,7 +1543,7 @@ module.exports = grammar({
     ),
 
     // Standalone rule otherwise it gets aliased as '(default) (default)'
-    class_default: $ => whiteSpacedKeyword('class', 'default', false),
+    class_default: $ => whiteSpacedKeyword('class', 'default'),
 
     case_value_range_list: $ => commaSep1(choice(
       $._expression,

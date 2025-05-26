@@ -15312,6 +15312,10 @@
     "named": false
   },
   {
+    "type": "classdefault",
+    "named": false
+  },
+  {
     "type": "classis",
     "named": false
   },
