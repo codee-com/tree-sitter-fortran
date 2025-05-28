@@ -1184,22 +1184,24 @@ END PROGRAM
     (end_of_statement)
     (if_statement
       (block_if_statement
-        (relational_expression
-          (call_expression
+        (block_if_clause
+          (if_clause
+            (relational_expression
+              (call_expression
+                (identifier)
+                (argument_list
+                  (extent_specifier
+                    (number_literal)
+                    (number_literal))))
+              (call_expression
+                (identifier)
+                (argument_list
+                  (string_literal)))))
+          (end_of_statement)
+          (assignment_statement
             (identifier)
-            (argument_list
-              (extent_specifier
-                (number_literal)
-                (number_literal))))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal))))
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement)
+            (number_literal))
+          (end_of_statement))
         (elseif_clause
           (relational_expression
             (call_expression
@@ -1246,15 +1248,17 @@ END PROGRAM
     (end_of_statement)
     (if_statement
       (block_if_statement
-        (block_label_start_expression)
-        (relational_expression
-          (identifier)
-          (number_literal))
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement)
+        (block_if_clause
+          (if_clause
+            (block_label_start_expression)
+            (relational_expression
+              (identifier)
+              (number_literal)))
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (number_literal))
+          (end_of_statement))
         (elseif_clause
           (relational_expression
             (identifier)
@@ -1267,17 +1271,19 @@ END PROGRAM
           (end_of_statement)
           (if_statement
             (block_if_statement
-              (call_expression
-                (identifier)
-                (argument_list
-                  (extent_specifier
-                    (number_literal)
-                    (number_literal))))
-              (end_of_statement)
-              (assignment_statement
-                (identifier)
-                (number_literal))
-              (end_of_statement)
+              (block_if_clause
+                (if_clause
+                  (call_expression
+                    (identifier)
+                    (argument_list
+                      (extent_specifier
+                        (number_literal)
+                        (number_literal)))))
+                (end_of_statement)
+                (assignment_statement
+                  (identifier)
+                  (number_literal))
+                (end_of_statement))
               (else_clause
                 (end_of_statement)
                 (assignment_statement

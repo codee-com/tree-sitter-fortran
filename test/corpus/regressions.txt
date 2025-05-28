@@ -100,13 +100,15 @@ end program foo
       (end_of_statement))
     (if_statement
       (block_if_statement
-        (block_label_start_expression)
-        (boolean_literal)
-        (end_of_statement)
-        (subroutine_call
-          (identifier)
-          (argument_list))
-        (end_of_statement)
+        (block_if_clause
+          (if_clause
+            (block_label_start_expression)
+            (boolean_literal))
+          (end_of_statement)
+          (subroutine_call
+            (identifier)
+            (argument_list))
+          (end_of_statement))
         (else_clause
           (block_label)
           (end_of_statement)
@@ -143,8 +145,10 @@ end program
       (end_of_statement))
     (if_statement
       (block_if_statement
-        (boolean_literal)
-        (end_of_statement)
+        (block_if_clause
+          (if_clause
+            (boolean_literal))
+          (end_of_statement))
         (elseif_clause
           (boolean_literal)
           (end_of_statement))

@@ -1235,20 +1235,22 @@ end program
     (end_of_statement)
     (if_statement
       (block_if_statement
-        (relational_expression
-          (identifier)
-          (number_literal))
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (number_literal))
-        (end_of_statement)
-        (assignment_statement
-          (identifier)
-          (math_expression
+        (block_if_clause
+          (if_clause
+            (relational_expression
+              (identifier)
+              (number_literal)))
+          (end_of_statement)
+          (assignment_statement
             (identifier)
-            (identifier)))
-        (end_of_statement)
+            (number_literal))
+          (end_of_statement)
+          (assignment_statement
+            (identifier)
+            (math_expression
+              (identifier)
+              (identifier)))
+          (end_of_statement))
         (elseif_clause
           (relational_expression
             (identifier)

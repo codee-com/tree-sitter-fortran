@@ -1723,7 +1723,7 @@
     }
   },
   {
-    "type": "block_if_statement",
+    "type": "block_if_clause",
     "named": true,
     "fields": {},
     "children": {
@@ -1736,10 +1736,6 @@
         },
         {
           "type": "arithmetic_if_statement",
-          "named": true
-        },
-        {
-          "type": "array_literal",
           "named": true
         },
         {
@@ -1759,18 +1755,6 @@
           "named": true
         },
         {
-          "type": "block_label",
-          "named": true
-        },
-        {
-          "type": "block_label_start_expression",
-          "named": true
-        },
-        {
-          "type": "boolean_literal",
-          "named": true
-        },
-        {
           "type": "call_expression",
           "named": true
         },
@@ -1783,31 +1767,11 @@
           "named": true
         },
         {
-          "type": "coarray_expression",
-          "named": true
-        },
-        {
           "type": "coarray_statement",
           "named": true
         },
         {
           "type": "coarray_team_statement",
-          "named": true
-        },
-        {
-          "type": "complex_literal",
-          "named": true
-        },
-        {
-          "type": "concatenation_expression",
-          "named": true
-        },
-        {
-          "type": "conditional_expression",
-          "named": true
-        },
-        {
-          "type": "derived_type_member_expression",
           "named": true
         },
         {
@@ -1819,19 +1783,7 @@
           "named": true
         },
         {
-          "type": "else_clause",
-          "named": true
-        },
-        {
-          "type": "elseif_clause",
-          "named": true
-        },
-        {
           "type": "end_do_label_statement",
-          "named": true
-        },
-        {
-          "type": "end_if_statement",
           "named": true
         },
         {
@@ -1855,15 +1807,11 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "if_clause",
           "named": true
         },
         {
           "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "implied_do_loop_expression",
           "named": true
         },
         {
@@ -1876,22 +1824,6 @@
         },
         {
           "type": "keyword_statement",
-          "named": true
-        },
-        {
-          "type": "logical_expression",
-          "named": true
-        },
-        {
-          "type": "math_expression",
-          "named": true
-        },
-        {
-          "type": "null_literal",
-          "named": true
-        },
-        {
-          "type": "number_literal",
           "named": true
         },
         {
@@ -1935,10 +1867,6 @@
           "named": true
         },
         {
-          "type": "relational_expression",
-          "named": true
-        },
-        {
           "type": "select_case_statement",
           "named": true
         },
@@ -1959,15 +1887,7 @@
           "named": true
         },
         {
-          "type": "string_literal",
-          "named": true
-        },
-        {
           "type": "subroutine_call",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
           "named": true
         },
         {
@@ -1976,6 +1896,37 @@
         },
         {
           "type": "write_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "block_if_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block_if_clause",
+          "named": true
+        },
+        {
+          "type": "else_clause",
+          "named": true
+        },
+        {
+          "type": "elseif_clause",
+          "named": true
+        },
+        {
+          "type": "end_if_statement",
+          "named": true
+        },
+        {
+          "type": "statement_label",
           "named": true
         }
       ]
@@ -6953,6 +6904,93 @@
     "type": "identifier",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "if_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_literal",
+          "named": true
+        },
+        {
+          "type": "block_label",
+          "named": true
+        },
+        {
+          "type": "block_label_start_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_literal",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "coarray_expression",
+          "named": true
+        },
+        {
+          "type": "complex_literal",
+          "named": true
+        },
+        {
+          "type": "concatenation_expression",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
+          "type": "derived_type_member_expression",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "implied_do_loop_expression",
+          "named": true
+        },
+        {
+          "type": "logical_expression",
+          "named": true
+        },
+        {
+          "type": "math_expression",
+          "named": true
+        },
+        {
+          "type": "null_literal",
+          "named": true
+        },
+        {
+          "type": "number_literal",
+          "named": true
+        },
+        {
+          "type": "relational_expression",
+          "named": true
+        },
+        {
+          "type": "string_literal",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "if_statement",
