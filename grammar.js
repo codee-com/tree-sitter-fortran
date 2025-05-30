@@ -90,7 +90,6 @@ module.exports = grammar({
     [$.data_statement, $.identifier],
     [$.data_value, $._expression],
     [$.else_clause],
-    [$.elseif_clause],
     [$.elsewhere_clause],
     [$.intrinsic_type],
     [$._intrinsic_type, $.identifier],
@@ -104,6 +103,7 @@ module.exports = grammar({
     [$._preproc_expression, $._expression],
     [$.coarray_critical_statement, $.identifier],
     [$.block_if_clause],
+    [$.block_elseif_clause],
   ],
 
   rules: {
@@ -1339,7 +1339,7 @@ module.exports = grammar({
 
     block_if_statement: $ => seq(
       $.block_if_clause,
-      repeat($.elseif_clause),
+      repeat($.block_elseif_clause),
       optional($.else_clause),
       optional($.statement_label),
       $.end_if_statement
@@ -1364,13 +1364,17 @@ module.exports = grammar({
       optional($._block_label)
     ),
 
+    block_elseif_clause: $ => seq(
+      $.elseif_clause,
+      $.end_of_statement,
+      repeat($._statement),
+    ),
+
     elseif_clause: $ => seq(
       whiteSpacedKeyword('else', 'if'),
       $._parenthesized_expression,
       caseInsensitive('then'),
       optional($._block_label),
-      $.end_of_statement,
-      repeat($._statement)
     ),
 
     else_clause: $ => seq(

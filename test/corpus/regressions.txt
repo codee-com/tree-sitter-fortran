@@ -149,8 +149,9 @@ end program
           (if_clause
             (boolean_literal))
           (end_of_statement))
-        (elseif_clause
-          (boolean_literal)
+        (block_elseif_clause
+          (elseif_clause
+            (boolean_literal))
           (end_of_statement))
         (end_if_statement)))
     (end_of_statement)

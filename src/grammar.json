@@ -14671,7 +14671,7 @@
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "elseif_clause"
+            "name": "block_elseif_clause"
           }
         },
         {
@@ -14819,6 +14819,26 @@
         }
       ]
     },
+    "block_elseif_clause": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "elseif_clause"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_of_statement"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement"
+          }
+        }
+      ]
+    },
     "elseif_clause": {
       "type": "SEQ",
       "members": [
@@ -14873,17 +14893,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "end_of_statement"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_statement"
-          }
         }
       ]
     },
@@ -20748,9 +20757,6 @@
       "else_clause"
     ],
     [
-      "elseif_clause"
-    ],
-    [
       "elsewhere_clause"
     ],
     [
@@ -20795,6 +20801,9 @@
     ],
     [
       "block_if_clause"
+    ],
+    [
+      "block_elseif_clause"
     ]
   ],
   "precedences": [],

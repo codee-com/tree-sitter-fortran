@@ -1251,10 +1251,11 @@ end program
               (identifier)
               (identifier)))
           (end_of_statement))
-        (elseif_clause
-          (relational_expression
-            (identifier)
-            (number_literal))
+        (block_elseif_clause
+          (elseif_clause
+            (relational_expression
+              (identifier)
+              (number_literal)))
           (end_of_statement)
           (assignment_statement
             (call_expression
