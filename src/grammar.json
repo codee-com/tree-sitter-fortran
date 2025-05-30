@@ -14679,7 +14679,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "else_clause"
+              "name": "block_else_clause"
             },
             {
               "type": "BLANK"
@@ -14896,6 +14896,26 @@
         }
       ]
     },
+    "block_else_clause": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "else_clause"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_of_statement"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement"
+          }
+        }
+      ]
+    },
     "else_clause": {
       "type": "SEQ",
       "members": [
@@ -14919,17 +14939,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "end_of_statement"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_statement"
-          }
         }
       ]
     },
@@ -20754,9 +20763,6 @@
       "_expression"
     ],
     [
-      "else_clause"
-    ],
-    [
       "elsewhere_clause"
     ],
     [
@@ -20804,6 +20810,9 @@
     ],
     [
       "block_elseif_clause"
+    ],
+    [
+      "block_else_clause"
     ]
   ],
   "precedences": [],

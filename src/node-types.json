@@ -1528,6 +1528,185 @@
     }
   },
   {
+    "type": "block_else_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "allocate_statement",
+          "named": true
+        },
+        {
+          "type": "arithmetic_if_statement",
+          "named": true
+        },
+        {
+          "type": "assign_statement",
+          "named": true
+        },
+        {
+          "type": "assignment_statement",
+          "named": true
+        },
+        {
+          "type": "associate_statement",
+          "named": true
+        },
+        {
+          "type": "block_construct",
+          "named": true
+        },
+        {
+          "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "close_statement",
+          "named": true
+        },
+        {
+          "type": "coarray_critical_statement",
+          "named": true
+        },
+        {
+          "type": "coarray_statement",
+          "named": true
+        },
+        {
+          "type": "coarray_team_statement",
+          "named": true
+        },
+        {
+          "type": "do_label_statement",
+          "named": true
+        },
+        {
+          "type": "do_loop_statement",
+          "named": true
+        },
+        {
+          "type": "else_clause",
+          "named": true
+        },
+        {
+          "type": "end_do_label_statement",
+          "named": true
+        },
+        {
+          "type": "end_of_statement",
+          "named": true
+        },
+        {
+          "type": "entry_statement",
+          "named": true
+        },
+        {
+          "type": "file_position_statement",
+          "named": true
+        },
+        {
+          "type": "forall_statement",
+          "named": true
+        },
+        {
+          "type": "format_statement",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "include_statement",
+          "named": true
+        },
+        {
+          "type": "inquire_statement",
+          "named": true
+        },
+        {
+          "type": "keyword_statement",
+          "named": true
+        },
+        {
+          "type": "open_statement",
+          "named": true
+        },
+        {
+          "type": "pointer_association_statement",
+          "named": true
+        },
+        {
+          "type": "preproc_call",
+          "named": true
+        },
+        {
+          "type": "preproc_def",
+          "named": true
+        },
+        {
+          "type": "preproc_function_def",
+          "named": true
+        },
+        {
+          "type": "preproc_if",
+          "named": true
+        },
+        {
+          "type": "preproc_ifdef",
+          "named": true
+        },
+        {
+          "type": "preproc_include",
+          "named": true
+        },
+        {
+          "type": "print_statement",
+          "named": true
+        },
+        {
+          "type": "read_statement",
+          "named": true
+        },
+        {
+          "type": "select_case_statement",
+          "named": true
+        },
+        {
+          "type": "select_rank_statement",
+          "named": true
+        },
+        {
+          "type": "select_type_statement",
+          "named": true
+        },
+        {
+          "type": "statement_label",
+          "named": true
+        },
+        {
+          "type": "stop_statement",
+          "named": true
+        },
+        {
+          "type": "subroutine_call",
+          "named": true
+        },
+        {
+          "type": "where_statement",
+          "named": true
+        },
+        {
+          "type": "write_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block_elseif_clause",
     "named": true,
     "fields": {},
@@ -2089,15 +2268,15 @@
       "required": true,
       "types": [
         {
+          "type": "block_else_clause",
+          "named": true
+        },
+        {
           "type": "block_elseif_clause",
           "named": true
         },
         {
           "type": "block_if_clause",
-          "named": true
-        },
-        {
-          "type": "else_clause",
           "named": true
         },
         {
@@ -5273,175 +5452,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
-          "type": "allocate_statement",
-          "named": true
-        },
-        {
-          "type": "arithmetic_if_statement",
-          "named": true
-        },
-        {
-          "type": "assign_statement",
-          "named": true
-        },
-        {
-          "type": "assignment_statement",
-          "named": true
-        },
-        {
-          "type": "associate_statement",
-          "named": true
-        },
-        {
-          "type": "block_construct",
-          "named": true
-        },
-        {
           "type": "block_label",
-          "named": true
-        },
-        {
-          "type": "call_expression",
-          "named": true
-        },
-        {
-          "type": "close_statement",
-          "named": true
-        },
-        {
-          "type": "coarray_critical_statement",
-          "named": true
-        },
-        {
-          "type": "coarray_statement",
-          "named": true
-        },
-        {
-          "type": "coarray_team_statement",
-          "named": true
-        },
-        {
-          "type": "do_label_statement",
-          "named": true
-        },
-        {
-          "type": "do_loop_statement",
-          "named": true
-        },
-        {
-          "type": "end_do_label_statement",
-          "named": true
-        },
-        {
-          "type": "end_of_statement",
-          "named": true
-        },
-        {
-          "type": "entry_statement",
-          "named": true
-        },
-        {
-          "type": "file_position_statement",
-          "named": true
-        },
-        {
-          "type": "forall_statement",
-          "named": true
-        },
-        {
-          "type": "format_statement",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "include_statement",
-          "named": true
-        },
-        {
-          "type": "inquire_statement",
-          "named": true
-        },
-        {
-          "type": "keyword_statement",
-          "named": true
-        },
-        {
-          "type": "open_statement",
-          "named": true
-        },
-        {
-          "type": "pointer_association_statement",
-          "named": true
-        },
-        {
-          "type": "preproc_call",
-          "named": true
-        },
-        {
-          "type": "preproc_def",
-          "named": true
-        },
-        {
-          "type": "preproc_function_def",
-          "named": true
-        },
-        {
-          "type": "preproc_if",
-          "named": true
-        },
-        {
-          "type": "preproc_ifdef",
-          "named": true
-        },
-        {
-          "type": "preproc_include",
-          "named": true
-        },
-        {
-          "type": "print_statement",
-          "named": true
-        },
-        {
-          "type": "read_statement",
-          "named": true
-        },
-        {
-          "type": "select_case_statement",
-          "named": true
-        },
-        {
-          "type": "select_rank_statement",
-          "named": true
-        },
-        {
-          "type": "select_type_statement",
-          "named": true
-        },
-        {
-          "type": "statement_label",
-          "named": true
-        },
-        {
-          "type": "stop_statement",
-          "named": true
-        },
-        {
-          "type": "subroutine_call",
-          "named": true
-        },
-        {
-          "type": "where_statement",
-          "named": true
-        },
-        {
-          "type": "write_statement",
           "named": true
         }
       ]

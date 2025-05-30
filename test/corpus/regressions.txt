@@ -109,8 +109,9 @@ end program foo
             (identifier)
             (argument_list))
           (end_of_statement))
-        (else_clause
-          (block_label)
+        (block_else_clause
+          (else_clause
+            (block_label))
           (end_of_statement)
           (subroutine_call
             (identifier)

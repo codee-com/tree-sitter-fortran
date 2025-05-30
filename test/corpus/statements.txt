@@ -1240,7 +1240,8 @@ END PROGRAM
                     (argument_list
                       (number_literal)))))))
           (end_of_statement))
-        (else_clause
+        (block_else_clause
+          (else_clause)
           (end_of_statement)
           (assignment_statement
             (identifier)
@@ -1287,7 +1288,8 @@ END PROGRAM
                   (identifier)
                   (number_literal))
                 (end_of_statement))
-              (else_clause
+              (block_else_clause
+                (else_clause)
                 (end_of_statement)
                 (assignment_statement
                   (identifier)
@@ -1295,8 +1297,9 @@ END PROGRAM
                 (end_of_statement))
               (end_if_statement)))
           (end_of_statement))
-        (else_clause
-          (block_label)
+        (block_else_clause
+          (else_clause
+            (block_label))
           (end_of_statement)
           (assignment_statement
             (identifier)
