@@ -37,18 +37,17 @@ end subroutine foo
       (name)
       (end_of_statement))
     (include_statement
-      (filename)
-      (end_of_statement))
+      (filename))
+    (end_of_statement)
     (comment)
     (include_statement
-      (filename)
-      (end_of_statement))
+      (filename))
+    (end_of_statement)
     (interface
       (interface_statement
         (end_of_statement))
       (include_statement
-        (filename)
-        (end_of_statement))
+        (filename))
       (end_interface_statement
         (end_of_statement)))
     (assignment_statement
@@ -56,21 +55,20 @@ end subroutine foo
       (number_literal))
     (end_of_statement)
     (include_statement
-      (filename)
-      (end_of_statement))
+      (filename))
+    (end_of_statement)
     (internal_procedures
       (contains_statement)
       (end_of_statement)
       (include_statement
-        (filename)
-        (end_of_statement))
+        (filename))
       (subroutine
         (subroutine_statement
           (name)
           (end_of_statement))
         (include_statement
-          (filename)
-          (end_of_statement))
+          (filename))
+        (end_of_statement)
         (end_subroutine_statement
           (name)
           (end_of_statement))))
@@ -89,8 +87,8 @@ end subroutine foo
       (name)
       (end_of_statement))
     (include_statement
-      (filename)
-      (end_of_statement))
+      (filename))
+    (end_of_statement)
     (comment)
     (variable_declaration
       (intrinsic_type)
@@ -198,6 +196,7 @@ PROGRAM TEST
   IMPLICIT INTEGER(i - n), REAL(8)(r-z),  COMPLEX*8(a - c, d, e-h)
   IMPLICIT NONE
   implicit none (type, external)
+  implicit type(foo)(f), class(bar)(C)
 END PROGRAM
 
 --------------------------------------------------------------------------------
@@ -235,6 +234,16 @@ END PROGRAM
     (end_of_statement)
     (implicit_statement
       (none))
+    (end_of_statement)
+    (implicit_statement
+      (derived_type
+        (type_name))
+      (implicit_range
+        (implicit_range_letter))
+      (derived_type
+        (type_name))
+      (implicit_range
+        (implicit_range_letter)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -282,16 +291,16 @@ END MODULE
     (module_statement
       (name)
       (end_of_statement))
-    (private_statement
-      (end_of_statement))
+    (private_statement)
+    (end_of_statement)
     (private_statement
       (identifier)
       (identifier)
       (operator
         (operator_name))
       (operator
-        (operator_name))
-      (end_of_statement))
+        (operator_name)))
+    (end_of_statement)
     (end_module_statement
       (end_of_statement))))
 
@@ -311,16 +320,16 @@ END MODULE
     (module_statement
       (name)
       (end_of_statement))
-    (public_statement
-      (end_of_statement))
+    (public_statement)
+    (end_of_statement)
     (public_statement
       (identifier)
       (identifier)
       (operator
         (operator_name))
       (operator
-        (operator_name))
-      (end_of_statement))
+        (operator_name)))
+    (end_of_statement)
     (end_module_statement
       (end_of_statement))))
 
@@ -754,10 +763,10 @@ END PROGRAM
     (save_statement
       (identifier)
       (identifier)
-      (identifier)
+      (common_block)
       (identifier))
     (end_of_statement)
-    (variable_modification
+    (bind_statement
       (language_binding
         (identifier))
       (identifier))
@@ -883,7 +892,8 @@ END PROGRAM
     (end_of_statement)
     (do_loop_statement
       (while_statement
-        (identifier))
+        (parenthesized_expression
+          (identifier)))
       (end_of_statement)
       (assignment_statement
         (identifier)
@@ -899,7 +909,8 @@ END PROGRAM
       (end_of_statement)
       (if_statement
         (inline_if_statement
-          (identifier)
+          (parenthesized_expression
+            (identifier))
           (keyword_statement
             (statement_label_reference))))
       (end_of_statement)
@@ -1162,79 +1173,84 @@ END PROGRAM
       (end_of_statement))
     (if_statement
       (inline_if_statement
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (assignment_statement
           (identifier)
           (number_literal))))
     (end_of_statement)
     (if_statement
       (inline_if_statement
-        (logical_expression
-          (relational_expression
-            (identifier)
-            (number_literal))
-          (relational_expression
-            (number_literal)
-            (identifier)))
+        (parenthesized_expression
+          (logical_expression
+            (relational_expression
+              (identifier)
+              (number_literal))
+            (relational_expression
+              (number_literal)
+              (identifier))))
         (assignment_statement
           (identifier)
           (number_literal))))
     (end_of_statement)
     (if_statement
       (block_if_statement
-        (relational_expression
-          (call_expression
-            (identifier)
-            (argument_list
-              (extent_specifier
-                (number_literal)
-                (number_literal))))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal))))
+        (parenthesized_expression
+          (relational_expression
+            (call_expression
+              (identifier)
+              (argument_list
+                (extent_specifier
+                  (number_literal)
+                  (number_literal))))
+            (call_expression
+              (identifier)
+              (argument_list
+                (string_literal)))))
         (end_of_statement)
         (assignment_statement
           (identifier)
           (number_literal))
         (end_of_statement)
         (elseif_clause
-          (relational_expression
-            (call_expression
-              (identifier)
-              (argument_list
-                (extent_specifier
-                  (number_literal)
-                  (number_literal))))
-            (call_expression
-              (identifier)
-              (argument_list
-                (call_expression
-                  (identifier)
-                  (argument_list
-                    (number_literal))))))
+          (parenthesized_expression
+            (relational_expression
+              (call_expression
+                (identifier)
+                (argument_list
+                  (extent_specifier
+                    (number_literal)
+                    (number_literal))))
+              (call_expression
+                (identifier)
+                (argument_list
+                  (call_expression
+                    (identifier)
+                    (argument_list
+                      (number_literal)))))))
           (end_of_statement)
           (assignment_statement
             (identifier)
             (number_literal))
           (end_of_statement))
         (elseif_clause
-          (relational_expression
-            (call_expression
-              (identifier)
-              (argument_list
-                (extent_specifier
-                  (number_literal)
-                  (number_literal))))
-            (call_expression
-              (identifier)
-              (argument_list
-                (call_expression
-                  (identifier)
-                  (argument_list
-                    (number_literal))))))
+          (parenthesized_expression
+            (relational_expression
+              (call_expression
+                (identifier)
+                (argument_list
+                  (extent_specifier
+                    (number_literal)
+                    (number_literal))))
+              (call_expression
+                (identifier)
+                (argument_list
+                  (call_expression
+                    (identifier)
+                    (argument_list
+                      (number_literal)))))))
           (end_of_statement))
         (else_clause
           (end_of_statement)
@@ -1247,18 +1263,20 @@ END PROGRAM
     (if_statement
       (block_if_statement
         (block_label_start_expression)
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (end_of_statement)
         (assignment_statement
           (identifier)
           (number_literal))
         (end_of_statement)
         (elseif_clause
-          (relational_expression
-            (identifier)
-            (number_literal))
+          (parenthesized_expression
+            (relational_expression
+              (identifier)
+              (number_literal)))
           (block_label)
           (end_of_statement)
           (assignment_statement
@@ -1267,12 +1285,13 @@ END PROGRAM
           (end_of_statement)
           (if_statement
             (block_if_statement
-              (call_expression
-                (identifier)
-                (argument_list
-                  (extent_specifier
-                    (number_literal)
-                    (number_literal))))
+              (parenthesized_expression
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (extent_specifier
+                      (number_literal)
+                      (number_literal)))))
               (end_of_statement)
               (assignment_statement
                 (identifier)
@@ -1335,9 +1354,10 @@ end program
       (end_of_statement))
     (where_statement
       (inline_where_statement
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (assignment_statement
           (identifier)
           (math_expression
@@ -1346,9 +1366,10 @@ end program
     (end_of_statement)
     (where_statement
       (block_where_statement
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (end_of_statement)
         (assignment_statement
           (identifier)
@@ -1363,9 +1384,10 @@ end program
             (number_literal)))
         (end_of_statement)
         (elsewhere_clause
-          (relational_expression
-            (identifier)
-            (number_literal))
+          (parenthesized_expression
+            (relational_expression
+              (identifier)
+              (number_literal)))
           (end_of_statement)
           (assignment_statement
             (identifier)
@@ -1384,9 +1406,10 @@ end program
     (where_statement
       (block_where_statement
         (block_label_start_expression)
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (end_of_statement)
         (assignment_statement
           (identifier)
@@ -1395,9 +1418,10 @@ end program
             (number_literal)))
         (end_of_statement)
         (elsewhere_clause
-          (relational_expression
-            (identifier)
-            (number_literal))
+          (parenthesized_expression
+            (relational_expression
+              (identifier)
+              (number_literal)))
           (block_label)
           (end_of_statement)
           (assignment_statement
@@ -1518,13 +1542,14 @@ END PROGRAM
         (end_of_statement)
         (where_statement
           (inline_where_statement
-            (relational_expression
-              (call_expression
-                (identifier)
-                (argument_list
+            (parenthesized_expression
+              (relational_expression
+                (call_expression
                   (identifier)
-                  (identifier)))
-              (number_literal))
+                  (argument_list
+                    (identifier)
+                    (identifier)))
+                (number_literal)))
             (assignment_statement
               (call_expression
                 (identifier)
@@ -1643,8 +1668,9 @@ PROGRAM TEST
     WRITE(*,*)  'Other characters, which may not be letters'
   END SELECT
 
-  SELECT CASE (c)
-  END SELECT
+  select case (empty)
+  end select
+
 END PROGRAM
 
 --------------------------------------------------------------------------------
@@ -1907,8 +1933,7 @@ END PROGRAM
     (read_statement
       (unit_identifier
         (identifier))
-      (keyword_argument
-        (identifier)
+      (format_identifier
         (string_literal))
       (input_item_list
         (call_expression
@@ -1989,6 +2014,8 @@ PROGRAM TEST
   WRITE(IOUNIT, "(FORMAT STRING)", IOSTAT=IOS)
   WRITE(IOUNIT, FMT="(FORMAT STRING)") flags(:)
   WRITE(UNIT=IOUNIT, FMT="(FORMAT STRING)", IOSTAT=IOS, ADVANCE='NO') X
+  write(unit=77, '(a)') "unusual"
+  write(unit=77, *) "but valid"
 END PROGRAM
 
 --------------------------------------------------------------------------------
@@ -2029,8 +2056,7 @@ END PROGRAM
     (write_statement
       (unit_identifier
         (identifier))
-      (keyword_argument
-        (identifier)
+      (format_identifier
         (string_literal))
       (output_item_list
         (call_expression
@@ -2053,6 +2079,21 @@ END PROGRAM
         (string_literal))
       (output_item_list
         (identifier)))
+    (end_of_statement)
+    (write_statement
+      (unit_identifier
+        (number_literal))
+      (format_identifier
+        (string_literal))
+      (output_item_list
+        (string_literal)))
+    (end_of_statement)
+    (write_statement
+      (unit_identifier
+        (number_literal))
+      (format_identifier)
+      (output_item_list
+        (string_literal)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -2246,8 +2287,8 @@ END PROGRAM test
       (enumerator_statement
         declarator: (identifier)
         declarator: (identifier))
-      (end_enum_statement)
-      (end_of_statement))
+      (end_enum_statement))
+    (end_of_statement)
     (enum
       (enum_statement
         (language_binding
@@ -2258,8 +2299,8 @@ END PROGRAM test
           left: (identifier)
           right: (unary_expression
             argument: (number_literal))))
-      (end_enum_statement)
-      (end_of_statement))
+      (end_enum_statement))
+    (end_of_statement)
     (end_program_statement
       (name)
       (end_of_statement))))
@@ -2434,8 +2475,7 @@ end program test
         (string_literal)))
     (end_of_statement)
     (close_statement
-      (keyword_argument
-        (identifier)
+      (unit_identifier
         (identifier))
       (keyword_argument
         (identifier)
@@ -2732,11 +2772,11 @@ end module
       (none))
     (end_of_statement)
     (public_statement
-      (defined_io_procedure)
-      (end_of_statement))
+      (defined_io_procedure))
+    (end_of_statement)
     (private_statement
-      (defined_io_procedure)
-      (end_of_statement))
+      (defined_io_procedure))
+    (end_of_statement)
     (interface
       (interface_statement
         (defined_io_procedure)
@@ -2744,8 +2784,7 @@ end module
       (procedure_statement
         (procedure_kind)
         (method_name
-          (name))
-        (end_of_statement))
+          (name)))
       (end_interface_statement
         (end_of_statement)))
     (interface
@@ -2755,8 +2794,7 @@ end module
       (procedure_statement
         (procedure_kind)
         (method_name
-          (name))
-        (end_of_statement))
+          (name)))
       (end_interface_statement
         (defined_io_procedure)
         (end_of_statement)))
@@ -2774,8 +2812,7 @@ end module
             (binding_name
               (defined_io_procedure))
             (method_name
-              (name)))
-          (end_of_statement))
+              (name))))
         (comment)
         (procedure_statement
           (procedure_kind)
@@ -2784,8 +2821,7 @@ end module
             (binding_name
               (identifier))
             (method_name
-              (name)))
-          (end_of_statement)))
+              (name)))))
       (end_type_statement
         (name)
         (end_of_statement)))
@@ -2953,6 +2989,11 @@ program test
   rewind(11)
   rewind(lu_prof(N))
 
+  flush 10
+  flush (10, iostat=ios)
+
+  wait(10)
+
   pause 'this is deleted'
 end program
 
@@ -2979,8 +3020,7 @@ end program
         (identifier)))
     (end_of_statement)
     (file_position_statement
-      (keyword_argument
-        (identifier)
+      (unit_identifier
         (derived_type_member_expression
           (identifier)
           (type_member)))
@@ -2990,14 +3030,32 @@ end program
     (end_of_statement)
     (file_position_statement
       (unit_identifier
+        (parenthesized_expression
+          (number_literal))))
+    (end_of_statement)
+    (file_position_statement
+      (unit_identifier
+        (parenthesized_expression
+          (call_expression
+            (identifier)
+            (argument_list
+              (identifier))))))
+    (end_of_statement)
+    (file_position_statement
+      (unit_identifier
         (number_literal)))
     (end_of_statement)
     (file_position_statement
       (unit_identifier
-        (call_expression
-          (identifier)
-          (argument_list
-            (identifier)))))
+        (number_literal))
+      (keyword_argument
+        (identifier)
+        (identifier)))
+    (end_of_statement)
+    (file_position_statement
+      (unit_identifier
+        (parenthesized_expression
+          (number_literal))))
     (end_of_statement)
     (file_position_statement
       (string_literal))
@@ -3035,8 +3093,7 @@ end program test
               (identifier))))))
     (end_of_statement)
     (inquire_statement
-      (keyword_argument
-        (identifier)
+      (unit_identifier
         (identifier))
       (keyword_argument
         (identifier)
@@ -3066,6 +3123,13 @@ program test
     allocate(double precision::foo)
     allocate(my_type::bar(1), foo, parent%child%grandchild(1, 2), errmsg=msg)
     allocate(parent(n)%child(x, y))
+    deallocate(my_int)
+    deallocate(foo, bar)
+    deallocate(parent%child)
+    deallocate(foo, stat=stat, errmsg=msg)
+    nullify(my_int)
+    nullify(foo, bar)
+    nullify(parent%child)
 end program test
 
 --------------------------------------------------------------------------------
@@ -3129,6 +3193,39 @@ end program test
           (identifier)
           (identifier))))
     (end_of_statement)
+    (deallocate_statement
+      (identifier))
+    (end_of_statement)
+    (deallocate_statement
+      (identifier)
+      (identifier))
+    (end_of_statement)
+    (deallocate_statement
+      (derived_type_member_expression
+        (identifier)
+        (type_member)))
+    (end_of_statement)
+    (deallocate_statement
+      (identifier)
+      (keyword_argument
+        name: (identifier)
+        value: (identifier))
+      (keyword_argument
+        name: (identifier)
+        value: (identifier)))
+    (end_of_statement)
+    (nullify_statement
+      (identifier))
+    (end_of_statement)
+    (nullify_statement
+      (identifier)
+      (identifier))
+    (end_of_statement)
+    (nullify_statement
+      (derived_type_member_expression
+        (identifier)
+        (type_member)))
+    (end_of_statement)
     (end_program_statement
       (name)
       (end_of_statement))))
@@ -3145,7 +3242,8 @@ end
 (translation_unit
   (program
     (arithmetic_if_statement
-      (identifier)
+      (parenthesized_expression
+        (identifier))
       (statement_label_reference)
       (statement_label_reference)
       (statement_label_reference))
@@ -3157,7 +3255,7 @@ end
 Statement Functions (Obsolescent)
 ================================================================================
 
-      SUBROUTINE CEBCHVXX( THRESH, PATH )      
+      SUBROUTINE CEBCHVXX( THRESH, PATH )
       COMPLEX            ZDUM
 !     .. Statement Functions ..
       REAL               CABS1
@@ -3253,6 +3351,11 @@ Entry statement (Obsolescent)
        RETURN
        END
 
+       subroutine foo(i)
+       entry      bar(i)
+       integer i
+       end subroutine foo
+
 --------------------------------------------------------------------------------
 
 (translation_unit
@@ -3292,6 +3395,24 @@ Entry statement (Obsolescent)
     (keyword_statement)
     (end_of_statement)
     (end_subroutine_statement
+      (end_of_statement)))
+  (subroutine
+    (subroutine_statement
+      (name)
+      (parameters
+        (identifier))
+      (end_of_statement))
+    (entry_statement
+      (name)
+      (parameters
+        (identifier)))
+    (end_of_statement)
+    (variable_declaration
+      (intrinsic_type)
+      (identifier))
+    (end_of_statement)
+    (end_subroutine_statement
+      (name)
       (end_of_statement))))
 
 ================================================================================
@@ -3416,9 +3537,10 @@ end program test
     (end_of_statement)
     (if_statement
       (inline_if_statement
-        (relational_expression
-          (identifier)
-          (number_literal))
+        (parenthesized_expression
+          (relational_expression
+            (identifier)
+            (number_literal)))
         (assignment_statement
           (coarray_expression
             (identifier)
@@ -3785,4 +3907,205 @@ end program
       (statement_label_reference))
     (end_of_statement)
     (end_program_statement
+      (end_of_statement))))
+
+================================================================================
+Cray pointer (extension)
+================================================================================
+
+SUBROUTINE  sub ( n )
+  COMMON pool(100000)
+  INTEGER blk(128), word64
+  REAL a(1000), b(n), c(100000-n-1000)
+  POINTER ( pblk, blk ), (ia, a(10:100) ), ( ib, b ), &
+          ( ic, c ), ( address, word64 )
+END SUBROUTINE sub
+
+subroutine pointer_name_clash
+  integer, dimension(2) :: pointer
+  pointer(1, 1) = 4
+end subroutine pointer_name_clash
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (subroutine
+    (subroutine_statement
+      name: (name)
+      parameters: (parameters
+        (identifier))
+      (end_of_statement))
+    (common_statement
+      (sized_declarator
+        (identifier)
+        (size
+          (number_literal))))
+    (end_of_statement)
+    (variable_declaration
+      type: (intrinsic_type)
+      declarator: (sized_declarator
+        (identifier)
+        (size
+          (number_literal)))
+      declarator: (identifier))
+    (end_of_statement)
+    (variable_declaration
+      type: (intrinsic_type)
+      declarator: (sized_declarator
+        (identifier)
+        (size
+          (number_literal)))
+      declarator: (sized_declarator
+        (identifier)
+        (size
+          (identifier)))
+      declarator: (sized_declarator
+        (identifier)
+        (size
+          (math_expression
+            left: (math_expression
+              left: (number_literal)
+              right: (identifier))
+            right: (number_literal)))))
+    (end_of_statement)
+    (cray_pointer_declaration
+      (cray_pointer_pair
+        pointer: (identifier)
+        target: (identifier))
+      (cray_pointer_pair
+        pointer: (identifier)
+        target: (sized_declarator
+          (identifier)
+          (size
+            (extent_specifier
+              (number_literal)
+              (number_literal)))))
+      (cray_pointer_pair
+        pointer: (identifier)
+        target: (identifier))
+      (cray_pointer_pair
+        pointer: (identifier)
+        target: (identifier))
+      (cray_pointer_pair
+        pointer: (identifier)
+        target: (identifier)))
+    (end_of_statement)
+    (end_subroutine_statement
+      (name)
+      (end_of_statement)))
+  (subroutine
+    (subroutine_statement
+      name: (name)
+      (end_of_statement))
+    (variable_declaration
+      type: (intrinsic_type)
+      attribute: (type_qualifier
+        (argument_list
+          (number_literal)))
+      declarator: (identifier))
+    (end_of_statement)
+    (assignment_statement
+      left: (call_expression
+        (identifier)
+        (argument_list
+          (number_literal)
+          (number_literal)))
+      right: (number_literal))
+    (end_of_statement)
+    (end_subroutine_statement
+      (name)
+      (end_of_statement))))
+
+================================================================================
+Data declarators (extension)
+================================================================================
+
+program test
+  implicit none
+  real a(100)/100*1.0/
+  integer(kind=4)::i/1/,j/2/
+  complex x/(1.0, 2.0)/
+end program
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (program
+    (program_statement
+      name: (name)
+      (end_of_statement))
+    (implicit_statement
+      (none))
+    (end_of_statement)
+    (variable_declaration
+      type: (intrinsic_type)
+      declarator: (data_declarator
+        left: (sized_declarator
+          (identifier)
+          (size
+            (number_literal)))
+        right: (data_value
+          repeat: (number_literal)
+          (number_literal))))
+    (end_of_statement)
+    (variable_declaration
+      type: (intrinsic_type
+        kind: (kind
+          (keyword_argument
+            name: (identifier)
+            value: (number_literal))))
+      declarator: (data_declarator
+        left: (identifier)
+        right: (data_value
+          (number_literal)))
+      declarator: (data_declarator
+        left: (identifier)
+        right: (data_value
+          (number_literal))))
+    (end_of_statement)
+    (variable_declaration
+      type: (intrinsic_type)
+      declarator: (data_declarator
+        left: (identifier)
+        right: (data_value
+          (complex_literal
+            (number_literal)
+            (number_literal)))))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement))))
+
+================================================================================
+Standalone Bind(C) Statement
+================================================================================
+
+program test
+  common /foo/ foo
+  integer :: foo
+  bind(C) :: /foo/
+end program test
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (program
+    (program_statement
+      (name)
+      (end_of_statement))
+    (common_statement
+      (variable_group
+        (name)
+        (identifier)))
+    (end_of_statement)
+    (variable_declaration
+      (intrinsic_type)
+      (identifier))
+    (end_of_statement)
+    (bind_statement
+      (language_binding
+        (identifier))
+      (common_block))
+    (end_of_statement)
+    (end_program_statement
+      (name)
       (end_of_statement))))
