@@ -1,0 +1,129 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Thu, 3 Apr 2025 10:57:24 +0200
+Subject: Ensure nodes appear in the syntax tree
+
+Previously, these nodes were defined using regexes, preventing them
+from being explicitly represented in the tree.
+---
+ grammar.js                  |  8 +++++---
+ test/corpus/expressions.txt |  4 ++++
+ test/corpus/statements.txt  | 31 ++++++++++++++++++++++---------
+ 3 files changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index af06d68..14d3573 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -722,9 +722,10 @@ module.exports = grammar({
+     ),
+ 
+     implicit_range: $ => seq(
+-      /[a-zA-Z]/,
+-      optional(seq('-', /[a-zA-Z]/))
++      $.implicit_range_letter,
++      optional(seq('-', $.implicit_range_letter))
+     ),
++    implicit_range_letter: $ => /[a-zA-Z]/,
+ 
+     import_statement: $ => prec.left(seq(
+       caseInsensitive('import'),
+@@ -2027,8 +2028,9 @@ module.exports = grammar({
+     )),
+ 
+     user_defined_operator: $ => prec.right(seq(
+-      '.', /[a-zA-Z]+/, '.'
++      '.', $.user_defined_operator_name, '.'
+     )),
++    user_defined_operator_name: $ => /[a-zA-Z]+/,
+ 
+     // Due to the fact Fortran uses parentheses for both function calls and
+     // array access there is no way to differentiate the two except for the
+diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
+index 38640c9..a9771e1 100644
+--- a/test/corpus/expressions.txt
++++ b/test/corpus/expressions.txt
+@@ -1062,8 +1062,12 @@ end program
+             (argument_list
+               (number_literal)))
+           (ERROR
++            (implicit_range_letter)
++            (implicit_range_letter)
++            (implicit_range_letter)
+             (ERROR
+               (number_literal))
++            (user_defined_operator_name)
+             (number_literal))
+           (number_literal))))
+     (end_of_statement)
+diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
+index 372a493..7948402 100644
+--- a/test/corpus/statements.txt
++++ b/test/corpus/statements.txt
+@@ -208,17 +208,26 @@ END PROGRAM
+       (end_of_statement))
+     (implicit_statement
+       (intrinsic_type)
+-      (implicit_range)
++      (implicit_range
++        (implicit_range_letter)
++        (implicit_range_letter))
+       (intrinsic_type
+         (kind
+           (number_literal)))
+-      (implicit_range)
++      (implicit_range
++        (implicit_range_letter)
++        (implicit_range_letter))
+       (intrinsic_type
+         (kind
+           (number_literal)))
+-      (implicit_range)
+-      (implicit_range)
+-      (implicit_range))
++      (implicit_range
++        (implicit_range_letter)
++        (implicit_range_letter))
++      (implicit_range
++        (implicit_range_letter))
++      (implicit_range
++        (implicit_range_letter)
++        (implicit_range_letter)))
+     (end_of_statement)
+     (implicit_statement
+       (none))
+@@ -229,10 +238,12 @@ END PROGRAM
+     (implicit_statement
+       (derived_type
+         (type_name))
+-      (implicit_range)
++      (implicit_range
++        (implicit_range_letter))
+       (derived_type
+         (type_name))
+-      (implicit_range))
++      (implicit_range
++        (implicit_range_letter)))
+     (end_of_statement)
+     (end_program_statement
+       (end_of_statement))))
+@@ -2699,7 +2710,8 @@ end program
+       (format_identifier)
+       (output_item_list
+         (unary_expression
+-          (user_defined_operator)
++          (user_defined_operator
++            (user_defined_operator_name))
+           (identifier))))
+     (end_of_statement)
+     (print_statement
+@@ -2707,7 +2719,8 @@ end program
+       (output_item_list
+         (math_expression
+           (identifier)
+-          (user_defined_operator)
++          (user_defined_operator
++            (user_defined_operator_name))
+           (identifier))))
+     (end_of_statement)
+     (end_program_statement

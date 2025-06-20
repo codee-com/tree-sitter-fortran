@@ -13,10 +13,10 @@ we want to use `&` as line separator instead of `\`.
  2 files changed, 34 insertions(+), 34 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index a731ff8..4c9e8c8 100644
+index 4bf147c..bd6e95e 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -2353,7 +2353,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2465,7 +2465,7 @@ function preprocIf(suffix, content, precedence = 0) {
        field('condition', $._preproc_expression),
        optional($.preproc_comment),
        '\n',
@@ -25,7 +25,7 @@ index a731ff8..4c9e8c8 100644
        field('alternative', optional(alternativeBlock($))),
        preprocessor('endif'),
        optional($.preproc_comment),
-@@ -2363,7 +2363,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2475,7 +2475,7 @@ function preprocIf(suffix, content, precedence = 0) {
        choice(preprocessor('ifdef'), preprocessor('ifndef')),
        field('name', $.identifier),
        optional($.preproc_comment),
@@ -34,7 +34,7 @@ index a731ff8..4c9e8c8 100644
        field('alternative', optional(alternativeBlock($))),
        preprocessor('endif'),
        optional($.preproc_comment),
-@@ -2372,7 +2372,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2484,7 +2484,7 @@ function preprocIf(suffix, content, precedence = 0) {
      ['preproc_else' + suffix]: $ => prec(precedence, seq(
        preprocessor('else'),
        optional($.preproc_comment),
@@ -43,7 +43,7 @@ index a731ff8..4c9e8c8 100644
      )),
  
      ['preproc_elif' + suffix]: $ => prec(precedence, seq(
-@@ -2380,7 +2380,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2492,7 +2492,7 @@ function preprocIf(suffix, content, precedence = 0) {
        optional($.preproc_comment),
        field('condition', $._preproc_expression),
        '\n',
@@ -52,7 +52,7 @@ index a731ff8..4c9e8c8 100644
        field('alternative', optional(alternativeBlock($))),
      )),
  
-@@ -2388,7 +2388,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2500,7 +2500,7 @@ function preprocIf(suffix, content, precedence = 0) {
        choice(preprocessor('elifdef'), preprocessor('elifndef')),
        field('name', $.identifier),
        optional($.preproc_comment),
@@ -62,7 +62,7 @@ index a731ff8..4c9e8c8 100644
      )),
    };
 diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
-index 7519f12..85e65a4 100644
+index ab7c1a2..c7b2ae0 100644
 --- a/test/corpus/preprocessor.txt
 +++ b/test/corpus/preprocessor.txt
 @@ -125,7 +125,7 @@ end subroutine foo3
@@ -246,7 +246,7 @@ index 7519f12..85e65a4 100644
      (end_program_statement
        (end_of_statement))))
  
-@@ -581,7 +581,7 @@ end module foo
+@@ -580,7 +580,7 @@ end module foo
            (end_of_statement)))
        (preproc_ifdef
          name: (identifier)
@@ -255,7 +255,7 @@ index 7519f12..85e65a4 100644
            (subroutine_statement
              name: (name)
              (end_of_statement))
-@@ -641,16 +641,16 @@ end module foo
+@@ -640,16 +640,16 @@ end module foo
          (end_of_statement)
          (preproc_ifdef
            name: (identifier)
@@ -276,7 +276,7 @@ index 7519f12..85e65a4 100644
          (assignment_statement
            left: (identifier)
            right: (math_expression
-@@ -717,11 +717,11 @@ end module foo
+@@ -716,11 +716,11 @@ end module foo
          (end_of_statement)
          (preproc_ifdef
            name: (identifier)

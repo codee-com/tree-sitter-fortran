@@ -10,10 +10,10 @@ This may be squashed together with
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 1c217ba..54eccb3 100644
+index 88bfc76..16959ac 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -396,7 +396,7 @@ module.exports = grammar({
+@@ -407,7 +407,7 @@ module.exports = grammar({
  
      block_data_statement: $ => seq(
        whiteSpacedKeyword('block', 'data'),
@@ -22,7 +22,7 @@ index 1c217ba..54eccb3 100644
        $.end_of_statement
      ),
  
-@@ -1696,7 +1696,7 @@ module.exports = grammar({
+@@ -1757,7 +1757,7 @@ module.exports = grammar({
        caseInsensitive('type'),
        optional(seq(',', $.access_specifier)),
        optional('::'),

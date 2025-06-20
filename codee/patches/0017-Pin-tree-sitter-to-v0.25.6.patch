@@ -4,11 +4,11 @@ Date: Fri, 20 Jun 2025 08:23:46 +0200
 Subject: Pin `tree-sitter` to `v0.25.6`
 
 ---
- .github/workflows/ci.yml |  2 ++
+ .github/workflows/ci.yml |  2 +
  Cargo.toml               |  2 +-
- package-lock.json        | 53 ++++++++++++++++++++--------------------
- package.json             |  4 +--
- 4 files changed, 32 insertions(+), 29 deletions(-)
+ package-lock.json        | 87 ++++++++++++++++++++++++++++++----------
+ package.json             |  4 +-
+ 4 files changed, 70 insertions(+), 25 deletions(-)
 
 diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
 index 40d9858..9f65d2c 100644
@@ -24,17 +24,17 @@ index 40d9858..9f65d2c 100644
          uses: tree-sitter/parser-test-action@v2
          with:
 diff --git a/Cargo.toml b/Cargo.toml
-index cece2c4..d0d0718 100644
+index 3789ac5..d0d0718 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -21,4 +21,4 @@ tree-sitter-language = "0.1.0"
  cc = "1.0"
  
  [dev-dependencies]
--tree-sitter = "0.24"
+-tree-sitter = "0.25"
 +tree-sitter = "0.25.6"
 diff --git a/package-lock.json b/package-lock.json
-index e490d09..97805ca 100644
+index 12df1b0..645ccfd 100644
 --- a/package-lock.json
 +++ b/package-lock.json
 @@ -20,10 +20,10 @@
@@ -78,22 +78,22 @@ index e490d09..97805ca 100644
        "dev": true,
        "license": "MIT",
        "dependencies": {
-@@ -2388,9 +2389,9 @@
+@@ -2387,10 +2388,22 @@
+       "integrity": "sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==",
        "dev": true
      },
-     "node_modules/tree-sitter": {
--      "version": "0.22.4",
--      "resolved": "https://registry.npmjs.org/tree-sitter/-/tree-sitter-0.22.4.tgz",
--      "integrity": "sha512-usbHZP9/oxNsUY65MQUsduGRqDHQOou1cagUSwjhoSYAmSahjQDAVsh9s+SlZkn8X8+O1FULRGwHu7AFP3kjzg==",
++    "node_modules/tree-sitter": {
 +      "version": "0.25.0",
 +      "resolved": "https://registry.npmjs.org/tree-sitter/-/tree-sitter-0.25.0.tgz",
 +      "integrity": "sha512-PGZZzFW63eElZJDe/b/R/LbsjDDYJa5UEjLZJB59RQsMX+fo0j54fqBPn1MGKav/QNa0JR0zBiVaikYDWCj5KQ==",
-       "hasInstallScript": true,
-       "license": "MIT",
-       "peer": true,
-@@ -2400,9 +2401,9 @@
-       }
-     },
++      "hasInstallScript": true,
++      "license": "MIT",
++      "peer": true,
++      "dependencies": {
++        "node-addon-api": "^8.3.0",
++        "node-gyp-build": "^4.8.4"
++      }
++    },
      "node_modules/tree-sitter-cli": {
 -      "version": "0.24.7",
 -      "resolved": "https://registry.npmjs.org/tree-sitter-cli/-/tree-sitter-cli-0.24.7.tgz",
@@ -104,7 +104,34 @@ index e490d09..97805ca 100644
        "dev": true,
        "hasInstallScript": true,
        "license": "MIT",
-@@ -2830,9 +2831,9 @@
+@@ -2401,6 +2414,16 @@
+         "node": ">=12.0.0"
+       }
+     },
++    "node_modules/tree-sitter/node_modules/node-addon-api": {
++      "version": "8.4.0",
++      "resolved": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-8.4.0.tgz",
++      "integrity": "sha512-D9DI/gXHvVmjHS08SVch0Em8G5S1P+QWtU31appcKT/8wFSPRcdHadIFSAntdMMVM5zz+/DL+bL/gz3UDppqtg==",
++      "license": "MIT",
++      "peer": true,
++      "engines": {
++        "node": "^18 || ^20 || >= 21"
++      }
++    },
+     "node_modules/tsconfig-paths": {
+       "version": "3.14.1",
+       "resolved": "https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-3.14.1.tgz",
+@@ -2690,7 +2713,8 @@
+       "version": "5.3.2",
+       "resolved": "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz",
+       "integrity": "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==",
+-      "dev": true
++      "dev": true,
++      "requires": {}
+     },
+     "ajv": {
+       "version": "6.12.6",
+@@ -2807,9 +2831,9 @@
        }
      },
      "brace-expansion": {
@@ -117,7 +144,17 @@ index e490d09..97805ca 100644
        "dev": true,
        "requires": {
          "balanced-match": "^1.0.0",
-@@ -4254,9 +4255,9 @@
+@@ -3078,7 +3102,8 @@
+       "version": "16.0.3",
+       "resolved": "https://registry.npmjs.org/eslint-config-standard/-/eslint-config-standard-16.0.3.tgz",
+       "integrity": "sha512-x4fmJL5hGqNJKGHSjnLdgA6U6h1YW/G2dW9fA+cyVur4SK6lyue8+UgNKWlZtUDTXvgKDD/Oa3GQjmB5kjtVvg==",
+-      "dev": true
++      "dev": true,
++      "requires": {}
+     },
+     "eslint-import-resolver-node": {
+       "version": "0.3.7",
+@@ -4230,9 +4255,9 @@
        }
      },
      "tar-fs": {
@@ -130,22 +167,28 @@ index e490d09..97805ca 100644
        "dev": true,
        "requires": {
          "chownr": "^1.1.1",
-@@ -4285,9 +4286,9 @@
+@@ -4260,10 +4285,28 @@
+       "integrity": "sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==",
        "dev": true
      },
-     "tree-sitter": {
--      "version": "0.22.4",
--      "resolved": "https://registry.npmjs.org/tree-sitter/-/tree-sitter-0.22.4.tgz",
--      "integrity": "sha512-usbHZP9/oxNsUY65MQUsduGRqDHQOou1cagUSwjhoSYAmSahjQDAVsh9s+SlZkn8X8+O1FULRGwHu7AFP3kjzg==",
++    "tree-sitter": {
 +      "version": "0.25.0",
 +      "resolved": "https://registry.npmjs.org/tree-sitter/-/tree-sitter-0.25.0.tgz",
 +      "integrity": "sha512-PGZZzFW63eElZJDe/b/R/LbsjDDYJa5UEjLZJB59RQsMX+fo0j54fqBPn1MGKav/QNa0JR0zBiVaikYDWCj5KQ==",
-       "peer": true,
-       "requires": {
-         "node-addon-api": "^8.3.0",
-@@ -4303,9 +4304,9 @@
-       }
-     },
++      "peer": true,
++      "requires": {
++        "node-addon-api": "^8.3.0",
++        "node-gyp-build": "^4.8.4"
++      },
++      "dependencies": {
++        "node-addon-api": {
++          "version": "8.4.0",
++          "resolved": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-8.4.0.tgz",
++          "integrity": "sha512-D9DI/gXHvVmjHS08SVch0Em8G5S1P+QWtU31appcKT/8wFSPRcdHadIFSAntdMMVM5zz+/DL+bL/gz3UDppqtg==",
++          "peer": true
++        }
++      }
++    },
      "tree-sitter-cli": {
 -      "version": "0.24.7",
 -      "resolved": "https://registry.npmjs.org/tree-sitter-cli/-/tree-sitter-cli-0.24.7.tgz",
@@ -157,18 +200,18 @@ index e490d09..97805ca 100644
      },
      "tsconfig-paths": {
 diff --git a/package.json b/package.json
-index 3b11bff..ce7e0b2 100644
+index db8754c..ce7e0b2 100644
 --- a/package.json
 +++ b/package.json
 @@ -50,10 +50,10 @@
      "eslint-plugin-node": "^11.1.0",
      "eslint-plugin-promise": "^4.2.1",
      "prebuildify": "^6.0.0",
--    "tree-sitter-cli": "^0.24.7"
+-    "tree-sitter-cli": "^0.25.4"
 +    "tree-sitter-cli": "==0.25.6"
    },
    "peerDependencies": {
--    "tree-sitter": "^0.22.4"
+-    "tree-sitter": "^0.25.4"
 +    "tree-sitter": "==0.25.0"
    },
    "peerDependenciesMeta": {

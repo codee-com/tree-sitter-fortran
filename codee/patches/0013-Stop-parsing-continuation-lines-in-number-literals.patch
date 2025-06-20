@@ -8,12 +8,13 @@ literals. Instead of attempting to parse them incorrectly, we now treat
 them as a parsing error. This allows library users to handle such cases
 explicitly.
 ---
- src/scanner.c               | 71 +++++++++++++++++++++++--------------
- test/corpus/expressions.txt | 25 ++++++-------
- 2 files changed, 57 insertions(+), 39 deletions(-)
+ src/scanner.c                      | 69 +++++++++++++++++++-----------
+ test/corpus/expressions.txt        | 25 +++++------
+ test/corpus/line_continuations.txt |  3 +-
+ 3 files changed, 58 insertions(+), 39 deletions(-)
 
 diff --git a/src/scanner.c b/src/scanner.c
-index 3130491..fc6f887 100644
+index 10a22d7..b768d99 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -19,6 +19,16 @@ typedef struct {
@@ -33,7 +34,7 @@ index 3130491..fc6f887 100644
  //  consume current character into current token and advance
  static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
  
-@@ -54,44 +64,41 @@ static bool is_exp_sentinel(char chr) {
+@@ -56,44 +66,41 @@ static bool is_exp_sentinel(char chr) {
      }
  }
  
@@ -47,9 +48,9 @@ index 3130491..fc6f887 100644
      while (iswdigit(lexer->lookahead)) {
          advance(lexer); // store all digits
      }
+     lexer->mark_end(lexer);
 -
 -    // handle line continuations
-+    lexer->mark_end(lexer);
 +    // Return an error if a line continuation is found. This scanner cannot
 +    // handle line continuations, particularly in cases like:
 +    //
@@ -61,13 +62,13 @@ index 3130491..fc6f887 100644
 +    // Here, the scanner would need to return multiple tokens, but tree-sitter
 +    // expects only a single token.
      if (lexer->lookahead == '&') {
--      skip(lexer);
+-      advance(lexer);
 -      while (iswspace(lexer->lookahead)) {
--        skip(lexer);
+-        advance(lexer);
 -      }
 -      // second '&' required to continue the literal
 -      if (lexer->lookahead == '&') {
--        skip(lexer);
+-        advance(lexer);
 -        // don't return here, as we may have finished literal on first
 -        // line but still have second '&'
 -        scan_int(lexer);
@@ -75,7 +76,6 @@ index 3130491..fc6f887 100644
 +        return Error;
      }
 -
--    lexer->mark_end(lexer);
 -    return true;
 +    return True;
  }
@@ -96,7 +96,7 @@ index 3130491..fc6f887 100644
              lexer->mark_end(lexer); // add decimal to token
          }
          lexer->result_symbol = FLOAT_LITERAL;
-@@ -99,16 +106,21 @@ static bool scan_number(TSLexer *lexer) {
+@@ -101,8 +108,8 @@ static bool scan_number(TSLexer *lexer) {
      // if next char isn't number return since we handle exp
      // notation and precision identifiers separately. If there are
      // no leading digit it's a nonmatch.
@@ -107,8 +107,9 @@ index 3130491..fc6f887 100644
          // process exp notation
          if (is_exp_sentinel(lexer->lookahead)) {
              advance(lexer);
-             if (lexer->lookahead == '+' || lexer->lookahead == '-') {
+@@ -110,8 +117,13 @@ static bool scan_number(TSLexer *lexer) {
                  advance(lexer);
+                 lexer->mark_end(lexer);
              }
 -            if (!scan_int(lexer)) {
 -                return true; // valid number token with junk after it
@@ -120,9 +121,9 @@ index 3130491..fc6f887 100644
 +                case Error:
 +                    return Error;
              }
-             lexer->mark_end(lexer);
              lexer->result_symbol = FLOAT_LITERAL;
-@@ -429,8 +441,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+         }
+@@ -432,8 +444,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
      if (valid_symbols[INTEGER_LITERAL] || valid_symbols[FLOAT_LITERAL] ||
          valid_symbols[BOZ_LITERAL]) {
          // extract out root number from expression
@@ -139,10 +140,10 @@ index 3130491..fc6f887 100644
          if (scan_boz(lexer)) {
              return true;
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index eee04ef..0e9e317 100644
+index 994158d..38640c9 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -1030,6 +1030,8 @@ end program
+@@ -1042,6 +1042,8 @@ end program
        (type_qualifier)
        (init_declarator
          (identifier)
@@ -151,7 +152,7 @@ index eee04ef..0e9e317 100644
          (number_literal)))
      (end_of_statement)
      (variable_declaration
-@@ -1040,18 +1042,17 @@ end program
+@@ -1052,18 +1054,17 @@ end program
        (init_declarator
          (identifier)
          (array_literal
@@ -181,3 +182,17 @@ index eee04ef..0e9e317 100644
            (number_literal))))
      (end_of_statement)
      (end_program_statement
+diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
+index a3ebedb..c086fe8 100644
+--- a/test/corpus/line_continuations.txt
++++ b/test/corpus/line_continuations.txt
+@@ -339,7 +339,8 @@ end program test
+         (array_literal
+           (number_literal)
+           (number_literal)
+-          (number_literal))))
++          (ERROR
++            (number_literal)))))
+     (end_of_statement)
+     (end_program_statement
+       (name)

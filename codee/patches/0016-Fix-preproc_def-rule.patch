@@ -9,10 +9,10 @@ Subject: Fix `preproc_def` rule
  2 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index ffe8a4b..75e5269 100644
+index bfe768f..f685c64 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -146,7 +146,7 @@ module.exports = grammar({
+@@ -157,7 +157,7 @@ module.exports = grammar({
        preprocessor('define'),
        field('name', $.identifier),
        field('value', optional($.preproc_arg)),
@@ -22,7 +22,7 @@ index ffe8a4b..75e5269 100644
  
      preproc_function_def: $ => seq(
 diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
-index 85e65a4..aebbb74 100644
+index c7b2ae0..700d955 100644
 --- a/test/corpus/preprocessor.txt
 +++ b/test/corpus/preprocessor.txt
 @@ -30,6 +30,8 @@ Object-like macro definitions

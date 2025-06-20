@@ -28,7 +28,7 @@ In other words, this commit is hidding the newline character in the AST.
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 4c9e8c8..07410f4 100644
+index bd6e95e..af06d68 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -100,8 +100,9 @@ module.exports = grammar({
@@ -40,9 +40,9 @@ index 4c9e8c8..07410f4 100644
 +    [$.preproc_if_in_specification_part, $.program],
 +    [$._preproc_expression, $._expression],
      [$.coarray_critical_statement, $.identifier],
-   ],
- 
-@@ -2352,7 +2353,6 @@ function preprocIf(suffix, content, precedence = 0) {
+     [$.format_statement, $.identifier],
+     [$.inline_if_statement, $.arithmetic_if_statement, $.block_if_statement, $.identifier],
+@@ -2464,7 +2465,6 @@ function preprocIf(suffix, content, precedence = 0) {
        preprocessor('if'),
        field('condition', $._preproc_expression),
        optional($.preproc_comment),
@@ -50,7 +50,7 @@ index 4c9e8c8..07410f4 100644
        field('content', content($)),
        field('alternative', optional(alternativeBlock($))),
        preprocessor('endif'),
-@@ -2379,7 +2379,6 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2491,7 +2491,6 @@ function preprocIf(suffix, content, precedence = 0) {
        preprocessor('elif'),
        optional($.preproc_comment),
        field('condition', $._preproc_expression),

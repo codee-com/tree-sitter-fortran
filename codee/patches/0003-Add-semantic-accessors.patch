@@ -13,10 +13,10 @@ Subject: Add semantic accessors
  6 files changed, 35 insertions(+), 22 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 4856695..50204e4 100644
+index 4e6a7f1..d0af7b9 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -291,7 +291,11 @@ module.exports = grammar({
+@@ -302,7 +302,11 @@ module.exports = grammar({
        $.end_program_statement
      ),
  
@@ -29,7 +29,7 @@ index 4856695..50204e4 100644
      end_program_statement: $ => blockStructureEnding($, 'program'),
  
      module: $ => seq(
-@@ -307,7 +311,11 @@ module.exports = grammar({
+@@ -318,7 +322,11 @@ module.exports = grammar({
        $.end_module_statement
      ),
  
@@ -42,7 +42,7 @@ index 4856695..50204e4 100644
      end_module_statement: $ => blockStructureEnding($, 'module'),
  
      submodule: $ => seq(
-@@ -331,7 +339,7 @@ module.exports = grammar({
+@@ -342,7 +350,7 @@ module.exports = grammar({
          ':', field('parent', $.module_name)
        )),
        ')',
@@ -51,7 +51,7 @@ index 4856695..50204e4 100644
        $._end_of_statement,
      ),
      end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
-@@ -363,7 +371,7 @@ module.exports = grammar({
+@@ -374,7 +382,7 @@ module.exports = grammar({
      interface_statement: $ => seq(
        optional($.abstract_specifier),
        caseInsensitive('interface'),
@@ -60,7 +60,7 @@ index 4856695..50204e4 100644
        $._end_of_statement,
      ),
  
-@@ -734,8 +742,13 @@ module.exports = grammar({
+@@ -768,8 +776,13 @@ module.exports = grammar({
        optional($.statement_label),
        caseInsensitive('type'),
        choice(
@@ -75,8 +75,8 @@ index 4856695..50204e4 100644
 +        )
        ),
        optional(alias($.argument_list, $.derived_type_parameter_list)),
-       $._end_of_statement
-@@ -1960,7 +1973,7 @@ module.exports = grammar({
+       $._end_of_statement,
+@@ -2048,7 +2061,7 @@ module.exports = grammar({
      // precedence is used to prevent conflict with assignment expression
      keyword_argument: $ => prec(1, seq(
        field("name",$.identifier),
@@ -86,10 +86,10 @@ index 4856695..50204e4 100644
      )),
  
 diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
-index ae3b766..ead1f53 100644
+index ab165f0..9b2eccb 100644
 --- a/test/corpus/constructs.txt
 +++ b/test/corpus/constructs.txt
-@@ -980,12 +980,12 @@ end program
+@@ -988,12 +988,12 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -104,7 +104,7 @@ index ae3b766..ead1f53 100644
        (end_type_statement
          (name)))
      (derived_type_definition
-@@ -993,7 +993,7 @@ end program
+@@ -1001,7 +1001,7 @@ end program
          access: (access_specifier)
          base: (base_type_specifier
            (identifier))
@@ -114,10 +114,10 @@ index ae3b766..ead1f53 100644
          (name)))
      (end_program_statement)))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index b17afad..254c65f 100644
+index c5a8f3d..eb8b11c 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -158,7 +158,7 @@ END PROGRAM
+@@ -159,7 +159,7 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -126,7 +126,7 @@ index b17afad..254c65f 100644
      (assignment_statement
        left: (identifier)
        right: (string_literal))
-@@ -237,7 +237,7 @@ end program
+@@ -242,7 +242,7 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -135,7 +135,7 @@ index b17afad..254c65f 100644
      (variable_declaration
        type: (intrinsic_type)
        declarator: (init_declarator
-@@ -712,7 +712,7 @@ END PROGRAM
+@@ -717,7 +717,7 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -198,10 +198,10 @@ index fc47bf1..1af946a 100644
        left: (call_expression
          (identifier)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 2405c0d..7fdbf31 100644
+index ca8c86e..ad47d68 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
-@@ -277,7 +277,7 @@ END PROGRAM
+@@ -289,7 +289,7 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -210,7 +210,7 @@ index 2405c0d..7fdbf31 100644
      (variable_declaration
        type: (intrinsic_type)
        attribute: (type_qualifier)
-@@ -787,7 +787,7 @@ END PROGRAM TEST
+@@ -799,7 +799,7 @@ END PROGRAM TEST
  (translation_unit
    (program
      (program_statement
@@ -219,7 +219,7 @@ index 2405c0d..7fdbf31 100644
      (variable_declaration
        type: (intrinsic_type)
        attribute: (type_qualifier
-@@ -1935,7 +1935,7 @@ END PROGRAM test
+@@ -1961,7 +1961,7 @@ END PROGRAM test
  (translation_unit
    (program
      (program_statement
@@ -228,7 +228,7 @@ index 2405c0d..7fdbf31 100644
      (enum
        (enum_statement
          (language_binding
-@@ -2661,7 +2661,7 @@ end program test
+@@ -2711,7 +2711,7 @@ end program test
  (translation_unit
    (program
      (program_statement

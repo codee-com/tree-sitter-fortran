@@ -6,20 +6,20 @@ Subject: Unalias nodes
 These `alias`es are meaningless and may provoke duplicate visitations
 for third-party applications.
 ---
- grammar.js                   | 15 +++----
+ grammar.js                   | 12 +++---
  queries/highlights.scm       |  2 +-
  test/corpus/constructs.txt   | 76 ++++++++++++++++++++++++------------
  test/corpus/cudafortran.txt  |  3 +-
  test/corpus/preprocessor.txt | 16 +++++---
  test/corpus/regressions.txt  |  6 ++-
  test/corpus/statements.txt   | 48 ++++++++++++++---------
- 7 files changed, 103 insertions(+), 63 deletions(-)
+ 7 files changed, 103 insertions(+), 60 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 4de79f8..f71cd44 100644
+index d2b55d1..3b2336a 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -576,7 +576,7 @@ module.exports = grammar({
+@@ -600,7 +600,7 @@ module.exports = grammar({
          ),
          optional('::')
        ),
@@ -28,19 +28,16 @@ index 4de79f8..f71cd44 100644
        optional(
          choice(
            seq(',', commaSep1($.use_alias)),
-@@ -700,10 +700,7 @@ module.exports = grammar({
-       repeat(choice(
-         $.public_statement,
-         $.private_statement,
--        seq(
+@@ -734,7 +734,7 @@ module.exports = grammar({
+           choice(
+             $.public_statement,
+             $.private_statement,
 -            alias(caseInsensitive('sequence'), $.sequence_statement),
--            $.end_of_statement
--        ),
-+        seq(caseInsensitive('sequence'), $.end_of_statement),
-         $.include_statement,
-         seq($.variable_declaration, $.end_of_statement),
-         $.preproc_include,
-@@ -791,7 +788,7 @@ module.exports = grammar({
++            caseInsensitive('sequence'),
+             $.include_statement,
+           ),
+           $.end_of_statement
+@@ -824,7 +824,7 @@ module.exports = grammar({
        $.identifier,
        $._generic_procedure
      ),
@@ -49,7 +46,7 @@ index 4de79f8..f71cd44 100644
  
      procedure_kind: $ => choice(
        caseInsensitive('generic'),
-@@ -1505,7 +1502,7 @@ module.exports = grammar({
+@@ -1565,7 +1565,7 @@ module.exports = grammar({
        caseInsensitive('case'),
        choice(
          seq('(', $.case_value_range_list, ')'),
@@ -58,7 +55,7 @@ index 4de79f8..f71cd44 100644
        ),
        optional($._block_label),
        $.end_of_statement,
-@@ -1523,7 +1520,7 @@ module.exports = grammar({
+@@ -1583,7 +1583,7 @@ module.exports = grammar({
              seq('(', field('type', choice($.intrinsic_type, $.identifier)), ')'),
            ),
          ),
@@ -67,7 +64,7 @@ index 4de79f8..f71cd44 100644
        ),
        optional($._block_label),
        $.end_of_statement,
-@@ -1542,7 +1539,7 @@ module.exports = grammar({
+@@ -1602,7 +1602,7 @@ module.exports = grammar({
        caseInsensitive('rank'),
        choice(
          seq('(', $.case_value_range_list, ')'),
@@ -90,12 +87,12 @@ index 418e40d..f0a2e55 100644
   "abstract"
   "bind"
 diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
-index 7219a8e..2874006 100644
+index 8189fde..f2b3f31 100644
 --- a/test/corpus/constructs.txt
 +++ b/test/corpus/constructs.txt
 @@ -82,7 +82,8 @@ end module
-     (private_statement
-       (end_of_statement))
+     (private_statement)
+     (end_of_statement)
      (use_statement
 -      (module_name))
 +      (module_name
@@ -103,85 +100,82 @@ index 7219a8e..2874006 100644
      (end_of_statement)
      (interface
        (interface_statement
-@@ -90,11 +91,13 @@ end module
+@@ -90,10 +91,12 @@ end module
          (end_of_statement))
        (procedure_statement
          (procedure_kind)
--        (method_name)
+-        (method_name))
 +        (method_name
-+          (name))
-         (end_of_statement))
++          (name)))
        (procedure_statement
          (procedure_kind)
--        (method_name)
+-        (method_name))
 +        (method_name
-+          (name))
-         (end_of_statement))
++          (name)))
        (end_interface_statement
          (end_of_statement)))
-@@ -380,11 +383,13 @@ end interface
+     (variable_declaration
+@@ -378,10 +381,12 @@ end interface
        (end_of_statement))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (end_interface_statement
        (end_of_statement))))
-@@ -415,11 +420,13 @@ end interface operator (.not.)
+ 
+@@ -412,10 +417,12 @@ end interface operator (.not.)
        (end_of_statement))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (end_interface_statement
-       (operator)
-@@ -430,7 +437,8 @@ end interface operator (.not.)
+       (operator
+         (operator_name))
+@@ -427,7 +434,8 @@ end interface operator (.not.)
        (end_of_statement))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (function
        (function_statement
-@@ -470,7 +478,8 @@ end interface assignment (=)
+         (name)
+@@ -467,7 +475,8 @@ end interface assignment (=)
        (end_of_statement))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (end_interface_statement
        (assignment)
-@@ -491,7 +500,8 @@ interface operator(+) ; module procedure test_plus ; end interface
+       (end_of_statement))))
+@@ -488,7 +497,8 @@ interface operator(+) ; module procedure test_plus ; end interface
        (end_of_statement))
      (procedure_statement
        (procedure_kind)
--      (method_name)
+-      (method_name))
 +      (method_name
-+        (name))
-       (end_of_statement))
++        (name)))
      (end_interface_statement
        (end_of_statement))))
-@@ -514,7 +524,8 @@ end module
+ 
+@@ -510,7 +520,8 @@ end module
        (name)
        (end_of_statement))
      (use_statement
@@ -189,9 +183,9 @@ index 7219a8e..2874006 100644
 +      (module_name
 +        (name))
        (included_items
-         (operator)
-         (assignment)))
-@@ -723,7 +734,8 @@ end function
+         (operator
+           (operator_name))
+@@ -721,7 +732,8 @@ end function
        (end_of_statement))
      (comment)
      (use_statement
@@ -201,72 +195,67 @@ index 7219a8e..2874006 100644
      (end_of_statement)
      (assignment_statement
        (identifier)
-@@ -978,7 +990,6 @@ end program
+@@ -977,7 +989,6 @@ end program
          (access_specifier)
          (type_name)
          (end_of_statement))
 -      (sequence_statement)
        (end_of_statement)
-       (private_statement
-         (end_of_statement))
-@@ -1022,12 +1033,14 @@ end program
+       (private_statement)
+       (end_of_statement)
+@@ -1021,33 +1032,39 @@ end program
            (procedure_kind)
            (procedure_attribute)
            (procedure_attribute)
--          (method_name)
+-          (method_name))
 +          (method_name
-+            (name))
-           (end_of_statement))
++            (name)))
          (comment)
          (procedure_statement
            (procedure_kind)
--          (method_name)
+-          (method_name))
 +          (method_name
-+            (name))
-           (end_of_statement))
++            (name)))
          (comment)
          (procedure_statement
-@@ -1035,7 +1048,8 @@ end program
+           (procedure_kind)
            (procedure_attribute)
            (procedure_attribute
              (identifier))
--          (method_name)
+-          (method_name))
 +          (method_name
-+            (name))
-           (end_of_statement))
++            (name)))
          (procedure_statement
            (procedure_kind)
-@@ -1043,8 +1057,10 @@ end program
+           (procedure_attribute)
            (binding
              (binding_name
                (identifier))
 -            (method_name))
--          (method_name)
+-          (method_name))
 +            (method_name
 +              (name)))
 +          (method_name
-+            (name))
-           (end_of_statement))
++            (name)))
          (procedure_statement
            (procedure_kind)
-@@ -1052,7 +1068,8 @@ end program
+           (procedure_attribute)
            (binding
              (binding_name
                (assignment))
--            (method_name))
+-            (method_name)))
 +            (method_name
-+              (name)))
-           (end_of_statement))
++              (name))))
          (procedure_statement
            (procedure_kind)
-@@ -1060,19 +1077,23 @@ end program
-           (binding
+           (procedure_attribute)
+@@ -1055,17 +1072,21 @@ end program
              (binding_name
-               (operator))
--            (method_name))
+               (operator
+                 (operator_name)))
+-            (method_name)))
 +            (method_name
-+              (name)))
-           (end_of_statement))
++              (name))))
          (procedure_statement
            (procedure_kind)
 -          (method_name)
@@ -275,45 +264,43 @@ index 7219a8e..2874006 100644
            (binding
              (binding_name
                (identifier))
--            (method_name))
+-            (method_name)))
 +            (method_name
-+              (name)))
-           (end_of_statement))
++              (name))))
          (procedure_statement
            (procedure_kind)
--          (method_name)
+-          (method_name)))
 +          (method_name
-+            (name))
-           (end_of_statement)))
++            (name))))
        (end_type_statement
          (name)
-@@ -1192,7 +1213,8 @@ end program
+         (end_of_statement)))
+@@ -1184,7 +1205,8 @@ end program
            (procedure_kind)
            (procedure_interface)
            (procedure_attribute)
--          (method_name)
+-          (method_name)))
 +          (method_name
-+            (name))
-           (end_of_statement)))
++            (name))))
        (end_type_statement
          (end_of_statement)))
-@@ -1241,12 +1263,14 @@ end program test
-           (end_of_statement))
+     (interface
+@@ -1231,11 +1253,13 @@ end program test
+         (private_statement)
          (procedure_statement
            (procedure_kind)
--          (method_name)
+-          (method_name))
 +          (method_name
-+            (name))
-           (end_of_statement))
++            (name)))
          (procedure_statement
            (procedure_kind)
            (procedure_attribute)
--          (method_name)
+-          (method_name)))
 +          (method_name
-+            (name))
-           (end_of_statement)))
++            (name))))
        (end_type_statement
          (name)
+         (end_of_statement)))
 diff --git a/test/corpus/cudafortran.txt b/test/corpus/cudafortran.txt
 index 238d682..b351532 100644
 --- a/test/corpus/cudafortran.txt
@@ -329,7 +316,7 @@ index 238d682..b351532 100644
      (assignment_statement
        (identifier)
 diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
-index c07a6a7..7519f12 100644
+index a3c3a59..ab7c1a2 100644
 --- a/test/corpus/preprocessor.txt
 +++ b/test/corpus/preprocessor.txt
 @@ -469,7 +469,8 @@ end program
@@ -356,13 +343,13 @@ index c07a6a7..7519f12 100644
            (identifier)
            (procedure_statement
              (procedure_kind)
--            (method_name)
+-            (method_name))))
 +            (method_name
-+              (name))
-             (end_of_statement))))
++              (name)))))
        (end_type_statement
          (name)
-@@ -813,7 +816,6 @@ end program
+         (end_of_statement)))
+@@ -812,7 +815,6 @@ end program
              (number_literal))
            (end_of_statement)))
        (case_statement
@@ -370,26 +357,25 @@ index c07a6a7..7519f12 100644
          (end_of_statement)
          (preproc_ifdef
            (identifier)
-@@ -852,13 +854,15 @@ end module
+@@ -851,12 +853,14 @@ end module
          (end_of_statement))
        (procedure_statement
          (procedure_kind)
--        (method_name)
+-        (method_name))
 +        (method_name
-+          (name))
-         (end_of_statement))
++          (name)))
        (preproc_ifdef
          (identifier)
          (procedure_statement
            (procedure_kind)
--          (method_name)
+-          (method_name)))
 +          (method_name
-+            (name))
-           (end_of_statement)))
++            (name))))
        (end_interface_statement
          (end_of_statement)))
+     (end_module_statement
 diff --git a/test/corpus/regressions.txt b/test/corpus/regressions.txt
-index f445352..fa1eb87 100644
+index a5ddddf..0b7937a 100644
 --- a/test/corpus/regressions.txt
 +++ b/test/corpus/regressions.txt
 @@ -26,14 +26,16 @@ end program example_padl
@@ -412,10 +398,10 @@ index f445352..fa1eb87 100644
          (identifier)))
      (end_of_statement)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 14e2e8a..60e5481 100644
+index 604ca98..f5b73e2 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
-@@ -132,47 +132,57 @@ END PROGRAM
+@@ -130,47 +130,57 @@ END PROGRAM
        (name)
        (end_of_statement))
      (use_statement
@@ -483,7 +469,7 @@ index 14e2e8a..60e5481 100644
        (use_alias
          (local_name)
          (identifier)))
-@@ -1712,7 +1722,6 @@ END PROGRAM
+@@ -1740,7 +1750,6 @@ END PROGRAM
              (string_literal)))
          (end_of_statement))
        (case_statement
@@ -491,7 +477,7 @@ index 14e2e8a..60e5481 100644
          (end_of_statement)
          (write_statement
            (unit_identifier)
-@@ -2347,7 +2356,6 @@ end subroutine print_decorated_numbers
+@@ -2390,7 +2399,6 @@ end subroutine print_decorated_numbers
                (type_member))))
          (end_of_statement))
        (type_statement
@@ -499,7 +485,7 @@ index 14e2e8a..60e5481 100644
          (end_of_statement)
          (write_statement
            (unit_identifier)
-@@ -2502,7 +2510,6 @@ end subroutine assumed_rank
+@@ -2544,7 +2552,6 @@ end subroutine assumed_rank
              (string_literal)))
          (end_of_statement))
        (rank_statement
@@ -507,7 +493,7 @@ index 14e2e8a..60e5481 100644
          (end_of_statement)
          (stop_statement
            (string_literal))
-@@ -2697,7 +2704,8 @@ end module
+@@ -2741,7 +2748,8 @@ end module
        (name)
        (end_of_statement))
      (use_statement
@@ -517,43 +503,43 @@ index 14e2e8a..60e5481 100644
        (included_items
          (defined_io_procedure)
          (defined_io_procedure)))
-@@ -2717,7 +2725,8 @@ end module
+@@ -2761,7 +2769,8 @@ end module
          (end_of_statement))
        (procedure_statement
          (procedure_kind)
--        (method_name)
+-        (method_name))
 +        (method_name
-+          (name))
-         (end_of_statement))
++          (name)))
        (end_interface_statement
          (end_of_statement)))
-@@ -2727,7 +2736,8 @@ end module
+     (interface
+@@ -2770,7 +2779,8 @@ end module
          (end_of_statement))
        (procedure_statement
          (procedure_kind)
--        (method_name)
+-        (method_name))
 +        (method_name
-+          (name))
-         (end_of_statement))
++          (name)))
        (end_interface_statement
          (defined_io_procedure)
-@@ -2745,7 +2755,8 @@ end module
+         (end_of_statement)))
+@@ -2787,7 +2797,8 @@ end module
            (binding
              (binding_name
                (defined_io_procedure))
--            (method_name))
+-            (method_name)))
 +            (method_name
-+              (name)))
-           (end_of_statement))
++              (name))))
          (comment)
          (procedure_statement
-@@ -2754,7 +2765,8 @@ end module
+           (procedure_kind)
+@@ -2795,7 +2806,8 @@ end module
            (binding
              (binding_name
                (identifier))
--            (method_name))
+-            (method_name))))
 +            (method_name
-+              (name)))
-           (end_of_statement)))
++              (name)))))
        (end_type_statement
          (name)
+         (end_of_statement)))
