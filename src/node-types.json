@@ -15033,7 +15033,8 @@
   },
   {
     "type": "&",
-    "named": false
+    "named": false,
+    "extra": true
   },
   {
     "type": "&&",
@@ -15333,7 +15334,8 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "common",
@@ -15717,11 +15719,11 @@
   },
   {
     "type": "none",
-    "named": false
+    "named": true
   },
   {
     "type": "none",
-    "named": true
+    "named": false
   },
   {
     "type": "nopass",
