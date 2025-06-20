@@ -101,7 +101,8 @@ end program foo
     (if_statement
       (block_if_statement
         (block_label_start_expression)
-        (boolean_literal)
+        (parenthesized_expression
+          (boolean_literal))
         (end_of_statement)
         (subroutine_call
           (identifier)
@@ -143,10 +144,12 @@ end program
       (end_of_statement))
     (if_statement
       (block_if_statement
-        (boolean_literal)
+        (parenthesized_expression
+          (boolean_literal))
         (end_of_statement)
         (elseif_clause
-          (boolean_literal)
+          (parenthesized_expression
+            (boolean_literal))
           (end_of_statement))
         (end_if_statement)))
     (end_of_statement)

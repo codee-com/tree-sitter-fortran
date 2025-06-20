@@ -1,0 +1,292 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Fri, 28 Mar 2025 12:09:30 +0100
+Subject: Add semantic accessors to macros
+
+This way we can query the node and implement children-specific logic to
+`content` and `alternative`. The nodes below `content` and `alternative`
+may be Fortran nodes and not preprocessor directives!! So, for instance,
+we want to use `&` as line separator instead of `\`.
+---
+ grammar.js                   | 10 +++----
+ test/corpus/preprocessor.txt | 58 ++++++++++++++++++------------------
+ 2 files changed, 34 insertions(+), 34 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 4bf147c..bd6e95e 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -2465,7 +2465,7 @@ function preprocIf(suffix, content, precedence = 0) {
+       field('condition', $._preproc_expression),
+       optional($.preproc_comment),
+       '\n',
+-      content($),
++      field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+       preprocessor('endif'),
+       optional($.preproc_comment),
+@@ -2475,7 +2475,7 @@ function preprocIf(suffix, content, precedence = 0) {
+       choice(preprocessor('ifdef'), preprocessor('ifndef')),
+       field('name', $.identifier),
+       optional($.preproc_comment),
+-      content($),
++      field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+       preprocessor('endif'),
+       optional($.preproc_comment),
+@@ -2484,7 +2484,7 @@ function preprocIf(suffix, content, precedence = 0) {
+     ['preproc_else' + suffix]: $ => prec(precedence, seq(
+       preprocessor('else'),
+       optional($.preproc_comment),
+-      content($),
++      field('content', content($)),
+     )),
+ 
+     ['preproc_elif' + suffix]: $ => prec(precedence, seq(
+@@ -2492,7 +2492,7 @@ function preprocIf(suffix, content, precedence = 0) {
+       optional($.preproc_comment),
+       field('condition', $._preproc_expression),
+       '\n',
+-      content($),
++      field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+     )),
+ 
+@@ -2500,7 +2500,7 @@ function preprocIf(suffix, content, precedence = 0) {
+       choice(preprocessor('elifdef'), preprocessor('elifndef')),
+       field('name', $.identifier),
+       optional($.preproc_comment),
+-      content($),
++      field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+     )),
+   };
+diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
+index ab7c1a2..c7b2ae0 100644
+--- a/test/corpus/preprocessor.txt
++++ b/test/corpus/preprocessor.txt
+@@ -125,7 +125,7 @@ end subroutine foo3
+ (translation_unit
+   (preproc_ifdef
+     name: (identifier)
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+@@ -134,28 +134,28 @@ end subroutine foo3
+         (end_of_statement))))
+   (preproc_ifdef
+     name: (identifier)
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+       (end_subroutine_statement
+         (name)
+         (end_of_statement)))
+-    (preproc_def
++    content: (preproc_def
+       name: (identifier)
+       value: (preproc_arg))
+     alternative: (preproc_elif
+       condition: (preproc_defined
+         (identifier))
+       alternative: (preproc_else
+-        (subroutine
++        content: (subroutine
+           (subroutine_statement
+             name: (name)
+             (end_of_statement))
+           (end_subroutine_statement
+             (name)
+             (end_of_statement)))
+-        (preproc_def
++        content: (preproc_def
+           name: (identifier)
+           value: (preproc_arg))))
+     (preproc_comment)))
+@@ -188,7 +188,7 @@ end subroutine foo5
+ (translation_unit
+   (preproc_ifdef
+     name: (identifier)
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+@@ -197,7 +197,7 @@ end subroutine foo5
+         (end_of_statement)))
+     alternative: (preproc_elifdef
+       name: (identifier)
+-      (subroutine
++      content: (subroutine
+         (subroutine_statement
+           name: (name)
+           (end_of_statement))
+@@ -206,7 +206,7 @@ end subroutine foo5
+           (end_of_statement)))))
+   (preproc_ifdef
+     name: (identifier)
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+@@ -215,7 +215,7 @@ end subroutine foo5
+         (end_of_statement)))
+     alternative: (preproc_elifdef
+       name: (identifier)
+-      (subroutine
++      content: (subroutine
+         (subroutine_statement
+           name: (name)
+           (end_of_statement))
+@@ -223,7 +223,7 @@ end subroutine foo5
+           (name)
+           (end_of_statement)))
+       alternative: (preproc_else
+-        (subroutine
++        content: (subroutine
+           (subroutine_statement
+             name: (name)
+             (end_of_statement))
+@@ -259,7 +259,7 @@ end subroutine e
+ (translation_unit
+   (preproc_ifdef
+     name: (identifier)
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+@@ -269,7 +269,7 @@ end subroutine e
+     alternative: (preproc_elif
+       condition: (preproc_defined
+         (identifier))
+-      (subroutine
++      content: (subroutine
+         (subroutine_statement
+           name: (name)
+           (end_of_statement))
+@@ -279,7 +279,7 @@ end subroutine e
+   (preproc_if
+     condition: (preproc_defined
+       (identifier))
+-    (subroutine
++    content: (subroutine
+       (subroutine_statement
+         name: (name)
+         (end_of_statement))
+@@ -288,7 +288,7 @@ end subroutine e
+         (end_of_statement)))
+     alternative: (preproc_elifdef
+       name: (identifier)
+-      (subroutine
++      content: (subroutine
+         (subroutine_statement
+           name: (name)
+           (end_of_statement))
+@@ -296,7 +296,7 @@ end subroutine e
+           (name)
+           (end_of_statement)))
+       alternative: (preproc_else
+-        (subroutine
++        content: (subroutine
+           (subroutine_statement
+             name: (name)
+             (end_of_statement))
+@@ -327,22 +327,22 @@ General if blocks
+         (identifier))
+       right: (preproc_defined
+         (identifier)))
+-    (preproc_def
++    content: (preproc_def
+       name: (identifier)
+       value: (preproc_arg))
+     alternative: (preproc_elif
+       condition: (preproc_defined
+         (identifier))
+-      (preproc_def
++      content: (preproc_def
+         name: (identifier))
+       alternative: (preproc_elif
+         condition: (unary_expression
+           argument: (preproc_defined
+             (identifier)))
+-        (preproc_def
++        content: (preproc_def
+           name: (identifier))
+         alternative: (preproc_else
+-          (preproc_include
++          content: (preproc_include
+             path: (system_lib_string)))))))
+ 
+ ================================================================================
+@@ -360,7 +360,7 @@ Unary not
+     condition: (unary_expression
+       argument: (preproc_defined
+         (identifier)))
+-    (preproc_def
++    content: (preproc_def
+       name: (identifier))))
+ 
+ ================================================================================
+@@ -479,10 +479,10 @@ end program
+       condition: (binary_expression
+         left: (identifier)
+         right: (number_literal))
+-      (use_statement
++      content: (use_statement
+         (module_name
+           (name)))
+-      (end_of_statement))
++      content: (end_of_statement))
+     (end_program_statement
+       (end_of_statement))))
+ 
+@@ -580,7 +580,7 @@ end module foo
+           (end_of_statement)))
+       (preproc_ifdef
+         name: (identifier)
+-        (subroutine
++        content: (subroutine
+           (subroutine_statement
+             name: (name)
+             (end_of_statement))
+@@ -640,16 +640,16 @@ end module foo
+         (end_of_statement)
+         (preproc_ifdef
+           name: (identifier)
+-          (variable_declaration
++          content: (variable_declaration
+             type: (intrinsic_type)
+             declarator: (identifier))
+-          (end_of_statement)
+-          (assignment_statement
++          content: (end_of_statement)
++          content: (assignment_statement
+             left: (identifier)
+             right: (math_expression
+               left: (identifier)
+               right: (number_literal)))
+-          (end_of_statement))
++          content: (end_of_statement))
+         (assignment_statement
+           left: (identifier)
+           right: (math_expression
+@@ -716,11 +716,11 @@ end module foo
+         (end_of_statement)
+         (preproc_ifdef
+           name: (identifier)
+-          (assignment_statement
++          content: (assignment_statement
+             left: (identifier)
+             right: (number_literal
+               kind: (identifier)))
+-          (end_of_statement))
++          content: (end_of_statement))
+         (end_subroutine_statement
+           (name)
+           (end_of_statement)))

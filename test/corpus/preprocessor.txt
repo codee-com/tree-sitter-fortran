@@ -539,8 +539,7 @@ end module foo
           (procedure_statement
             (procedure_kind)
             (method_name
-              (name))
-            (end_of_statement))))
+              (name)))))
       (end_type_statement
         (name)
         (end_of_statement)))
@@ -861,15 +860,13 @@ end module
       (procedure_statement
         (procedure_kind)
         (method_name
-          (name))
-        (end_of_statement))
+          (name)))
       (preproc_ifdef
         (identifier)
         (procedure_statement
           (procedure_kind)
           (method_name
-            (name))
-          (end_of_statement)))
+            (name))))
       (end_interface_statement
         (end_of_statement)))
     (end_module_statement

@@ -8,7 +8,7 @@ Subject: Add TypeScript source annotation
  1 file changed, 6 insertions(+)
 
 diff --git a/grammar.js b/grammar.js
-index bcae961..6c99d98 100644
+index dd65a87..a89ba01 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -14,6 +14,12 @@

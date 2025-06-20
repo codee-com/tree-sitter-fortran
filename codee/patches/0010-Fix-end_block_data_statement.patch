@@ -1,0 +1,292 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Thu, 20 Mar 2025 14:48:08 +0100
+Subject: Fix `end_block_data_statement`
+
+This is upstreamable.
+---
+ grammar.js                 |  31 ++++--
+ test/corpus/constructs.txt | 221 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 243 insertions(+), 9 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 16959ac..4bf147c 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -412,17 +412,30 @@ module.exports = grammar({
+     ),
+ 
+     // Can't use `blockStructureEnding` because it's two keywords
+-    end_block_data_statement: $ => {
+-      const structType = whiteSpacedKeyword('block', 'data', false)
+-      return prec.right(seq(
++    end_block_data_statement: $ => seq(
++      alias(
+         choice(
++          caseInsensitive('end', false),
+           seq(
+-            alias(caseInsensitive('end', false), 'end'),
+-            optional(alias(structType, 'blockdata'))),
+-          alias(caseInsensitive('end' + structType, false), 'endblockdata')),
+-        optional($._name),
+-        $.end_of_statement))
+-    },
++            caseInsensitive('endblock', false),
++            caseInsensitive('data', false),
++          ),
++          seq(
++            caseInsensitive('end', false),
++            caseInsensitive('blockdata', false),
++          ),
++          seq(
++            caseInsensitive('end', false),
++            caseInsensitive('block', false),
++            caseInsensitive('data', false),
++          ),
++          caseInsensitive('endblockdata', false)
++        ),
++        'endblockdata'
++      ),
++      optional($._name),
++      $.end_of_statement
++    ),
+ 
+     assignment: $ => seq(caseInsensitive('assignment'), '(', '=', ')'),
+     operator: $ => seq(caseInsensitive('operator'), '(', alias(/[^()]+/, $.operator_name), ')'),
+diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
+index f2b3f31..c2eb077 100644
+--- a/test/corpus/constructs.txt
++++ b/test/corpus/constructs.txt
+@@ -1662,6 +1662,51 @@ Block Data (Obsolescent)
+       DATA ICASE /4/
+       END
+ 
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      END BLOCK DATA
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      ENDBLOCK DATA
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      ENDBLOCKDATA
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      END BLOCKDATA
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      END COMBLA
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      END BLOCK DATA combla
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      ENDBLOCK DATA combla
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      ENDBLOCKDATA combla
++
++      BLOCK DATA combla
++      COMMON /COMBLA/ ICASE, N, INCX
++      DATA ICASE /4/
++      END BLOCKDATA combla
++
+ --------------------------------------------------------------------------------
+ 
+ (translation_unit
+@@ -1683,4 +1728,180 @@ Block Data (Obsolescent)
+           (number_literal))))
+     (end_of_statement)
+     (end_block_data_statement
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (name)
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (name)
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (name)
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (name)
++      (end_of_statement)))
++  (block_data
++    (block_data_statement
++      (name)
++      (end_of_statement))
++    (common_statement
++      (variable_group
++        (name)
++        (identifier)
++        (identifier)
++        (identifier)))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal))))
++    (end_of_statement)
++    (end_block_data_statement
++      (name)
+       (end_of_statement))))

@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Diego Alonso <diego.alonso@appentra.com>
+Date: Wed, 19 Mar 2025 15:56:19 +0100
+Subject: Consume `end_of_statement`
+
+instead of skipping.
+
+This makes the `end_of_statement` parsed tokens hold the correct
+location information (except comments, which are not consumed so that
+they can also be consumed as `comment` tokens).
+---
+ src/scanner.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/scanner.c b/src/scanner.c
+index 0b4caef..10a22d7 100644
+--- a/src/scanner.c
++++ b/src/scanner.c
+@@ -226,7 +226,7 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
+ 
+     // Semicolons and EOF always end the statement
+     if (lexer->eof(lexer)) {
+-        skip(lexer);
++        advance(lexer);
+         lexer->result_symbol = END_OF_STATEMENT;
+         return true;
+     }
+@@ -240,13 +240,13 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
+     // '\r' to cover unix, MSDOS and old style Macintosh.
+     // Handle comments here too, but don't consume them
+     if (lexer->lookahead == '\r') {
+-        skip(lexer);
++        advance(lexer);
+         if (lexer->lookahead == '\n') {
+-            skip(lexer);
++            advance(lexer);
+         }
+     } else {
+         if (lexer->lookahead == '\n') {
+-            skip(lexer);
++            advance(lexer);
+         } else if (lexer->lookahead != '!') {
+             // Not a newline and not a comment, so not an
+             // end-of-statement

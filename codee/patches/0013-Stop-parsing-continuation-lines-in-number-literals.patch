@@ -1,0 +1,198 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Wed, 2 Apr 2025 09:20:20 +0200
+Subject: Stop parsing continuation lines in number literals
+
+The previous algorithm incorrectly handled line continuations in number
+literals. Instead of attempting to parse them incorrectly, we now treat
+them as a parsing error. This allows library users to handle such cases
+explicitly.
+---
+ src/scanner.c                      | 69 +++++++++++++++++++-----------
+ test/corpus/expressions.txt        | 25 +++++------
+ test/corpus/line_continuations.txt |  3 +-
+ 3 files changed, 58 insertions(+), 39 deletions(-)
+
+diff --git a/src/scanner.c b/src/scanner.c
+index 10a22d7..b768d99 100644
+--- a/src/scanner.c
++++ b/src/scanner.c
+@@ -19,6 +19,16 @@ typedef struct {
+     bool in_line_continuation;
+ } Scanner;
+ 
++typedef enum {
++    False,
++    True,
++    Error,
++} BoolOrErr;
++
++static BoolOrErr bool_or_err_max(BoolOrErr lhs, BoolOrErr rhs) {
++    return lhs >= rhs ? lhs : rhs;
++}
++
+ //  consume current character into current token and advance
+ static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
+ 
+@@ -56,44 +66,41 @@ static bool is_exp_sentinel(char chr) {
+     }
+ }
+ 
+-static bool scan_int(TSLexer *lexer) {
++static BoolOrErr scan_int(TSLexer *lexer) {
+     if (!iswdigit(lexer->lookahead)) {
+-        return false;
++        return False;
+     }
+     // consume digits
+     while (iswdigit(lexer->lookahead)) {
+         advance(lexer); // store all digits
+     }
+     lexer->mark_end(lexer);
+-
+-    // handle line continuations
++    // Return an error if a line continuation is found. This scanner cannot
++    // handle line continuations, particularly in cases like:
++    //
++    // ```fortran
++    // b = 6& ! foo
++    //   &7;
++    // ```
++    //
++    // Here, the scanner would need to return multiple tokens, but tree-sitter
++    // expects only a single token.
+     if (lexer->lookahead == '&') {
+-      advance(lexer);
+-      while (iswspace(lexer->lookahead)) {
+-        advance(lexer);
+-      }
+-      // second '&' required to continue the literal
+-      if (lexer->lookahead == '&') {
+-        advance(lexer);
+-        // don't return here, as we may have finished literal on first
+-        // line but still have second '&'
+-        scan_int(lexer);
+-      }
++        return Error;
+     }
+-
+-    return true;
++    return True;
+ }
+ 
+ /// Scan a number of the forms 1XXX, 1.0XXX, 0.1XXX, 1.XDX, etc.
+-static bool scan_number(TSLexer *lexer) {
++static BoolOrErr scan_number(TSLexer *lexer) {
+     lexer->result_symbol = INTEGER_LITERAL;
+-    bool digits = scan_int(lexer);
++    BoolOrErr digits = scan_int(lexer);
+     if (lexer->lookahead == '.') {
+         advance(lexer);
+         // exclude decimal if followed by any letter other than d/D and e/E
+         // if no leading digits are present and a non-digit follows
+         // the decimal it's a nonmatch.
+-        if (digits && !iswalnum(lexer->lookahead)) {
++        if ((digits == True) && !iswalnum(lexer->lookahead)) {
+             lexer->mark_end(lexer); // add decimal to token
+         }
+         lexer->result_symbol = FLOAT_LITERAL;
+@@ -101,8 +108,8 @@ static bool scan_number(TSLexer *lexer) {
+     // if next char isn't number return since we handle exp
+     // notation and precision identifiers separately. If there are
+     // no leading digit it's a nonmatch.
+-    digits = scan_int(lexer) || digits;
+-    if (digits) {
++    digits = bool_or_err_max(scan_int(lexer), digits);
++    if (digits == True) {
+         // process exp notation
+         if (is_exp_sentinel(lexer->lookahead)) {
+             advance(lexer);
+@@ -110,8 +117,13 @@ static bool scan_number(TSLexer *lexer) {
+                 advance(lexer);
+                 lexer->mark_end(lexer);
+             }
+-            if (!scan_int(lexer)) {
+-                return true; // valid number token with junk after it
++            switch (scan_int(lexer)) {
++                case False:
++                    return True; // valid number token with junk after it
++                case True:
++                    break;
++                case Error:
++                    return Error;
+             }
+             lexer->result_symbol = FLOAT_LITERAL;
+         }
+@@ -432,8 +444,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+     if (valid_symbols[INTEGER_LITERAL] || valid_symbols[FLOAT_LITERAL] ||
+         valid_symbols[BOZ_LITERAL]) {
+         // extract out root number from expression
+-        if (scan_number(lexer)) {
+-            return true;
++        switch (scan_number(lexer)) {
++            case False:
++                break;
++            case True:
++                return true;
++            case Error:
++                return false;
+         }
+         if (scan_boz(lexer)) {
+             return true;
+diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
+index 994158d..38640c9 100644
+--- a/test/corpus/expressions.txt
++++ b/test/corpus/expressions.txt
+@@ -1042,6 +1042,8 @@ end program
+       (type_qualifier)
+       (init_declarator
+         (identifier)
++        (ERROR
++          (number_literal))
+         (number_literal)))
+     (end_of_statement)
+     (variable_declaration
+@@ -1052,18 +1054,17 @@ end program
+       (init_declarator
+         (identifier)
+         (array_literal
+-          (number_literal)
+-          (number_literal))))
+-    (end_of_statement)
+-    (variable_declaration
+-      (intrinsic_type)
+-      (type_qualifier
+-        (argument_list
+-          (number_literal)))
+-      (init_declarator
+-        (identifier)
+-        (array_literal
+-          (number_literal)
++          (ERROR
++            (number_literal))
++          (identifier)
++          (call_expression
++            (identifier)
++            (argument_list
++              (number_literal)))
++          (ERROR
++            (ERROR
++              (number_literal))
++            (number_literal))
+           (number_literal))))
+     (end_of_statement)
+     (end_program_statement
+diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
+index a3ebedb..c086fe8 100644
+--- a/test/corpus/line_continuations.txt
++++ b/test/corpus/line_continuations.txt
+@@ -339,7 +339,8 @@ end program test
+         (array_literal
+           (number_literal)
+           (number_literal)
+-          (number_literal))))
++          (ERROR
++            (number_literal)))))
+     (end_of_statement)
+     (end_program_statement
+       (name)
