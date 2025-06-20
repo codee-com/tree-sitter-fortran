@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Diego Alonso <diego.alonso@appentra.com>
+Date: Wed, 19 Mar 2025 13:42:50 +0100
+Subject: Add TypeScript source annotation
+
+---
+ grammar.js | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/grammar.js b/grammar.js
+index bcae961..6c99d98 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -14,6 +14,12 @@
+ // since the parser doesn't support the ^ regex token, a using a seq
+ // might work as long as the label is optional.
+ //
++
++// This annotation tells typescript where to find the DSL. Useful for LSP
++// navigation and hover documentation
++/// <reference types="tree-sitter-cli/dsl" />
++// @ts-check
++
+ const PREC = {
+   ASSIGNMENT: -10,
+   DEFAULT: 0,

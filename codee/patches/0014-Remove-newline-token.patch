@@ -1,0 +1,60 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Mon, 31 Mar 2025 08:09:23 +0200
+Subject: Remove newline token
+
+We don't want the newline token to show in the AST as it would make our
+passes sensible to that specific token. For instance if the source was
+
+```fortran
+\#ifdef HAVE_THING
+  ! foo
+\#endif
+```
+
+we wouldn't want to visit the newline character and make our column
+limit algorithm split the `#ifdef` as
+
+```fortran
+\#ifdef HAVE_THING \
+
+  ! foo
+\#endif
+```
+
+In other words, this commit is hidding the newline character in the AST.
+---
+ grammar.js | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 4c9e8c8..07410f4 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -100,8 +100,9 @@ module.exports = grammar({
+     [$.rank_statement],
+     [$.stop_statement, $.identifier],
+     [$.type_statement],
+-    [$.preproc_ifdef_in_specification_part, $.program],
+     [$.preproc_else_in_specification_part, $.program],
++    [$.preproc_if_in_specification_part, $.program],
++    [$._preproc_expression, $._expression],
+     [$.coarray_critical_statement, $.identifier],
+   ],
+ 
+@@ -2352,7 +2353,6 @@ function preprocIf(suffix, content, precedence = 0) {
+       preprocessor('if'),
+       field('condition', $._preproc_expression),
+       optional($.preproc_comment),
+-      '\n',
+       field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+       preprocessor('endif'),
+@@ -2379,7 +2379,6 @@ function preprocIf(suffix, content, precedence = 0) {
+       preprocessor('elif'),
+       optional($.preproc_comment),
+       field('condition', $._preproc_expression),
+-      '\n',
+       field('content', content($)),
+       field('alternative', optional(alternativeBlock($))),
+     )),

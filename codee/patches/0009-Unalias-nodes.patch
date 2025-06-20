@@ -1,0 +1,559 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Tue, 18 Mar 2025 15:38:42 +0100
+Subject: Unalias nodes
+
+These `alias`es are meaningless and may provoke duplicate visitations
+for third-party applications.
+---
+ grammar.js                   | 15 +++----
+ queries/highlights.scm       |  2 +-
+ test/corpus/constructs.txt   | 76 ++++++++++++++++++++++++------------
+ test/corpus/cudafortran.txt  |  3 +-
+ test/corpus/preprocessor.txt | 16 +++++---
+ test/corpus/regressions.txt  |  6 ++-
+ test/corpus/statements.txt   | 48 ++++++++++++++---------
+ 7 files changed, 103 insertions(+), 63 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 4de79f8..f71cd44 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -576,7 +576,7 @@ module.exports = grammar({
+         ),
+         optional('::')
+       ),
+-      alias($.identifier, $.module_name),
++      $.module_name,
+       optional(
+         choice(
+           seq(',', commaSep1($.use_alias)),
+@@ -700,10 +700,7 @@ module.exports = grammar({
+       repeat(choice(
+         $.public_statement,
+         $.private_statement,
+-        seq(
+-            alias(caseInsensitive('sequence'), $.sequence_statement),
+-            $.end_of_statement
+-        ),
++        seq(caseInsensitive('sequence'), $.end_of_statement),
+         $.include_statement,
+         seq($.variable_declaration, $.end_of_statement),
+         $.preproc_include,
+@@ -791,7 +788,7 @@ module.exports = grammar({
+       $.identifier,
+       $._generic_procedure
+     ),
+-    method_name: $ => alias($.identifier, 'method_name'),
++    method_name: $ => $._name,
+ 
+     procedure_kind: $ => choice(
+       caseInsensitive('generic'),
+@@ -1505,7 +1502,7 @@ module.exports = grammar({
+       caseInsensitive('case'),
+       choice(
+         seq('(', $.case_value_range_list, ')'),
+-        alias(caseInsensitive('default'), $.default)
++        caseInsensitive('default')
+       ),
+       optional($._block_label),
+       $.end_of_statement,
+@@ -1523,7 +1520,7 @@ module.exports = grammar({
+             seq('(', field('type', choice($.intrinsic_type, $.identifier)), ')'),
+           ),
+         ),
+-        alias($._class_default, $.default)
++        $._class_default
+       ),
+       optional($._block_label),
+       $.end_of_statement,
+@@ -1542,7 +1539,7 @@ module.exports = grammar({
+       caseInsensitive('rank'),
+       choice(
+         seq('(', $.case_value_range_list, ')'),
+-        alias(caseInsensitive('default'), $.default)
++        caseInsensitive('default')
+       ),
+       optional($._block_label),
+       $.end_of_statement,
+diff --git a/queries/highlights.scm b/queries/highlights.scm
+index 418e40d..f0a2e55 100644
+--- a/queries/highlights.scm
++++ b/queries/highlights.scm
+@@ -46,7 +46,7 @@
+  ] @keyword.function
+ 
+ [
+- (default)
++ "default"
+  (procedure_qualifier)
+  "abstract"
+  "bind"
+diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
+index 7219a8e..2874006 100644
+--- a/test/corpus/constructs.txt
++++ b/test/corpus/constructs.txt
+@@ -82,7 +82,8 @@ end module
+     (private_statement
+       (end_of_statement))
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (interface
+       (interface_statement
+@@ -90,11 +91,13 @@ end module
+         (end_of_statement))
+       (procedure_statement
+         (procedure_kind)
+-        (method_name)
++        (method_name
++          (name))
+         (end_of_statement))
+       (procedure_statement
+         (procedure_kind)
+-        (method_name)
++        (method_name
++          (name))
+         (end_of_statement))
+       (end_interface_statement
+         (end_of_statement)))
+@@ -380,11 +383,13 @@ end interface
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (end_interface_statement
+       (end_of_statement))))
+@@ -415,11 +420,13 @@ end interface operator (.not.)
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (end_interface_statement
+       (operator)
+@@ -430,7 +437,8 @@ end interface operator (.not.)
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (function
+       (function_statement
+@@ -470,7 +478,8 @@ end interface assignment (=)
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (end_interface_statement
+       (assignment)
+@@ -491,7 +500,8 @@ interface operator(+) ; module procedure test_plus ; end interface
+       (end_of_statement))
+     (procedure_statement
+       (procedure_kind)
+-      (method_name)
++      (method_name
++        (name))
+       (end_of_statement))
+     (end_interface_statement
+       (end_of_statement))))
+@@ -514,7 +524,8 @@ end module
+       (name)
+       (end_of_statement))
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (operator)
+         (assignment)))
+@@ -723,7 +734,8 @@ end function
+       (end_of_statement))
+     (comment)
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (assignment_statement
+       (identifier)
+@@ -978,7 +990,6 @@ end program
+         (access_specifier)
+         (type_name)
+         (end_of_statement))
+-      (sequence_statement)
+       (end_of_statement)
+       (private_statement
+         (end_of_statement))
+@@ -1022,12 +1033,14 @@ end program
+           (procedure_kind)
+           (procedure_attribute)
+           (procedure_attribute)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement))
+         (comment)
+         (procedure_statement
+           (procedure_kind)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement))
+         (comment)
+         (procedure_statement
+@@ -1035,7 +1048,8 @@ end program
+           (procedure_attribute)
+           (procedure_attribute
+             (identifier))
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+@@ -1043,8 +1057,10 @@ end program
+           (binding
+             (binding_name
+               (identifier))
+-            (method_name))
+-          (method_name)
++            (method_name
++              (name)))
++          (method_name
++            (name))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+@@ -1052,7 +1068,8 @@ end program
+           (binding
+             (binding_name
+               (assignment))
+-            (method_name))
++            (method_name
++              (name)))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+@@ -1060,19 +1077,23 @@ end program
+           (binding
+             (binding_name
+               (operator))
+-            (method_name))
++            (method_name
++              (name)))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+-          (method_name)
++          (method_name
++            (name))
+           (binding
+             (binding_name
+               (identifier))
+-            (method_name))
++            (method_name
++              (name)))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement)))
+       (end_type_statement
+         (name)
+@@ -1192,7 +1213,8 @@ end program
+           (procedure_kind)
+           (procedure_interface)
+           (procedure_attribute)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement)))
+       (end_type_statement
+         (end_of_statement)))
+@@ -1241,12 +1263,14 @@ end program test
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement))
+         (procedure_statement
+           (procedure_kind)
+           (procedure_attribute)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement)))
+       (end_type_statement
+         (name)
+diff --git a/test/corpus/cudafortran.txt b/test/corpus/cudafortran.txt
+index 238d682..b351532 100644
+--- a/test/corpus/cudafortran.txt
++++ b/test/corpus/cudafortran.txt
+@@ -55,7 +55,8 @@ end function
+       (end_of_statement))
+     (comment)
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (assignment_statement
+       (identifier)
+diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
+index c07a6a7..7519f12 100644
+--- a/test/corpus/preprocessor.txt
++++ b/test/corpus/preprocessor.txt
+@@ -469,7 +469,8 @@ end program
+       name: (name)
+       (end_of_statement))
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (identifier)
+         (identifier)))
+@@ -479,7 +480,8 @@ end program
+         left: (identifier)
+         right: (number_literal))
+       (use_statement
+-        (module_name))
++        (module_name
++          (name)))
+       (end_of_statement))
+     (end_program_statement
+       (end_of_statement))))
+@@ -530,7 +532,8 @@ end module foo
+           (identifier)
+           (procedure_statement
+             (procedure_kind)
+-            (method_name)
++            (method_name
++              (name))
+             (end_of_statement))))
+       (end_type_statement
+         (name)
+@@ -813,7 +816,6 @@ end program
+             (number_literal))
+           (end_of_statement)))
+       (case_statement
+-        (default)
+         (end_of_statement)
+         (preproc_ifdef
+           (identifier)
+@@ -852,13 +854,15 @@ end module
+         (end_of_statement))
+       (procedure_statement
+         (procedure_kind)
+-        (method_name)
++        (method_name
++          (name))
+         (end_of_statement))
+       (preproc_ifdef
+         (identifier)
+         (procedure_statement
+           (procedure_kind)
+-          (method_name)
++          (method_name
++            (name))
+           (end_of_statement)))
+       (end_interface_statement
+         (end_of_statement)))
+diff --git a/test/corpus/regressions.txt b/test/corpus/regressions.txt
+index f445352..fa1eb87 100644
+--- a/test/corpus/regressions.txt
++++ b/test/corpus/regressions.txt
+@@ -26,14 +26,16 @@ end program example_padl
+       (name)
+       (end_of_statement))
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (identifier)
+         (assignment)
+         (defined_io_procedure)))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (identifier)))
+     (end_of_statement)
+diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
+index 14e2e8a..60e5481 100644
+--- a/test/corpus/statements.txt
++++ b/test/corpus/statements.txt
+@@ -132,47 +132,57 @@ END PROGRAM
+       (name)
+       (end_of_statement))
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (identifier)
+         (identifier)))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (identifier)))
+     (end_of_statement)
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (use_alias
+           (local_name)
+           (identifier))))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (use_alias
+         (local_name)
+         (identifier)))
+     (end_of_statement)
+     (use_statement
+-      (module_name))
++      (module_name
++        (name)))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items))
+     (end_of_statement)
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (use_alias
+         (local_name)
+         (identifier)))
+@@ -1712,7 +1722,6 @@ END PROGRAM
+             (string_literal)))
+         (end_of_statement))
+       (case_statement
+-        (default)
+         (end_of_statement)
+         (write_statement
+           (unit_identifier)
+@@ -2347,7 +2356,6 @@ end subroutine print_decorated_numbers
+               (type_member))))
+         (end_of_statement))
+       (type_statement
+-        (default)
+         (end_of_statement)
+         (write_statement
+           (unit_identifier)
+@@ -2502,7 +2510,6 @@ end subroutine assumed_rank
+             (string_literal)))
+         (end_of_statement))
+       (rank_statement
+-        (default)
+         (end_of_statement)
+         (stop_statement
+           (string_literal))
+@@ -2697,7 +2704,8 @@ end module
+       (name)
+       (end_of_statement))
+     (use_statement
+-      (module_name)
++      (module_name
++        (name))
+       (included_items
+         (defined_io_procedure)
+         (defined_io_procedure)))
+@@ -2717,7 +2725,8 @@ end module
+         (end_of_statement))
+       (procedure_statement
+         (procedure_kind)
+-        (method_name)
++        (method_name
++          (name))
+         (end_of_statement))
+       (end_interface_statement
+         (end_of_statement)))
+@@ -2727,7 +2736,8 @@ end module
+         (end_of_statement))
+       (procedure_statement
+         (procedure_kind)
+-        (method_name)
++        (method_name
++          (name))
+         (end_of_statement))
+       (end_interface_statement
+         (defined_io_procedure)
+@@ -2745,7 +2755,8 @@ end module
+           (binding
+             (binding_name
+               (defined_io_procedure))
+-            (method_name))
++            (method_name
++              (name)))
+           (end_of_statement))
+         (comment)
+         (procedure_statement
+@@ -2754,7 +2765,8 @@ end module
+           (binding
+             (binding_name
+               (identifier))
+-            (method_name))
++            (method_name
++              (name)))
+           (end_of_statement)))
+       (end_type_statement
+         (name)

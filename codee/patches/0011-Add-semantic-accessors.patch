@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Thu, 20 Mar 2025 10:27:45 +0100
+Subject: Add semantic accessors
+
+This may be squashed together with
+`590688ef27d4ee377ef1ba589c096f2de6ae0dc2`.
+---
+ grammar.js | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 1c217ba..54eccb3 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -396,7 +396,7 @@ module.exports = grammar({
+ 
+     block_data_statement: $ => seq(
+       whiteSpacedKeyword('block', 'data'),
+-      optional($._name),
++      optional(field('name', $._name)),
+       $.end_of_statement
+     ),
+ 
+@@ -1696,7 +1696,7 @@ module.exports = grammar({
+       caseInsensitive('type'),
+       optional(seq(',', $.access_specifier)),
+       optional('::'),
+-      $._type_name,
++      field('name', $._type_name),
+     ),
+ 
+     enumerator_statement: $ => seq(

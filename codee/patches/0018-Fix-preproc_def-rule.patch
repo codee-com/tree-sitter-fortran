@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jaime Gonzalez <jaime.gonzalez@appentra.com>
+Date: Thu, 5 Jun 2025 16:55:02 +0200
+Subject: Fix `preproc_def` rule
+
+---
+ grammar.js                   | 2 +-
+ test/corpus/preprocessor.txt | 8 +++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index ffe8a4b..75e5269 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -146,7 +146,7 @@ module.exports = grammar({
+       preprocessor('define'),
+       field('name', $.identifier),
+       field('value', optional($.preproc_arg)),
+-      token.immediate(/\r?\n/),
++      token(prec(1, /\r?\n/)), // force newline to win over preproc_arg
+     ),
+ 
+     preproc_function_def: $ => seq(
+diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
+index 85e65a4..aebbb74 100644
+--- a/test/corpus/preprocessor.txt
++++ b/test/corpus/preprocessor.txt
+@@ -30,6 +30,8 @@ Object-like macro definitions
+ #define ONE
+ #define TWO int a = b;
+ #define FOUR (mno * pq)
++#define FIVE_WITH_TRAILING_WHITESPACE 
++#define SIX
+ 
+ --------------------------------------------------------------------------------
+ 
+@@ -41,7 +43,11 @@ Object-like macro definitions
+     value: (preproc_arg))
+   (preproc_def
+     name: (identifier)
+-    value: (preproc_arg)))
++    value: (preproc_arg))
++  (preproc_def
++    name: (identifier))
++  (preproc_def
++    name: (identifier)))
+ 
+ ================================================================================
+ Function-like macro definitions
