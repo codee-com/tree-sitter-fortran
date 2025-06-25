@@ -126,6 +126,11 @@ end subroutine foo3
 #define c 16
 #endif  /* DEFINE1 */
 
+#ifdef DEFINE4
+subroutine foo4
+end subroutine foo4
+#endif // DEFINE4
+
 --------------------------------------------------------------------------------
 
 (translation_unit
@@ -164,6 +169,16 @@ end subroutine foo3
         content: (preproc_def
           name: (identifier)
           value: (preproc_arg))))
+    (preproc_comment))
+  (preproc_ifdef
+    name: (identifier)
+    content: (subroutine
+      (subroutine_statement
+        name: (name)
+        (end_of_statement))
+      (end_subroutine_statement
+        (name)
+        (end_of_statement)))
     (preproc_comment)))
 
 ================================================================================

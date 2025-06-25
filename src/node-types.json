@@ -4793,6 +4793,11 @@
     }
   },
   {
+    "type": "preproc_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "preproc_def",
     "named": true,
     "fields": {
@@ -8065,11 +8070,11 @@
   },
   {
     "type": "none",
-    "named": true
+    "named": false
   },
   {
     "type": "none",
-    "named": false
+    "named": true
   },
   {
     "type": "nopass",
@@ -8141,10 +8146,6 @@
   },
   {
     "type": "preproc_arg",
-    "named": true
-  },
-  {
-    "type": "preproc_comment",
     "named": true
   },
   {
