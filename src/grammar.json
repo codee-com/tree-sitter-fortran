@@ -14088,8 +14088,17 @@
                             "type": "FIELD",
                             "name": "repeat",
                             "content": {
-                              "type": "SYMBOL",
-                              "name": "number_literal"
+                              "type": "CHOICE",
+                              "members": [
+                                {
+                                  "type": "SYMBOL",
+                                  "name": "number_literal"
+                                },
+                                {
+                                  "type": "SYMBOL",
+                                  "name": "identifier"
+                                }
+                              ]
                             }
                           },
                           {
@@ -14168,8 +14177,17 @@
                                   "type": "FIELD",
                                   "name": "repeat",
                                   "content": {
-                                    "type": "SYMBOL",
-                                    "name": "number_literal"
+                                    "type": "CHOICE",
+                                    "members": [
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "number_literal"
+                                      },
+                                      {
+                                        "type": "SYMBOL",
+                                        "name": "identifier"
+                                      }
+                                    ]
                                   }
                                 },
                                 {

@@ -1,0 +1,57 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Wed, 25 Jun 2025 15:37:31 +0200
+Subject: Allow `identifier`s in `data_value`'s `repeat`s
+
+As seen in
+https://github.com/llvm/llvm-project/blob/llvmorg-20.1.6/flang/lib/Parser/Fortran-parsers.cpp#L913-L915.
+---
+ grammar.js                 |  4 +++-
+ test/corpus/statements.txt | 12 ++++++++++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/grammar.js b/grammar.js
+index 80bc23a..6e79004 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -1273,7 +1273,9 @@ module.exports = grammar({
+     data_value: $ => seq(
+       '/',
+       commaSep1(seq(
+-        optional(prec(1, seq(field('repeat', $.number_literal), '*'))),
++        optional(prec(1,
++          seq(field('repeat', choice($.number_literal, $.identifier)), '*')
++        )),
+         choice(
+           $.number_literal,
+           $.complex_literal,
+diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
+index 7948402..41a00f8 100644
+--- a/test/corpus/statements.txt
++++ b/test/corpus/statements.txt
+@@ -2842,6 +2842,7 @@ program test
+   DATA array(:, N) / &
+     54.45_fp, 200.01_fp /
+   DATA complex_array / ( 0, 1 ), ( 1, 0 ) /
++  DATA foo / 3 * 0.0, 4 * bar, 1.0, 2.0 /
+   data params/ param1, param2/
+ 
+   ! This is awful, but this makes sure the specification part has
+@@ -2949,6 +2950,17 @@ end program test
+             (number_literal)
+             (number_literal)))))
+     (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (number_literal)
++          (number_literal)
++          (number_literal)
++          (identifier)
++          (number_literal)
++          (number_literal))))
++    (end_of_statement)
+     (data_statement
+       (data_set
+         (identifier)
