@@ -11486,6 +11486,10 @@
               {
                 "type": "SYMBOL",
                 "name": "declared_type"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_identifier"
               }
             ]
           }
@@ -21582,6 +21586,10 @@
     {
       "type": "SYMBOL",
       "name": "hollerith_constant"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "macro_identifier"
     }
   ],
   "inline": [

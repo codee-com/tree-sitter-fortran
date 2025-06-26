@@ -7177,6 +7177,10 @@
             "named": true
           },
           {
+            "type": "macro_identifier",
+            "named": true
+          },
+          {
             "type": "procedure",
             "named": true
           }
@@ -8047,6 +8051,10 @@
   {
     "type": "logical",
     "named": false
+  },
+  {
+    "type": "macro_identifier",
+    "named": true
   },
   {
     "type": "managed",

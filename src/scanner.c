@@ -1,4 +1,5 @@
 #include "tree_sitter/alloc.h"
+#include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
 #include <ctype.h>
 #include <wctype.h>
@@ -13,10 +14,14 @@ enum TokenType {
     END_OF_STATEMENT,
     PREPROC_UNARY_OPERATOR,
     HOLLERITH_CONSTANT,
+    MACRO_IDENTIFIER,
 };
+
+typedef Array(char *) StringArray;
 
 typedef struct {
     bool in_line_continuation;
+    StringArray MacroIdentifiers;
 } Scanner;
 
 typedef enum {
@@ -301,31 +306,46 @@ static bool scan_end_line_continuation(Scanner *scanner, TSLexer *lexer) {
     return true;
 }
 
-static bool scan_string_literal_kind(TSLexer *lexer) {
-  // Strictly, it's allowed for the kind to be an integer literal, in
-  // practice I've not seen it
+typedef Array(char) String;
+
+// Returns NULL on error, otherwise an allocated char array for an identifier
+static String *scan_identifier(TSLexer *lexer) {
   if (!iswalpha(lexer->lookahead)) {
+    return NULL;
+  }
+  String *possible_identifier = ts_calloc(1, sizeof(String));
+  while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
+    array_push(possible_identifier, lexer->lookahead);
+    // Don't capture the trailing underscore as part of the kind identifier
+    // If another user of this function wants to mark the end again after
+    // the identifier they're free to do so
+    if (lexer->lookahead == '_') {
+      lexer->mark_end(lexer);
+    }
+    advance(lexer);
+  }
+  if (possible_identifier->size == 0) {
+    // First deallocate the array content itself and then the heap-allocated
+    // array struct
+    array_delete(possible_identifier);
+    ts_free(possible_identifier);
+    return NULL;
+  }
+  return possible_identifier;
+}
+
+static bool scan_string_literal_kind(TSLexer *lexer, String *identifier) {
+  if (identifier->size == 0) {
+    return false;
+  }
+
+  char last_char = identifier->contents[identifier->size - 1];
+  if ((last_char != '_') ||
+      (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
     return false;
   }
 
   lexer->result_symbol = STRING_LITERAL_KIND;
-
-  // We need two characters of lookahead to see `_"`
-  char current_char = '\0';
-
-  while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
-      current_char = lexer->lookahead;
-      // Don't capture the trailing underscore as part of the kind identifier
-      if (lexer->lookahead == '_') {
-          lexer->mark_end(lexer);
-      }
-      advance(lexer);
-  }
-
-  if ((current_char != '_') || (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
-    return false;
-  }
-
   return true;
 }
 
@@ -391,6 +411,33 @@ static bool scan_string_literal(TSLexer *lexer) {
     // We hit the end of the line without an '&', so this is an
     // unclosed string literal (an error)
     return false;
+}
+
+// Scans, using the MacroIdentifiers list from the scanner state, an identifier
+// that is contained in that list
+static bool scan_macro_identifier(Scanner *scanner, TSLexer *lexer,
+                                  String *identifier) {
+  unsigned num_macro_ids = scanner->MacroIdentifiers.size;
+  // Nothing to compare against
+  if (num_macro_ids == 0) {
+    return false;
+  }
+
+  // Find an equal macro identifier
+  for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
+    char *macro_id = *array_get(&scanner->MacroIdentifiers, i);
+    unsigned macro_id_len = strlen(macro_id);
+    // This will never be equal
+    if (identifier->size != macro_id_len) {
+      continue;
+    }
+    if (strncmp(macro_id, identifier->contents, identifier->size) == 0) {
+      lexer->mark_end(lexer);
+      lexer->result_symbol = MACRO_IDENTIFIER;
+      return true;
+    }
+  }
+  return false;
 }
 
 /// Need an external scanner to catch '!' before its parsed as a comment
@@ -467,19 +514,57 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         return true;
     }
 
-    if (valid_symbols[STRING_LITERAL_KIND]) {
+    // These symbols both scan for an identifier, we need to combine the logic
+    // and they always need to be the last to look for since we can't backtrack
+    if (valid_symbols[STRING_LITERAL_KIND] || valid_symbols[MACRO_IDENTIFIER]) {
+      String *identifier = scan_identifier(lexer);
+      bool identifier_result = false;
       // This may need a lot of lookahead, so should (probably) always
       // be the last token to look for
-      if (scan_string_literal_kind(lexer)) {
+      if (identifier && valid_symbols[STRING_LITERAL_KIND]) {
+        if (scan_string_literal_kind(lexer, identifier)) {
+          identifier_result = true;
+        }
+      }
+      if (!identifier_result && identifier && valid_symbols[MACRO_IDENTIFIER]) {
+        if (scan_macro_identifier(scanner, lexer, identifier)) {
+          identifier_result = true;
+        }
+      }
+      if (identifier) {
+        // First deallocate the array content itself and then the heap-allocated
+        // array struct
+        array_delete(identifier);
+        ts_free(identifier);
+      }
+      if (identifier_result) {
         return true;
       }
     }
-
     return false;
 }
 
 void *tree_sitter_fortran_external_scanner_create() {
-    return ts_calloc(1, sizeof(bool));
+  Scanner *result = (Scanner *)ts_calloc(1, sizeof(Scanner));
+  // First get the colon separated list of macro IDs from the environment
+  char *macro_ids = getenv("CODEE_TS_MACRO_IDS");
+  if (!macro_ids) {
+    return result;
+  }
+  // Now separate them while we copy them to a list in the scanner state
+  StringArray *macroIdsResult = &result->MacroIdentifiers;
+  char *macro_id = strtok(macro_ids, ":");
+  while (macro_id) {
+    // strlen is safe with strtok's result
+    int length = strlen(macro_id);
+    // length + 1 for the null termination
+    char *new_str = (char *)ts_calloc(1, (length + 1) * sizeof(char));
+    strncpy(new_str, macro_id, length);
+    array_push(macroIdsResult, new_str);
+    // Keep splitting
+    macro_id = strtok(NULL, ":");
+  }
+  return result;
 }
 
 bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
@@ -491,8 +576,9 @@ bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
 unsigned tree_sitter_fortran_external_scanner_serialize(void *payload,
                                                         char *buffer) {
     Scanner *scanner = (Scanner *)payload;
-    buffer[0] = (char)scanner->in_line_continuation;
-    return 1;
+    unsigned size = sizeof(*scanner);
+    memcpy(buffer, scanner, size);
+    return size;
 }
 
 void tree_sitter_fortran_external_scanner_deserialize(void *payload,
@@ -500,11 +586,18 @@ void tree_sitter_fortran_external_scanner_deserialize(void *payload,
                                                       unsigned length) {
     Scanner *scanner = (Scanner *)payload;
     if (length > 0) {
-        scanner->in_line_continuation = buffer[0];
+      unsigned size = sizeof(*scanner);
+      memcpy(scanner, buffer, size);
     }
 }
 
 void tree_sitter_fortran_external_scanner_destroy(void *payload) {
     Scanner *scanner = (Scanner *)payload;
+    // Destroy the strings allocated in each array element
+    for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
+      char *str = *array_get(&scanner->MacroIdentifiers, i);
+      ts_free(str);
+    }
+    array_delete(&scanner->MacroIdentifiers);
     ts_free(scanner);
 }

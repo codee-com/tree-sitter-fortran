@@ -67,6 +67,7 @@ module.exports = grammar({
     $._external_end_of_statement,
     $._preproc_unary_operator,
     $.hollerith_constant,
+    $.macro_identifier,
   ],
 
   extras: $ => [
@@ -870,6 +871,7 @@ module.exports = grammar({
         $.derived_type,
         alias($.procedure_declaration, $.procedure),
         $.declared_type,
+        $.macro_identifier,
       )),
       optional(seq(',',
         commaSep1(
