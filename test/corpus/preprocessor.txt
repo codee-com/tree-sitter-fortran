@@ -169,7 +169,7 @@ end subroutine foo4
         content: (preproc_def
           name: (identifier)
           value: (preproc_arg))))
-    (preproc_comment))
+    (multiline_preproc_comment))
   (preproc_ifdef
     name: (identifier)
     content: (subroutine
@@ -179,7 +179,7 @@ end subroutine foo4
       (end_subroutine_statement
         (name)
         (end_of_statement)))
-    (preproc_comment)))
+    (inline_preproc_comment)))
 
 ================================================================================
 Elifdefs
@@ -991,3 +991,56 @@ Preprocessor in specification part
     (end_subroutine_statement
       (name)
       (end_of_statement))))
+
+================================================================================
+Multiline preprocessor comments
+================================================================================
+
+/* Foo */
+#ifdef FOO
+#endif
+
+      PROGRAM MAIN
+        INTEGER /* FOO */ FOO
+        INTEGER BAR /* BAR */
+        INTEGER /* B
+                   A
+                   Z */ BAZ
+      END
+
+/* Foo
+// Bar
+Baz */
+#ifdef BAR
+#endif
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (multiline_preproc_comment)
+  (preproc_ifdef
+    (identifier))
+  (program
+    (program_statement
+      (name)
+      (end_of_statement))
+    (variable_declaration
+      (intrinsic_type)
+      (multiline_preproc_comment)
+      (identifier))
+    (end_of_statement)
+    (variable_declaration
+      (intrinsic_type)
+      (identifier))
+    (multiline_preproc_comment)
+    (end_of_statement)
+    (variable_declaration
+      (intrinsic_type)
+      (multiline_preproc_comment)
+      (identifier))
+    (end_of_statement)
+    (end_program_statement
+      (end_of_statement)))
+  (multiline_preproc_comment)
+  (preproc_ifdef
+    (identifier)))

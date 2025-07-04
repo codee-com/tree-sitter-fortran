@@ -75,6 +75,7 @@ module.exports = grammar({
     // preprocessor statements
     /\s|\\\r?\n/,
     $.comment,
+    $.multiline_preproc_comment,
     '&',
   ],
 
@@ -248,7 +249,8 @@ module.exports = grammar({
       ')',
     ),
 
-    preproc_comment: $ => choice(/\/\*.*\*\//, /\/\/.*/),
+    inline_preproc_comment: $ => /\/\/.*/,
+    multiline_preproc_comment: $ => /\/\*([^*]|\*+[^*/])*\*+\//,
 
     preproc_binary_expression: $ => {
       const table = [
@@ -2466,36 +2468,50 @@ function preprocIf(suffix, content, precedence = 0) {
     );
   }
 
+  /**
+    *
+    * @param {GrammarSymbols<string>} $
+    *
+    * @return {ChoiceRule}
+    *
+    */
+  function preprocComment($) {
+    return choice(
+      $.inline_preproc_comment,
+      $.multiline_preproc_comment,
+    );
+  }
+
   return {
     ['preproc_if' + suffix]: $ => prec(precedence, seq(
       preprocessor('if'),
       field('condition', $._preproc_expression),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
       field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
       preprocessor('endif'),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
     )),
 
     ['preproc_ifdef' + suffix]: $ => prec(precedence, seq(
       choice(preprocessor('ifdef'), preprocessor('ifndef')),
       field('name', $.identifier),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
       field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
       preprocessor('endif'),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
     )),
 
     ['preproc_else' + suffix]: $ => prec(precedence, seq(
       preprocessor('else'),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
       field('content', content($)),
     )),
 
     ['preproc_elif' + suffix]: $ => prec(precedence, seq(
       preprocessor('elif'),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
       field('condition', $._preproc_expression),
       field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
@@ -2504,7 +2520,7 @@ function preprocIf(suffix, content, precedence = 0) {
     ['preproc_elifdef' + suffix]: $ => prec(precedence, seq(
       choice(preprocessor('elifdef'), preprocessor('elifndef')),
       field('name', $.identifier),
-      optional($.preproc_comment),
+      optional(preprocComment($)),
       field('content', content($)),
       field('alternative', optional(alternativeBlock($))),
     )),

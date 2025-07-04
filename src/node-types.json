@@ -4797,11 +4797,6 @@
     }
   },
   {
-    "type": "preproc_comment",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "preproc_def",
     "named": true,
     "fields": {
@@ -5014,7 +5009,11 @@
       "required": false,
       "types": [
         {
-          "type": "preproc_comment",
+          "type": "inline_preproc_comment",
+          "named": true
+        },
+        {
+          "type": "multiline_preproc_comment",
           "named": true
         }
       ]
@@ -5164,7 +5163,11 @@
       "required": false,
       "types": [
         {
-          "type": "preproc_comment",
+          "type": "inline_preproc_comment",
+          "named": true
+        },
+        {
+          "type": "multiline_preproc_comment",
           "named": true
         }
       ]
@@ -5286,7 +5289,11 @@
       "required": false,
       "types": [
         {
-          "type": "preproc_comment",
+          "type": "inline_preproc_comment",
+          "named": true
+        },
+        {
+          "type": "multiline_preproc_comment",
           "named": true
         }
       ]
@@ -5500,7 +5507,11 @@
       "required": false,
       "types": [
         {
-          "type": "preproc_comment",
+          "type": "inline_preproc_comment",
+          "named": true
+        },
+        {
+          "type": "multiline_preproc_comment",
           "named": true
         }
       ]
@@ -5650,7 +5661,11 @@
       "required": false,
       "types": [
         {
-          "type": "preproc_comment",
+          "type": "inline_preproc_comment",
+          "named": true
+        },
+        {
+          "type": "multiline_preproc_comment",
           "named": true
         }
       ]
@@ -8001,6 +8016,10 @@
     "named": false
   },
   {
+    "type": "inline_preproc_comment",
+    "named": true
+  },
+  {
     "type": "inout",
     "named": false
   },
@@ -8067,6 +8086,11 @@
   {
     "type": "module",
     "named": false
+  },
+  {
+    "type": "multiline_preproc_comment",
+    "named": true,
+    "extra": true
   },
   {
     "type": "namelist",
