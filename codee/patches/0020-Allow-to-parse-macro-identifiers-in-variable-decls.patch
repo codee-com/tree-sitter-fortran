@@ -5,8 +5,8 @@ Subject: Allow to parse macro identifiers in variable decls
 
 ---
  grammar.js    |   2 +
- src/scanner.c | 128 +++++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 103 insertions(+), 27 deletions(-)
+ src/scanner.c | 141 +++++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 119 insertions(+), 24 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
 index 6e79004..40ac8b7 100644
@@ -29,7 +29,7 @@ index 6e79004..40ac8b7 100644
        optional(seq(',',
          commaSep1(
 diff --git a/src/scanner.c b/src/scanner.c
-index b768d99..e477df4 100644
+index b768d99..e5a37ee 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -1,4 +1,5 @@
@@ -65,10 +65,23 @@ index b768d99..e477df4 100644
 +// Returns NULL on error, otherwise an allocated char array for an identifier
 +static String *scan_identifier(TSLexer *lexer) {
    if (!iswalpha(lexer->lookahead)) {
+-    return false;
 +    return NULL;
-+  }
+   }
+-
+-  lexer->result_symbol = STRING_LITERAL_KIND;
+-
+-  // We need two characters of lookahead to see `_"`
+-  char current_char = '\0';
+-
 +  String *possible_identifier = ts_calloc(1, sizeof(String));
-+  while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
+   while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
+-      current_char = lexer->lookahead;
+-      // Don't capture the trailing underscore as part of the kind identifier
+-      if (lexer->lookahead == '_') {
+-          lexer->mark_end(lexer);
+-      }
+-      advance(lexer);
 +    array_push(possible_identifier, lexer->lookahead);
 +    // Don't capture the trailing underscore as part of the kind identifier
 +    // If another user of this function wants to mark the end again after
@@ -91,32 +104,16 @@ index b768d99..e477df4 100644
 +static bool scan_string_literal_kind(TSLexer *lexer, String *identifier) {
 +  if (identifier->size == 0) {
 +    return false;
-+  }
-+
+   }
+ 
+-  if ((current_char != '_') || (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
 +  char last_char = identifier->contents[identifier->size - 1];
 +  if ((last_char != '_') ||
 +      (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
      return false;
    }
  
-   lexer->result_symbol = STRING_LITERAL_KIND;
--
--  // We need two characters of lookahead to see `_"`
--  char current_char = '\0';
--
--  while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
--      current_char = lexer->lookahead;
--      // Don't capture the trailing underscore as part of the kind identifier
--      if (lexer->lookahead == '_') {
--          lexer->mark_end(lexer);
--      }
--      advance(lexer);
--  }
--
--  if ((current_char != '_') || (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
--    return false;
--  }
--
++  lexer->result_symbol = STRING_LITERAL_KIND;
    return true;
  }
  
