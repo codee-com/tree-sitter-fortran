@@ -1182,6 +1182,7 @@ module.exports = grammar({
       // Not strictly valid, but can catch extensions and preprocessor macros
       $.call_expression,
       $.include_statement,
+      $.macro_identifier
     ),
 
     statement_label: $ => prec(1, alias($._integer_literal, 'statement_label')),
@@ -1945,6 +1946,7 @@ module.exports = grammar({
       $.implied_do_loop_expression,
       $.coarray_expression,
       $.conditional_expression,
+      $.macro_identifier
     ),
 
     parenthesized_expression: $ => seq(

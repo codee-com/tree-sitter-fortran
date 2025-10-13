@@ -14167,6 +14167,10 @@
         {
           "type": "SYMBOL",
           "name": "include_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_identifier"
         }
       ]
     },
@@ -19331,6 +19335,10 @@
         {
           "type": "SYMBOL",
           "name": "conditional_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_identifier"
         }
       ]
     },

@@ -78,6 +78,10 @@
         "named": true
       },
       {
+        "type": "macro_identifier",
+        "named": true
+      },
+      {
         "type": "math_expression",
         "named": true
       },
@@ -287,6 +291,10 @@
       },
       {
         "type": "keyword_statement",
+        "named": true
+      },
+      {
+        "type": "macro_identifier",
         "named": true
       },
       {
