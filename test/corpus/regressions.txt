@@ -23,38 +23,59 @@ end program example_padl
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name))
       (included_items
+        (whitespace)
+        (whitespace)
         (identifier)
+        (whitespace)
         (assignment)
-        (defined_io_procedure)))
+        (whitespace)
+        (defined_io_procedure
+          (whitespace))))
     (end_of_statement)
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name))
       (included_items
+        (whitespace)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (derived_type
         (type_name))
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
       (string_literal))
     (end_of_statement)
     (comment)
+    (whitespace)
     (print_statement
       (format_identifier
         (string_literal))
+      (whitespace)
       (output_item_list
         (call_expression
           (identifier)
@@ -62,10 +83,14 @@ end program example_padl
             (identifier)
             (number_literal)
             (string_literal)))))
+    (whitespace)
     (end_of_statement)
     (comment)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (call_expression
         (identifier)
         (argument_list
@@ -74,6 +99,8 @@ end program example_padl
     (end_of_statement)
     (comment)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -96,29 +123,44 @@ end program foo
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (if_statement
       (block_if_statement
         (block_label_start_expression)
+        (whitespace)
+        (whitespace)
         (parenthesized_expression
           (boolean_literal))
+        (whitespace)
         (end_of_statement)
+        (whitespace)
         (subroutine_call
+          (whitespace)
           (identifier)
           (argument_list))
         (end_of_statement)
+        (whitespace)
         (else_clause
+          (whitespace)
           (block_label)
           (end_of_statement)
+          (whitespace)
           (subroutine_call
+            (whitespace)
             (identifier)
             (argument_list))
           (end_of_statement))
+        (whitespace)
         (end_if_statement
+          (whitespace)
           (block_label))))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -140,20 +182,30 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (if_statement
       (block_if_statement
+        (whitespace)
         (parenthesized_expression
           (boolean_literal))
+        (whitespace)
         (end_of_statement)
+        (whitespace)
         (elseif_clause
+          (whitespace)
           (parenthesized_expression
             (boolean_literal))
+          (whitespace)
           (end_of_statement))
-        (end_if_statement)))
+        (whitespace)
+        (end_if_statement
+          (whitespace))))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -170,17 +222,25 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
       (number_literal))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -197,14 +257,18 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
+    (whitespace)
     (assignment_statement
       left: (call_expression
         (identifier)
         (argument_list
           (number_literal)
           (number_literal)))
+      (whitespace)
+      (whitespace)
       right: (call_expression
         (identifier)
         (argument_list
@@ -212,6 +276,7 @@ end program
           (number_literal))))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -239,21 +304,29 @@ Multiple array assignments
 --------------------------------------------------------------------------------
 
 (translation_unit
+  (whitespace)
   (comment)
+  (whitespace)
   (comment)
+  (whitespace)
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
       (parameters
         (identifier)
+        (whitespace)
         (identifier))
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (keyword_argument
             (identifier)
             (number_literal))))
+      (whitespace)
+      (whitespace)
       (sized_declarator
         (identifier)
         (size
@@ -261,67 +334,96 @@ Multiple array assignments
             (number_literal)
             (identifier)))))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
-          (identifier)))
+          (identifier)
+          (whitespace)))
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (end_subroutine_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))

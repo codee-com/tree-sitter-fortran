@@ -160,6 +160,18 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "value",
           "content": {
@@ -22164,6 +22176,10 @@
         }
       ]
     },
+    "whitespace": {
+      "type": "PATTERN",
+      "value": "[ \\t\\v\\f]+"
+    },
     "comment": {
       "type": "TOKEN",
       "content": {
@@ -22201,7 +22217,11 @@
   "extras": [
     {
       "type": "PATTERN",
-      "value": "\\s|\\\\\\r?\\n"
+      "value": "[\\r\\n]|\\\\\\r?\\n"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "whitespace"
     },
     {
       "type": "SYMBOL",

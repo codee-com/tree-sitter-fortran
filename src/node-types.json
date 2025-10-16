@@ -4828,6 +4828,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -8395,6 +8405,11 @@
   {
     "type": "while",
     "named": false
+  },
+  {
+    "type": "whitespace",
+    "named": true,
+    "extra": true
   },
   {
     "type": "write",

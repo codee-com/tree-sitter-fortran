@@ -13,14 +13,18 @@ Include directives
   (preproc_include
     path: (string_literal))
   (preproc_include
+    (whitespace)
     path: (system_lib_string))
   (preproc_include
+    (whitespace)
     path: (identifier))
   (preproc_include
+    (whitespace)
     path: (call_expression
       function: (identifier)
       arguments: (argument_list
         (identifier)
+        (whitespace)
         (identifier)))))
 
 ================================================================================
@@ -37,16 +41,24 @@ Object-like macro definitions
 
 (translation_unit
   (preproc_def
+    (whitespace)
     name: (identifier))
   (preproc_def
+    (whitespace)
     name: (identifier)
+    (whitespace)
     value: (preproc_arg))
   (preproc_def
+    (whitespace)
     name: (identifier)
+    (whitespace)
     value: (preproc_arg))
   (preproc_def
-    name: (identifier))
+    (whitespace)
+    name: (identifier)
+    (whitespace))
   (preproc_def
+    (whitespace)
     name: (identifier)))
 
 ================================================================================
@@ -63,29 +75,42 @@ Function-like macro definitions
 
 (translation_unit
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params)
+    (whitespace)
     value: (preproc_arg))
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params
       (identifier))
+    (whitespace)
     value: (preproc_arg))
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params
       (identifier)
+      (whitespace)
       (identifier))
+    (whitespace)
     value: (preproc_arg))
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params)
+    (whitespace)
     value: (preproc_arg))
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params
       (identifier)
-      (identifier))
+      (whitespace)
+      (identifier)
+      (whitespace))
+    (whitespace)
     value: (preproc_arg)))
 
 ================================================================================
@@ -100,10 +125,14 @@ Multiline definitions
 
 (translation_unit
   (preproc_function_def
+    (whitespace)
     name: (identifier)
     parameters: (preproc_params
       (identifier)
+      (whitespace)
       (identifier))
+    (whitespace)
+    (whitespace)
     value: (preproc_arg)))
 
 ================================================================================
@@ -135,50 +164,73 @@ end subroutine foo4
 
 (translation_unit
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement))))
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     content: (preproc_def
+      (whitespace)
       name: (identifier)
+      (whitespace)
       value: (preproc_arg))
     alternative: (preproc_elif
+      (whitespace)
       condition: (preproc_defined
+        (whitespace)
         (identifier))
       alternative: (preproc_else
         content: (subroutine
           (subroutine_statement
+            (whitespace)
             name: (name)
             (end_of_statement))
           (end_subroutine_statement
+            (whitespace)
+            (whitespace)
             (name)
             (end_of_statement)))
         content: (preproc_def
+          (whitespace)
           name: (identifier)
+          (whitespace)
           value: (preproc_arg))))
+    (whitespace)
     (multiline_preproc_comment))
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
+    (whitespace)
     (inline_preproc_comment)))
 
 ================================================================================
@@ -208,47 +260,66 @@ end subroutine foo5
 
 (translation_unit
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     alternative: (preproc_elifdef
+      (whitespace)
       name: (identifier)
       content: (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))))
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     alternative: (preproc_elifdef
+      (whitespace)
       name: (identifier)
       content: (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       alternative: (preproc_else
         content: (subroutine
           (subroutine_statement
+            (whitespace)
             name: (name)
             (end_of_statement))
           (end_subroutine_statement
+            (whitespace)
+            (whitespace)
             (name)
             (end_of_statement)))))))
 
@@ -279,49 +350,69 @@ end subroutine e
 
 (translation_unit
   (preproc_ifdef
+    (whitespace)
     name: (identifier)
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     alternative: (preproc_elif
+      (whitespace)
       condition: (preproc_defined
         (identifier))
       content: (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))))
   (preproc_if
+    (whitespace)
     condition: (preproc_defined
+      (whitespace)
       (identifier))
     content: (subroutine
       (subroutine_statement
+        (whitespace)
         name: (name)
         (end_of_statement))
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     alternative: (preproc_elifdef
+      (whitespace)
       name: (identifier)
       content: (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       alternative: (preproc_else
         content: (subroutine
           (subroutine_statement
+            (whitespace)
             name: (name)
             (end_of_statement))
           (end_subroutine_statement
+            (whitespace)
+            (whitespace)
             (name)
             (end_of_statement)))))))
 
@@ -343,27 +434,35 @@ General if blocks
 
 (translation_unit
   (preproc_if
+    (whitespace)
     condition: (binary_expression
       left: (preproc_defined
         (identifier))
+      (whitespace)
       right: (preproc_defined
         (identifier)))
     content: (preproc_def
+      (whitespace)
       name: (identifier)
+      (whitespace)
       value: (preproc_arg))
     alternative: (preproc_elif
+      (whitespace)
       condition: (preproc_defined
         (identifier))
       content: (preproc_def
+        (whitespace)
         name: (identifier))
       alternative: (preproc_elif
         condition: (unary_expression
           argument: (preproc_defined
             (identifier)))
         content: (preproc_def
+          (whitespace)
           name: (identifier))
         alternative: (preproc_else
           content: (preproc_include
+            (whitespace)
             path: (system_lib_string)))))))
 
 ================================================================================
@@ -382,6 +481,7 @@ Unary not
       argument: (preproc_defined
         (identifier)))
     content: (preproc_def
+      (whitespace)
       name: (identifier))))
 
 ================================================================================
@@ -395,6 +495,7 @@ Unknown preprocessor directives
 (translation_unit
   (preproc_call
     directive: (preproc_directive)
+    (whitespace)
     argument: (preproc_arg)))
 
 ============================================
@@ -423,50 +524,68 @@ end program test
 (translation_unit
   (preproc_call
     (preproc_directive)
+    (whitespace)
     (preproc_arg))
   (preproc_call
     (preproc_directive)
+    (whitespace)
     (preproc_arg))
   (preproc_call
     (preproc_directive)
+    (whitespace)
     (preproc_arg))
   (preproc_call
     (preproc_directive)
+    (whitespace)
     (preproc_arg))
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (preproc_call
       (preproc_directive)
+      (whitespace)
       (preproc_arg))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
       (preproc_call
         (preproc_directive)
+        (whitespace)
         (preproc_arg))
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (end_of_statement))
         (preproc_call
           (preproc_directive)
+          (whitespace)
           (preproc_arg))
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
         (preproc_call
           (preproc_directive)
+          (whitespace)
           (preproc_arg))
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       (preproc_call
         (preproc_directive)
+        (whitespace)
         (preproc_arg)))
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -487,24 +606,35 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name))
       (included_items
+        (whitespace)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
     (preproc_if
+      (whitespace)
       condition: (binary_expression
         left: (identifier)
+        (whitespace)
         right: (number_literal))
+      (whitespace)
       content: (use_statement
+        (whitespace)
         (module_name
           (name)))
       content: (end_of_statement))
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -530,35 +660,53 @@ end module foo
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (type_name)
         (end_of_statement))
       (preproc_include
         (string_literal))
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
         (identifier))
       (end_of_statement)
       (preproc_if
+        (whitespace)
         (identifier)
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
           (identifier)))
+      (whitespace)
       (derived_type_procedures
         (contains_statement)
         (preproc_if
+          (whitespace)
           (identifier)
+          (whitespace)
           (procedure_statement
             (procedure_kind)
+            (whitespace)
+            (whitespace)
             (method_name
               (name)))))
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -587,35 +735,54 @@ end module foo
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       (preproc_ifdef
+        (whitespace)
         name: (identifier)
+        (whitespace)
         content: (subroutine
           (subroutine_statement
+            (whitespace)
             name: (name)
             (end_of_statement))
+          (whitespace)
           (end_subroutine_statement
+            (whitespace)
+            (whitespace)
             (name)
             (end_of_statement))))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -646,48 +813,76 @@ end module foo
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           type: (intrinsic_type)
+          (whitespace)
+          (whitespace)
           declarator: (identifier))
         (end_of_statement)
         (preproc_ifdef
+          (whitespace)
           name: (identifier)
+          (whitespace)
           content: (variable_declaration
             type: (intrinsic_type)
+            (whitespace)
+            (whitespace)
             declarator: (identifier))
           content: (end_of_statement)
+          (whitespace)
           content: (assignment_statement
             left: (identifier)
+            (whitespace)
+            (whitespace)
             right: (math_expression
               left: (identifier)
+              (whitespace)
               right: (number_literal)))
           content: (end_of_statement))
+        (whitespace)
         (assignment_statement
           left: (identifier)
+          (whitespace)
+          (whitespace)
           right: (math_expression
             left: (identifier)
+            (whitespace)
             right: (number_literal)))
         (end_of_statement)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -717,42 +912,64 @@ end module foo
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           type: (intrinsic_type)
+          (whitespace)
+          (whitespace)
           declarator: (identifier))
         (end_of_statement)
+        (whitespace)
         (assignment_statement
           left: (identifier)
+          (whitespace)
           right: (number_literal
             kind: (identifier)))
         (end_of_statement)
         (preproc_ifdef
+          (whitespace)
           name: (identifier)
+          (whitespace)
           content: (assignment_statement
             left: (identifier)
+            (whitespace)
             right: (number_literal
               kind: (identifier)))
           content: (end_of_statement))
+        (whitespace)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           name: (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -788,64 +1005,97 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (keyword_argument
             (identifier)
             (number_literal))))
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
       (string_literal))
     (end_of_statement)
+    (whitespace)
     (select_case_statement
+      (whitespace)
+      (whitespace)
       (selector
         (identifier))
       (end_of_statement)
       (preproc_ifdef
+        (whitespace)
         (identifier)
+        (whitespace)
         (case_statement
+          (whitespace)
           (case_value_range_list
             (string_literal))
           (end_of_statement)
+          (whitespace)
           (assignment_statement
             (identifier)
+            (whitespace)
             (number_literal))
           (end_of_statement)))
       (preproc_if
+        (whitespace)
         (binary_expression
           (identifier)
+          (whitespace)
           (number_literal))
+        (whitespace)
         (case_statement
+          (whitespace)
           (case_value_range_list
             (string_literal))
           (end_of_statement)
+          (whitespace)
           (assignment_statement
             (identifier)
+            (whitespace)
             (number_literal))
           (end_of_statement)))
+      (whitespace)
       (case_statement
+        (whitespace)
         (end_of_statement)
         (preproc_ifdef
+          (whitespace)
           (identifier)
+          (whitespace)
           (assignment_statement
             (identifier)
+            (whitespace)
             (number_literal))
           (end_of_statement)))
-      (end_select_statement))
+      (whitespace)
+      (end_select_statement
+        (whitespace)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -866,25 +1116,38 @@ end module
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (interface
       (interface_statement
+        (whitespace)
         (name)
         (end_of_statement))
+      (whitespace)
       (procedure_statement
-        (procedure_kind)
+        (procedure_kind
+          (whitespace))
+        (whitespace)
         (method_name
           (name)))
       (preproc_ifdef
+        (whitespace)
         (identifier)
+        (whitespace)
         (procedure_statement
-          (procedure_kind)
+          (procedure_kind
+            (whitespace))
+          (whitespace)
           (method_name
             (name))))
+      (whitespace)
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
     (end_module_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -914,64 +1177,96 @@ Preprocessor in specification part
 --------------------------------------------------------------------------------
 
 (translation_unit
+  (whitespace)
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
     (preproc_ifdef
+      (whitespace)
       (identifier)
       (preproc_ifdef
+        (whitespace)
         (identifier)
         (preproc_ifdef
+          (whitespace)
           (identifier)
+          (whitespace)
           (variable_declaration
             (intrinsic_type
               (kind
                 (keyword_argument
                   (identifier)
                   (number_literal))))
+            (whitespace)
+            (whitespace)
             (identifier))
           (end_of_statement)
+          (whitespace)
           (variable_declaration
             (intrinsic_type
               (kind
                 (keyword_argument
                   (identifier)
                   (number_literal))))
+            (whitespace)
+            (whitespace)
             (identifier))
           (end_of_statement)
+          (whitespace)
           (variable_declaration
             (intrinsic_type
               (kind
                 (keyword_argument
                   (identifier)
                   (number_literal))))
+            (whitespace)
+            (whitespace)
             (init_declarator
               (identifier)
+              (whitespace)
+              (whitespace)
               (unary_expression
                 (number_literal))))
           (end_of_statement)
           (preproc_else
+            (whitespace)
             (variable_declaration
               (intrinsic_type)
+              (whitespace)
+              (whitespace)
               (identifier))
             (end_of_statement)
+            (whitespace)
             (variable_declaration
               (intrinsic_type)
+              (whitespace)
+              (whitespace)
               (identifier))
             (end_of_statement)
+            (whitespace)
             (variable_declaration
               (intrinsic_type)
+              (whitespace)
+              (whitespace)
               (init_declarator
                 (identifier)
+                (whitespace)
+                (whitespace)
                 (unary_expression
                   (number_literal))))
             (end_of_statement)))
+        (whitespace)
         (assignment_statement
           (identifier)
+          (whitespace)
+          (whitespace)
           (call_expression
             (identifier)
             (argument_list
@@ -979,8 +1274,11 @@ Preprocessor in specification part
               (identifier)
               (identifier))))
         (end_of_statement)
+        (whitespace)
         (assignment_statement
           (identifier)
+          (whitespace)
+          (whitespace)
           (call_expression
             (identifier)
             (argument_list
@@ -988,7 +1286,10 @@ Preprocessor in specification part
               (identifier)
               (identifier))))
         (end_of_statement)))
+    (whitespace)
     (end_subroutine_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1019,28 +1320,42 @@ Baz */
 (translation_unit
   (multiline_preproc_comment)
   (preproc_ifdef
+    (whitespace)
     (identifier))
+  (whitespace)
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
       (multiline_preproc_comment)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
       (identifier))
+    (whitespace)
     (multiline_preproc_comment)
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
       (multiline_preproc_comment)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (end_program_statement
       (end_of_statement)))
   (multiline_preproc_comment)
   (preproc_ifdef
+    (whitespace)
     (identifier)))

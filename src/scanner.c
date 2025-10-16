@@ -452,11 +452,6 @@ static bool scan_preproc_unary_operator(TSLexer *lexer) {
 }
 
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
-    // Consume any leading whitespace except newlines
-    while (iswblank(lexer->lookahead)) {
-        skip(lexer);
-    }
-
     // Close the current statement if we can
     if (valid_symbols[END_OF_STATEMENT]) {
         if (scan_end_of_statement(scanner, lexer)) {

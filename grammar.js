@@ -73,7 +73,8 @@ module.exports = grammar({
   extras: $ => [
     // This allows escaping newlines everywhere, although this is only valid in
     // preprocessor statements
-    /\s|\\\r?\n/,
+    /[\r\n]|\\\r?\n/,
+    $.whitespace,
     $.comment,
     $.multiline_preproc_comment,
     '&',
@@ -158,6 +159,8 @@ module.exports = grammar({
     preproc_def: $ => seq(
       preprocessor('define'),
       field('name', $.identifier),
+      // TODO: Explain!!!!!
+      optional($.whitespace),
       field('value', optional($.preproc_arg)),
       token(prec(1, /\r?\n/)), // force newline to win over preproc_arg
     ),
@@ -2382,6 +2385,8 @@ module.exports = grammar({
       prec(-1, caseInsensitive('where', false)),
       caseInsensitive('write', false),
     ),
+
+    whitespace: $ => /[ \t\v\f]+/,
 
     comment: $ => token(seq('!', /.*/)),
 
