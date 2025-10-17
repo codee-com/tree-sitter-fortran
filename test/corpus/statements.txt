@@ -490,7 +490,8 @@ END PROGRAM
         (identifier)
         (keyword_argument
           name: (identifier)
-          value: (string_literal)))
+          value: (prefixed_string_literal
+            (string_literal))))
       declarator: (identifier))
     (end_of_statement)
     (variable_declaration
@@ -830,7 +831,8 @@ END PROGRAM
           (identifier))
         (keyword_argument
           (identifier)
-          (string_literal)))
+          (prefixed_string_literal
+            (string_literal))))
       (end_of_statement)
       (subroutine_call
         (identifier)
@@ -1208,7 +1210,8 @@ END PROGRAM
             (call_expression
               (identifier)
               (argument_list
-                (string_literal)))))
+                (prefixed_string_literal
+                  (string_literal))))))
         (end_of_statement)
         (assignment_statement
           (identifier)
@@ -1726,29 +1729,37 @@ END PROGRAM
       (case_statement
         (case_value_range_list
           (extent_specifier
-            (string_literal)
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (extent_specifier
-            (string_literal)
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement)
         (write_statement
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (case_statement
         (case_value_range_list
           (extent_specifier
-            (string_literal)
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement)
         (write_statement
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (case_statement
         (case_value_range_list
@@ -1758,7 +1769,8 @@ END PROGRAM
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (case_statement
         (end_of_statement)
@@ -1766,7 +1778,8 @@ END PROGRAM
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (end_select_statement))
     (end_of_statement)
@@ -1934,7 +1947,8 @@ END PROGRAM
       (unit_identifier
         (identifier))
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (input_item_list
         (call_expression
           (identifier)
@@ -1947,13 +1961,15 @@ END PROGRAM
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (keyword_argument
         (identifier)
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (input_item_list
         (identifier)))
     (end_of_statement)
@@ -1984,7 +2000,8 @@ END PROGRAM
     (print_statement
       (format_identifier)
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (print_statement
       (format_identifier
@@ -1996,9 +2013,11 @@ END PROGRAM
     (end_of_statement)
     (print_statement
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -2032,7 +2051,8 @@ END PROGRAM
       (unit_identifier)
       (format_identifier)
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (write_statement
       (unit_identifier
@@ -2048,7 +2068,8 @@ END PROGRAM
       (unit_identifier
         (identifier))
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (keyword_argument
         (identifier)
         (identifier)))
@@ -2057,7 +2078,8 @@ END PROGRAM
       (unit_identifier
         (identifier))
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (output_item_list
         (call_expression
           (identifier)
@@ -2070,13 +2092,15 @@ END PROGRAM
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (keyword_argument
         (identifier)
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (output_item_list
         (identifier)))
     (end_of_statement)
@@ -2084,16 +2108,19 @@ END PROGRAM
       (unit_identifier
         (number_literal))
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (write_statement
       (unit_identifier
         (number_literal))
       (format_identifier)
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -2353,7 +2380,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (output_item_list
             (identifier)))
         (end_of_statement))
@@ -2368,7 +2396,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (output_item_list
             (identifier)))
         (end_of_statement))
@@ -2383,7 +2412,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (output_item_list
             (identifier)))
         (end_of_statement))
@@ -2393,7 +2423,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (output_item_list
             (identifier)))
         (end_of_statement))
@@ -2403,7 +2434,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (output_item_list
             (derived_type_member_expression
               (identifier)
@@ -2415,7 +2447,8 @@ end subroutine print_decorated_numbers
         (write_statement
           (unit_identifier)
           (format_identifier
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (end_select_statement))
     (end_of_statement)
@@ -2457,14 +2490,16 @@ end program test
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (close_statement
       (unit_identifier
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (open_statement
       (keyword_argument
@@ -2472,14 +2507,16 @@ end program test
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (close_statement
       (unit_identifier
         (identifier))
       (keyword_argument
         (identifier)
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (open_statement
       (unit_identifier
@@ -2541,7 +2578,8 @@ end subroutine assumed_rank
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (rank_statement
         (case_value_range_list
@@ -2551,7 +2589,8 @@ end subroutine assumed_rank
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (rank_statement
         (case_value_range_list
@@ -2561,12 +2600,14 @@ end subroutine assumed_rank
           (unit_identifier)
           (format_identifier)
           (output_item_list
-            (string_literal)))
+            (prefixed_string_literal
+              (string_literal))))
         (end_of_statement))
       (rank_statement
         (end_of_statement)
         (stop_statement
-          (string_literal))
+          (prefixed_string_literal
+            (string_literal)))
         (end_of_statement))
       (end_select_statement))
     (end_of_statement)
@@ -2897,7 +2938,8 @@ end program test
           (identifier)
           (type_member))
         (data_value
-          (string_literal))))
+          (prefixed_string_literal
+            (string_literal)))))
     (end_of_statement)
     (data_statement
       (data_set
@@ -2907,7 +2949,8 @@ end program test
             (identifier)
             (argument_list
               (number_literal)
-              (string_literal))))))
+              (prefixed_string_literal
+                (string_literal)))))))
     (end_of_statement)
     (data_statement
       (data_set
@@ -3070,7 +3113,8 @@ end program
           (number_literal))))
     (end_of_statement)
     (file_position_statement
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))
@@ -3340,7 +3384,8 @@ Statement Functions (Obsolescent)
     (end_of_statement)
     (assignment_statement
       (identifier)
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (end_subroutine_statement
       (name)

@@ -18,10 +18,12 @@ end program
     (write_statement
       (unit_identifier)
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (comment)
       (keyword_argument
         (identifier)
@@ -56,11 +58,13 @@ end program
     (write_statement
       (unit_identifier)
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (comment)
       (keyword_argument
         (identifier)
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (keyword_argument
         (identifier)
         (identifier)))
@@ -244,30 +248,37 @@ end program
     (print_statement
       (format_identifier)
       (output_item_list
-        (string_literal)))
-    (end_of_statement)
-    (print_statement
-      (format_identifier)
-      (output_item_list
-        (string_literal)))
-    (end_of_statement)
-    (print_statement
-      (format_identifier)
-      (output_item_list
-        (string_literal)))
-    (end_of_statement)
-    (print_statement
-      (format_identifier)
-      (output_item_list
-        (concatenation_expression
-          (string_literal)
+        (prefixed_string_literal
           (string_literal))))
     (end_of_statement)
     (print_statement
       (format_identifier)
       (output_item_list
-        (string_literal)
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
+    (end_of_statement)
+    (print_statement
+      (format_identifier)
+      (output_item_list
+        (prefixed_string_literal
+          (string_literal))))
+    (end_of_statement)
+    (print_statement
+      (format_identifier)
+      (output_item_list
+        (concatenation_expression
+          (prefixed_string_literal
+            (string_literal))
+          (prefixed_string_literal
+            (string_literal)))))
+    (end_of_statement)
+    (print_statement
+      (format_identifier)
+      (output_item_list
+        (prefixed_string_literal
+          (string_literal))
+        (prefixed_string_literal
+          (string_literal))))
     (end_of_statement)
     (end_program_statement
       (end_of_statement))))

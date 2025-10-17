@@ -49,19 +49,22 @@ end program example_padl
     (end_of_statement)
     (assignment_statement
       (identifier)
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (comment)
     (print_statement
       (format_identifier
-        (string_literal))
+        (prefixed_string_literal
+          (string_literal)))
       (output_item_list
         (call_expression
           (identifier)
           (argument_list
             (identifier)
             (number_literal)
-            (string_literal)))))
+            (prefixed_string_literal
+              (string_literal))))))
     (end_of_statement)
     (comment)
     (assignment_statement
@@ -266,56 +269,64 @@ Multiple array assignments
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (assignment_statement
       (call_expression
         (identifier)
         (argument_list
           (identifier)))
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (print_statement
       (format_identifier)

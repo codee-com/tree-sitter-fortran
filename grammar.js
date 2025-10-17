@@ -62,7 +62,7 @@ module.exports = grammar({
     $._integer_literal,
     $._float_literal,
     $._boz_literal,
-    $._string_literal,
+    $.string_literal,
     $._string_literal_kind,
     $._external_end_of_statement,
     $._preproc_unary_operator,
@@ -110,6 +110,7 @@ module.exports = grammar({
     [$.inline_if_statement, $.arithmetic_if_statement, $.block_if_statement, $.identifier],
     [$.cray_pointer_declaration, $.identifier],
     [$.unit_identifier, $.identifier],
+    [$._preproc_expression, $.prefixed_string_literal],
   ],
 
   supertypes: $ => [
@@ -1284,7 +1285,7 @@ module.exports = grammar({
         choice(
           $.number_literal,
           $.complex_literal,
-          $.string_literal,
+          $.prefixed_string_literal,
           $.boolean_literal,
           $.unary_expression,
           $.null_literal,
@@ -1837,14 +1838,14 @@ module.exports = grammar({
       ),
 
       // Deleted feature -- not quite file position statement
-      seq(caseInsensitive('pause'), optional($.string_literal)),
+      seq(caseInsensitive('pause'), optional($.prefixed_string_literal)),
     ),
 
     // This is a limited set of expressions that can be used in IO statements
     // precedence is used to override a conflict with the complex literal
     _io_expressions: $ => prec(1, choice(
       '*',
-      $.string_literal,
+      $.prefixed_string_literal,
       $.identifier,
       $.derived_type_member_expression,
       $.concatenation_expression,
@@ -1930,7 +1931,7 @@ module.exports = grammar({
     _expression: $ => choice(
       $.number_literal,
       $.complex_literal,
-      $.string_literal,
+      $.prefixed_string_literal,
       $.boolean_literal,
       $.array_literal,
       $.null_literal,
@@ -2183,7 +2184,7 @@ module.exports = grammar({
       ')',
     )),
 
-    string_literal: $ => seq(
+    prefixed_string_literal: $ => seq(
       // Having a kind _prefix_, with an underscore and no whitespace,
       // is _really_ hard to parse without breaking other things, so
       // we have to rely on an external scanner
@@ -2196,7 +2197,7 @@ module.exports = grammar({
         // also need to *capture* it here
         token.immediate('_'),
       )),
-      $._string_literal,
+      $.string_literal,
     ),
 
     // Coarrays

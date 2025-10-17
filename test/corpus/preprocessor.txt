@@ -807,7 +807,8 @@ end program
     (end_of_statement)
     (assignment_statement
       (identifier)
-      (string_literal))
+      (prefixed_string_literal
+        (string_literal)))
     (end_of_statement)
     (select_case_statement
       (selector
@@ -817,7 +818,8 @@ end program
         (identifier)
         (case_statement
           (case_value_range_list
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (end_of_statement)
           (assignment_statement
             (identifier)
@@ -829,7 +831,8 @@ end program
           (number_literal))
         (case_statement
           (case_value_range_list
-            (string_literal))
+            (prefixed_string_literal
+              (string_literal)))
           (end_of_statement)
           (assignment_statement
             (identifier)
