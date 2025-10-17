@@ -13,22 +13,35 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
       (type_qualifier)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_modification
       (variable_attributes)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -48,23 +61,32 @@ end function
   (function
     (function_statement
       (procedure_attributes)
+      (whitespace)
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (comment)
     (use_statement
+      (whitespace)
       (module_name
         (name)))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (call_expression
         (identifier)
         (argument_list)))
     (end_of_statement)
     (end_function_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -85,9 +107,12 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (subroutine_call
+      (whitespace)
       (identifier)
       (cuda_kernel_argument_list
         (number_literal)
@@ -95,7 +120,9 @@ end program
       (argument_list
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (subroutine_call
+      (whitespace)
       (identifier)
       (cuda_kernel_argument_list
         (number_literal)
@@ -108,12 +135,17 @@ end program
       (argument_list
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (subroutine_call
+      (whitespace)
       (identifier)
+      (whitespace)
       (cuda_kernel_argument_list
         (number_literal)
+        (whitespace)
         (identifier)
         (identifier)
+        (whitespace)
         (call_expression
           (identifier)
           (argument_list
@@ -122,4 +154,5 @@ end program
         (identifier)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))

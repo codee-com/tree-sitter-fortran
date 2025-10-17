@@ -15,6 +15,7 @@ enum TokenType {
     PREPROC_UNARY_OPERATOR,
     HOLLERITH_CONSTANT,
     MACRO_IDENTIFIER,
+    WHITESPACE,
 };
 
 typedef Array(char *) StringArray;
@@ -451,10 +452,34 @@ static bool scan_preproc_unary_operator(TSLexer *lexer) {
   return false;
 }
 
+static bool scan_whitespace(Scanner *scanner, TSLexer *lexer,
+                            bool lex_whitespace) {
+    if (!iswblank(lexer->lookahead)) {
+        return false;
+    }
+
+    while (iswblank(lexer->lookahead)) {
+        if (lex_whitespace) {
+            advance(lexer);
+            continue;
+        }
+        skip(lexer);
+    }
+
+    if (!lex_whitespace) {
+        return false;
+    }
+
+    lexer->mark_end(lexer);
+    lexer->result_symbol = WHITESPACE;
+
+    return true;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     // Consume any leading whitespace except newlines
-    while (iswblank(lexer->lookahead)) {
-        skip(lexer);
+    if (scan_whitespace(scanner, lexer, valid_symbols[WHITESPACE])) {
+        return true;
     }
 
     // Close the current statement if we can
