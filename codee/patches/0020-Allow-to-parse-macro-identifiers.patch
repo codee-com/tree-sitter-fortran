@@ -1,15 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Diego Alonso <diego.alonso@appentra.com>
 Date: Thu, 26 Jun 2025 14:04:51 +0200
-Subject: Allow to parse macro identifiers in variable decls
+Subject: Allow to parse macro identifiers
 
 ---
- grammar.js    |   2 +
+ grammar.js    |   4 ++
  src/scanner.c | 141 +++++++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 119 insertions(+), 24 deletions(-)
+ 2 files changed, 121 insertions(+), 24 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 6e79004..40ac8b7 100644
+index 6e79004..1215588 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -67,6 +67,7 @@ module.exports = grammar({
@@ -28,6 +28,22 @@ index 6e79004..40ac8b7 100644
        )),
        optional(seq(',',
          commaSep1(
+@@ -1178,6 +1180,7 @@ module.exports = grammar({
+       // Not strictly valid, but can catch extensions and preprocessor macros
+       $.call_expression,
+       $.include_statement,
++      $.macro_identifier
+     ),
+ 
+     statement_label: $ => prec(1, alias($._integer_literal, 'statement_label')),
+@@ -1941,6 +1944,7 @@ module.exports = grammar({
+       $.implied_do_loop_expression,
+       $.coarray_expression,
+       $.conditional_expression,
++      $.macro_identifier
+     ),
+ 
+     parenthesized_expression: $ => seq(
 diff --git a/src/scanner.c b/src/scanner.c
 index b768d99..e5a37ee 100644
 --- a/src/scanner.c

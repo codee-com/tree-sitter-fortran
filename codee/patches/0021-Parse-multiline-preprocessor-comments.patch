@@ -9,7 +9,7 @@ Subject: Parse multiline preprocessor comments
  2 files changed, 79 insertions(+), 10 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 40ac8b7..b5c11d1 100644
+index 1215588..c6ffa3b 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -75,6 +75,7 @@ module.exports = grammar({
@@ -30,7 +30,7 @@ index 40ac8b7..b5c11d1 100644
  
      preproc_binary_expression: $ => {
        const table = [
-@@ -2466,36 +2468,50 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2468,36 +2470,50 @@ function preprocIf(suffix, content, precedence = 0) {
      );
    }
  
@@ -87,7 +87,7 @@ index 40ac8b7..b5c11d1 100644
        field('condition', $._preproc_expression),
        field('content', content($)),
        field('alternative', optional(alternativeBlock($))),
-@@ -2504,7 +2520,7 @@ function preprocIf(suffix, content, precedence = 0) {
+@@ -2506,7 +2522,7 @@ function preprocIf(suffix, content, precedence = 0) {
      ['preproc_elifdef' + suffix]: $ => prec(precedence, seq(
        choice(preprocessor('elifdef'), preprocessor('elifndef')),
        field('name', $.identifier),

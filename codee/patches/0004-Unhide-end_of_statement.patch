@@ -3918,7 +3918,7 @@ index 1af946a..d6b3f37 100644
 +      (name)
 +      (end_of_statement))))
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index ad47d68..fe7ec84 100644
+index d6bebae..fe7ec84 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -34,57 +34,76 @@ end subroutine foo
@@ -6818,7 +6818,7 @@ index ad47d68..fe7ec84 100644
  (translation_unit
    (program
      (program_statement
--      (name))
+-      name: (name))
 +      name: (name)
 +      (end_of_statement))
      (implicit_statement
