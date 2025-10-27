@@ -4846,6 +4846,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -8120,11 +8130,11 @@
   },
   {
     "type": "none",
-    "named": true
+    "named": false
   },
   {
     "type": "none",
-    "named": false
+    "named": true
   },
   {
     "type": "nopass",
@@ -8405,6 +8415,11 @@
   {
     "type": "while",
     "named": false
+  },
+  {
+    "type": "whitespace",
+    "named": true,
+    "extra": true
   },
   {
     "type": "write",

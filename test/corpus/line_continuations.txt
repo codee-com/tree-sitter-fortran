@@ -13,23 +13,34 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (write_statement
       (unit_identifier)
+      (whitespace)
       (format_identifier
         (prefixed_string_literal
           (string_literal)))
+      (whitespace)
+      (whitespace)
+      (whitespace)
       (keyword_argument
         (identifier)
         (prefixed_string_literal
           (string_literal)))
+      (whitespace)
+      (whitespace)
       (comment)
+      (whitespace)
+      (whitespace)
       (keyword_argument
         (identifier)
         (identifier)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -53,23 +64,36 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (write_statement
       (unit_identifier)
+      (whitespace)
       (format_identifier
         (prefixed_string_literal
           (string_literal)))
+      (whitespace)
+      (whitespace)
       (comment)
+      (whitespace)
+      (whitespace)
       (keyword_argument
         (identifier)
         (prefixed_string_literal
           (string_literal)))
+      (whitespace)
+      (whitespace)
+      (whitespace)
       (keyword_argument
         (identifier)
-        (identifier)))
+        (identifier))
+      (whitespace)
+      (whitespace))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -86,15 +110,25 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (identifier)
+      (whitespace)
+      (whitespace)
       (comment)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -116,28 +150,44 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (function
         (function_statement
+          (whitespace)
           (name)
           (parameters
+            (whitespace)
+            (whitespace)
             (identifier))
+          (whitespace)
+          (whitespace)
           (comment)
+          (whitespace)
           (function_result
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -156,19 +206,24 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (write_statement
       (unit_identifier)
+      (whitespace)
       (format_identifier
         (statement_label_reference)))
     (end_of_statement)
     (statement_label)
+    (whitespace)
     (format_statement
       (transfer_items
         (string_literal)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -191,33 +246,52 @@ end program ! comment
   (comment)
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (number_literal))
+    (whitespace)
     (end_of_statement)
     (comment)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (number_literal
         (identifier)))
+    (whitespace)
     (end_of_statement)
     (comment)
     (internal_procedures
       (contains_statement)
+      (whitespace)
       (end_of_statement)
       (comment)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
+          (whitespace)
           (end_of_statement))
         (comment)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
+          (whitespace)
           (end_of_statement))))
     (comment)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (end_of_statement)))
   (comment)
   (comment))
@@ -243,44 +317,61 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (prefixed_string_literal
           (string_literal))))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (prefixed_string_literal
           (string_literal))))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (prefixed_string_literal
           (string_literal))))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (concatenation_expression
           (prefixed_string_literal
             (string_literal))
+          (whitespace)
+          (whitespace)
+          (whitespace)
           (prefixed_string_literal
             (string_literal)))))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (prefixed_string_literal
           (string_literal))
+        (whitespace)
+        (whitespace)
         (prefixed_string_literal
           (string_literal))))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -300,27 +391,35 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (statement_label)
+    (whitespace)
     (format_statement
       (transfer_items
         (edit_descriptor)
+        (whitespace)
         (hollerith_constant)))
     (end_of_statement)
     (statement_label)
+    (whitespace)
     (format_statement
       (transfer_items
         (edit_descriptor)
+        (whitespace)
         (hollerith_constant)))
     (end_of_statement)
     (statement_label)
+    (whitespace)
     (format_statement
       (transfer_items
         (edit_descriptor)
+        (whitespace)
         (hollerith_constant)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -338,21 +437,35 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (init_declarator
         (sized_declarator
           (identifier)
           (size
             (number_literal)))
+        (whitespace)
+        (whitespace)
         (array_literal
+          (whitespace)
           (number_literal)
+          (whitespace)
+          (whitespace)
           (number_literal)
           (ERROR
-            (number_literal)))))
+            (whitespace)
+            (whitespace)
+            (number_literal))
+          (whitespace))))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))

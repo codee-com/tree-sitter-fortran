@@ -68,12 +68,14 @@ module.exports = grammar({
     $._preproc_unary_operator,
     $.hollerith_constant,
     $.macro_identifier,
+    $.whitespace,
   ],
 
   extras: $ => [
     // This allows escaping newlines everywhere, although this is only valid in
     // preprocessor statements
     /\s|\\\r?\n/,
+    $.whitespace,
     $.comment,
     $.multiline_preproc_comment,
     '&',
@@ -159,6 +161,16 @@ module.exports = grammar({
     preproc_def: $ => seq(
       preprocessor('define'),
       field('name', $.identifier),
+      // HACK: This `optional($.whitespace)` is a workaround to prevent
+      // `tree-sitter` from misinterpreting `#define FOO (bar * baz)` as a
+      // `preproc_function_def`. For reasons related to how `token.immediate()`
+      // detects adjacent tokens, explicitly naming the whitespace rule causes
+      // the parser to think the opening parenthesis after `FOO` is immediately
+      // following it, which makes it match the function-like form instead of
+      // the object-like one. Adding an optional `whitespace` node here breaks
+      // that ambiguity and forces `tree-sitter` to correctly parse it as a
+      // regular `preproc_def`
+      optional($.whitespace),
       field('value', optional($.preproc_arg)),
       $._external_end_of_statement,
     ),

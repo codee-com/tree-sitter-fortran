@@ -15,6 +15,7 @@ enum TokenType {
     PREPROC_UNARY_OPERATOR,
     HOLLERITH_CONSTANT,
     MACRO_IDENTIFIER,
+    WHITESPACE,
 };
 
 typedef Array(char *) StringArray;
@@ -451,10 +452,28 @@ static bool scan_preproc_unary_operator(TSLexer *lexer) {
   return false;
 }
 
+static bool is_horizontal_whitespace(int32_t c) {
+    return c == ' ' || c == '\t';
+}
+
+static bool scan_horizontal_whitespace(TSLexer *lexer) {
+    if (!is_horizontal_whitespace(lexer->lookahead)) {
+        return false;
+    }
+    while (is_horizontal_whitespace(lexer->lookahead)) {
+        advance(lexer);
+    }
+    lexer->mark_end(lexer);
+    lexer->result_symbol = WHITESPACE;
+    return true;
+}
+
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
-    // Consume any leading whitespace except newlines
-    while (iswblank(lexer->lookahead)) {
-        skip(lexer);
+    if (valid_symbols[WHITESPACE]) {
+        // Consume any leading whitespace except newlines
+        if (scan_horizontal_whitespace(lexer)) {
+            return true;
+        }
     }
 
     // Close the current statement if we can
@@ -468,6 +487,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     // statements, so we should eat all whitespace including
     // newlines, until we come to something more interesting
     while (iswspace(lexer->lookahead)) {
+        if (valid_symbols[WHITESPACE]) {
+            // If whitespace tokens are valid, emit them explicitly
+            if (scan_horizontal_whitespace(lexer)) {
+                return true;
+            }
+        } else if (is_horizontal_whitespace(lexer->lookahead)) {
+            // Otherwise, `assert` if we encounter horizontal whitespace that
+            // would be skipped silently (likely a bug)
+            assert(false && "Silently skipping horizontal whitespace!!");
+        }
         skip(lexer);
     }
 

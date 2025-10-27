@@ -160,6 +160,18 @@
           }
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "whitespace"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "value",
           "content": {
@@ -22192,6 +22204,10 @@
     },
     {
       "type": "SYMBOL",
+      "name": "whitespace"
+    },
+    {
+      "type": "SYMBOL",
       "name": "comment"
     },
     {
@@ -22344,6 +22360,10 @@
     {
       "type": "SYMBOL",
       "name": "macro_identifier"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "whitespace"
     }
   ],
   "inline": [

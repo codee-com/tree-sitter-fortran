@@ -13,15 +13,20 @@ END PROGRAM TEST
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (end_program_statement
+      (whitespace)
       (end_of_statement)))
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -77,35 +82,55 @@ end module
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (private_statement)
     (end_of_statement)
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name)))
     (end_of_statement)
+    (whitespace)
     (interface
       (interface_statement
+        (whitespace)
         (name)
         (end_of_statement))
+      (whitespace)
       (procedure_statement
-        (procedure_kind)
+        (procedure_kind
+          (whitespace))
+        (whitespace)
         (method_name
           (name)))
+      (whitespace)
       (procedure_statement
-        (procedure_kind)
+        (procedure_kind
+          (whitespace))
+        (whitespace)
         (method_name
           (name)))
+      (whitespace)
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
       (type_qualifier)
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (math_expression
           (call_expression
             (identifier)
@@ -116,18 +141,27 @@ end module
             (argument_list
               (number_literal))))))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
       (type_qualifier)
+      (whitespace)
+      (whitespace)
       (identifier)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (concatenation_expression
           (call_expression
             (identifier)
@@ -135,14 +169,20 @@ end module
               (number_literal)))
           (prefixed_string_literal
             (string_literal)))))
+    (whitespace)
     (end_of_statement)
     (comment)
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (concatenation_expression
           (call_expression
             (identifier)
@@ -150,14 +190,20 @@ end module
               (number_literal)))
           (prefixed_string_literal
             (string_literal)))))
+    (whitespace)
     (end_of_statement)
     (comment)
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (concatenation_expression
           (call_expression
             (identifier)
@@ -165,52 +211,81 @@ end module
               (number_literal)))
           (prefixed_string_literal
             (string_literal)))))
+    (whitespace)
     (end_of_statement)
     (comment)
+    (whitespace)
     (public_statement
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (public_statement
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (function
         (function_statement
+          (whitespace)
           (name)
           (parameters
             (identifier)
+            (whitespace)
             (identifier))
+          (whitespace)
           (function_result
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type
             (kind
               (number_literal)))
+          (whitespace)
+          (whitespace)
           (identifier)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
           (end_of_statement)))
+      (whitespace)
       (function
         (function_statement
+          (whitespace)
           (name)
           (parameters
             (identifier)
+            (whitespace)
             (identifier))
+          (whitespace)
           (function_result
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
+          (whitespace)
           (identifier)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
           (end_of_statement))))
     (end_module_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -236,19 +311,26 @@ end interface
   (interface
     (interface_statement
       (end_of_statement))
+    (whitespace)
     (subroutine
       (subroutine_statement
+        (whitespace)
         (name)
         (parameters
           (identifier)
           (identifier)
           (identifier))
         (end_of_statement))
+      (whitespace)
       (implicit_statement
+        (whitespace)
         (none))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier)
         (sized_declarator
           (identifier)
@@ -256,37 +338,57 @@ end interface
             (number_literal)
             (number_literal))))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
+    (whitespace)
     (function
       (function_statement
+        (whitespace)
         (name)
         (parameters
           (identifier)
           (identifier))
         (end_of_statement))
+      (whitespace)
       (implicit_statement
+        (whitespace)
         (none))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
         (type_qualifier)
+        (whitespace)
+        (whitespace)
         (identifier)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_function_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_interface_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -312,20 +414,28 @@ end interface
   (interface
     (interface_statement
       (abstract_specifier)
+      (whitespace)
       (end_of_statement))
+    (whitespace)
     (subroutine
       (subroutine_statement
+        (whitespace)
         (name)
         (parameters
           (identifier)
           (identifier)
           (identifier))
         (end_of_statement))
+      (whitespace)
       (implicit_statement
+        (whitespace)
         (none))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier)
         (sized_declarator
           (identifier)
@@ -333,37 +443,57 @@ end interface
             (number_literal)
             (number_literal))))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_subroutine_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
+    (whitespace)
     (function
       (function_statement
+        (whitespace)
         (name)
         (parameters
           (identifier)
           (identifier))
         (end_of_statement))
+      (whitespace)
       (implicit_statement
+        (whitespace)
         (none))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
         (type_qualifier)
+        (whitespace)
+        (whitespace)
         (identifier)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_function_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_interface_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -380,17 +510,25 @@ end interface
 (translation_unit
   (interface
     (interface_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
     (end_interface_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -415,49 +553,78 @@ end interface operator (.not.)
 (translation_unit
   (interface
     (interface_statement
+      (whitespace)
       (operator
+        (whitespace)
         (operator_name))
       (end_of_statement))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
     (end_interface_statement
+      (whitespace)
+      (whitespace)
       (operator
+        (whitespace)
         (operator_name))
       (end_of_statement)))
   (interface
     (interface_statement
+      (whitespace)
       (operator
+        (whitespace)
         (operator_name))
       (end_of_statement))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
+    (whitespace)
     (function
       (function_statement
+        (whitespace)
         (name)
         (parameters
           (identifier))
         (end_of_statement))
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
         (type_qualifier)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_function_statement
+        (whitespace)
         (end_of_statement)))
     (end_interface_statement
+      (whitespace)
+      (whitespace)
       (operator
+        (whitespace)
         (operator_name))
       (end_of_statement))))
 
@@ -474,14 +641,22 @@ end interface assignment (=)
 (translation_unit
   (interface
     (interface_statement
-      (assignment)
+      (whitespace)
+      (assignment
+        (whitespace))
       (end_of_statement))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
     (end_interface_statement
-      (assignment)
+      (whitespace)
+      (whitespace)
+      (assignment
+        (whitespace))
       (end_of_statement))))
 
 ================================================================================
@@ -495,14 +670,22 @@ interface operator(+) ; module procedure test_plus ; end interface
 (translation_unit
   (interface
     (interface_statement
+      (whitespace)
       (operator
         (operator_name))
+      (whitespace)
       (end_of_statement))
+    (whitespace)
     (procedure_statement
-      (procedure_kind)
+      (procedure_kind
+        (whitespace))
+      (whitespace)
       (method_name
         (name)))
+    (whitespace)
+    (whitespace)
     (end_interface_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -520,24 +703,36 @@ end module
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name))
       (included_items
+        (whitespace)
+        (whitespace)
         (operator
           (operator_name))
+        (whitespace)
         (assignment)))
     (end_of_statement)
+    (whitespace)
     (public_statement
+      (whitespace)
+      (whitespace)
       (assignment))
     (end_of_statement)
+    (whitespace)
     (private_statement
+      (whitespace)
       (operator
         (operator_name)))
     (end_of_statement)
     (end_module_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -580,119 +775,178 @@ END SUBROUTINE
   (subroutine
     (subroutine_statement
       (procedure_qualifier)
+      (whitespace)
       (procedure_qualifier)
+      (whitespace)
+      (whitespace)
       (name)
       (parameters
         (identifier))
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
       (type_qualifier)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
       (type_qualifier)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (math_expression
         (identifier)
+        (whitespace)
+        (whitespace)
         (identifier)))
     (end_of_statement)
     (end_subroutine_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement)))
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (end_subroutine_statement
+      (whitespace)
       (end_of_statement)))
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
       (parameters
         (identifier)
+        (whitespace)
         (identifier))
+      (whitespace)
       (language_binding
         (identifier))
       (end_of_statement))
     (end_subroutine_statement
+      (whitespace)
       (end_of_statement)))
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
+      (whitespace)
       (language_binding
         (identifier)
+        (whitespace)
         (keyword_argument
           (identifier)
           (prefixed_string_literal
             (string_literal))))
       (end_of_statement))
     (end_subroutine_statement
+      (whitespace)
       (end_of_statement)))
   (subroutine
     (subroutine_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (subroutine_call
+      (whitespace)
       (identifier)
       (argument_list
         (prefixed_string_literal
           (string_literal))
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (parameters
             (identifier)
+            (whitespace)
             (identifier)
+            (whitespace)
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (variable_declaration
           (intrinsic_type
             (kind
               (assumed_size)))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (variable_declaration
           (intrinsic_type
             (kind
               (assumed_size)
               (assumed_size)))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (assignment_statement
           (identifier)
+          (whitespace)
+          (whitespace)
           (call_expression
             (identifier)
             (argument_list
               (identifier))))
         (end_of_statement)
+        (whitespace)
         (keyword_statement)
         (end_of_statement)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
           (end_of_statement))))
     (end_subroutine_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -733,101 +987,143 @@ end function
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (comment)
+    (whitespace)
     (use_statement
+      (whitespace)
       (module_name
         (name)))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (call_expression
         (identifier)
         (argument_list)))
     (end_of_statement)
     (end_function_statement
+      (whitespace)
       (end_of_statement)))
   (function
     (function_statement
       (derived_type
         (type_name))
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (comment)
+    (whitespace)
     (variable_declaration
       (derived_type
         (type_name))
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (derived_type_member_expression
         (identifier)
         (type_member))
+      (whitespace)
+      (whitespace)
       (number_literal))
     (end_of_statement)
+    (whitespace)
     (assignment_statement
       (identifier)
+      (whitespace)
+      (whitespace)
       (identifier))
     (end_of_statement)
     (end_function_statement
+      (whitespace)
       (end_of_statement)))
   (function
     (function_statement
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (name)
       (parameters
         (identifier)
+        (whitespace)
         (identifier))
+      (whitespace)
       (language_binding
         (identifier))
       (end_of_statement))
     (end_function_statement
+      (whitespace)
       (end_of_statement)))
   (function
     (function_statement
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (name)
+      (whitespace)
       (language_binding
         (identifier)
+        (whitespace)
         (keyword_argument
           (identifier)
           (prefixed_string_literal
             (string_literal))))
       (end_of_statement))
     (end_function_statement
+      (whitespace)
       (end_of_statement)))
   (function
     (function_statement
+      (whitespace)
       (name)
+      (whitespace)
       (function_result
         (identifier))
+      (whitespace)
       (language_binding
         (identifier)
+        (whitespace)
         (keyword_argument
           (identifier)
           (prefixed_string_literal
             (string_literal))))
       (end_of_statement))
     (end_function_statement
+      (whitespace)
       (end_of_statement)))
   (function
     (function_statement
+      (whitespace)
       (name)
+      (whitespace)
       (language_binding
         (identifier)
+        (whitespace)
         (keyword_argument
           (identifier)
           (prefixed_string_literal
             (string_literal))))
+      (whitespace)
       (function_result
         (identifier))
       (end_of_statement))
     (end_function_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -861,88 +1157,141 @@ end function test
   (function
     (function_statement
       (procedure_qualifier)
+      (whitespace)
       (procedure_qualifier)
+      (whitespace)
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (name)
       (parameters
         (identifier)
+        (whitespace)
         (identifier))
+      (whitespace)
       (function_result
         (identifier))
       (end_of_statement))
+    (whitespace)
     (variable_declaration
       (intrinsic_type
         (kind
           (number_literal)))
+      (whitespace)
+      (whitespace)
       (identifier)
+      (whitespace)
       (identifier))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (parenthesized_expression
           (relational_expression
             (identifier)
+            (whitespace)
+            (whitespace)
             (identifier)))))
     (end_of_statement)
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (function
         (function_statement
           (intrinsic_type)
+          (whitespace)
           (procedure_qualifier)
+          (whitespace)
+          (whitespace)
           (name)
+          (whitespace)
           (function_result
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type
             (kind
               (number_literal)))
+          (whitespace)
           (init_declarator
             (identifier)
+            (whitespace)
+            (whitespace)
             (number_literal)))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
           (end_of_statement)))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (parameters
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (assignment_statement
           (identifier)
+          (whitespace)
+          (whitespace)
           (math_expression
             (identifier)
+            (whitespace)
+            (whitespace)
             (number_literal)))
         (end_of_statement)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
           (end_of_statement)))
+      (whitespace)
       (function
         (function_statement
           (intrinsic_type)
+          (whitespace)
           (procedure_qualifier)
+          (whitespace)
           (procedure_qualifier)
+          (whitespace)
+          (whitespace)
           (name)
           (parameters
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (derived_type
             (type_name))
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_function_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -984,161 +1333,262 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (type_name)
         (end_of_statement))
+      (whitespace)
       (end_type_statement
+        (whitespace)
         (end_of_statement)))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (access_specifier)
+        (whitespace)
+        (whitespace)
         (type_name)
         (end_of_statement))
+      (whitespace)
       (end_of_statement)
+      (whitespace)
       (private_statement)
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type
           (kind
             (number_literal)))
+        (whitespace)
+        (whitespace)
         (identifier)
         (identifier)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (identifier)
         (identifier)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type
           (kind
             (identifier)))
+        (whitespace)
         (type_qualifier)
+        (whitespace)
         (type_qualifier
           (argument_list
             (extent_specifier)
+            (whitespace)
             (extent_specifier)
+            (whitespace)
             (extent_specifier)))
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (procedure
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
           (procedure_attribute))
+        (whitespace)
+        (whitespace)
         (pointer_init_declarator
           (identifier)
+          (whitespace)
+          (whitespace)
           (null_literal)))
       (end_of_statement)
+      (whitespace)
       (derived_type_procedures
         (contains_statement)
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (method_name
             (name)))
+        (whitespace)
         (comment)
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (method_name
             (name)))
+        (whitespace)
         (comment)
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
           (procedure_attribute
             (identifier))
+          (whitespace)
+          (whitespace)
           (method_name
             (name)))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (binding
             (binding_name
               (identifier))
+            (whitespace)
+            (whitespace)
             (method_name
               (name)))
+          (whitespace)
           (method_name
             (name)))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (binding
             (binding_name
               (assignment))
+            (whitespace)
+            (whitespace)
             (method_name
               (name))))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (binding
             (binding_name
               (operator
                 (operator_name)))
+            (whitespace)
+            (whitespace)
             (method_name
               (name))))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
+          (whitespace)
           (method_name
             (name))
+          (whitespace)
           (binding
             (binding_name
               (identifier))
+            (whitespace)
+            (whitespace)
             (method_name
               (name))))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
+          (whitespace)
           (method_name
             (name))))
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (abstract_specifier)
+        (whitespace)
+        (whitespace)
         (type_name)
         (derived_type_parameter_list
           (identifier)
+          (whitespace)
           (identifier))
         (end_of_statement))
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
         (type_qualifier)
+        (whitespace)
+        (whitespace)
         (init_declarator
           (identifier)
+          (whitespace)
+          (whitespace)
           (call_expression
             (identifier)
             (argument_list
               (number_literal)))))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type
+          (whitespace)
           (kind
             (call_expression
               (identifier)
               (argument_list
                 (number_literal)))))
+        (whitespace)
         (type_qualifier)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type
           (kind
             (identifier)))
+        (whitespace)
+        (whitespace)
         (sized_declarator
           (identifier)
           (size
             (identifier)
+            (whitespace)
             (identifier))))
       (end_of_statement)
+      (whitespace)
       (end_type_statement
+        (whitespace)
         (end_of_statement)))
+    (whitespace)
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -1157,28 +1607,46 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       name: (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         access: (access_specifier)
+        (whitespace)
         (abstract_specifier)
+        (whitespace)
+        (whitespace)
         name: (type_name)
         (end_of_statement))
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         access: (access_specifier)
+        (whitespace)
         base: (base_type_specifier
           (identifier))
+        (whitespace)
+        (whitespace)
         name: (type_name)
         (end_of_statement))
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -1201,35 +1669,54 @@ end program
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (type_name)
         (end_of_statement))
+      (whitespace)
       (derived_type_procedures
         (contains_statement)
+        (whitespace)
         (procedure_statement
           (procedure_kind)
           (procedure_interface)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (method_name
             (name))))
+      (whitespace)
       (end_type_statement
+        (whitespace)
         (end_of_statement)))
+    (whitespace)
     (interface
       (interface_statement
         (abstract_specifier)
+        (whitespace)
         (end_of_statement))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
           (end_of_statement)))
+      (whitespace)
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
     (end_program_statement
+      (whitespace)
       (end_of_statement))))
 
 ================================================================================
@@ -1250,28 +1737,45 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (type_name)
         (end_of_statement))
+      (whitespace)
       (derived_type_procedures
         (contains_statement)
+        (whitespace)
         (private_statement)
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
+          (whitespace)
           (method_name
             (name)))
+        (whitespace)
         (procedure_statement
           (procedure_kind)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
+          (whitespace)
           (method_name
             (name))))
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1291,35 +1795,57 @@ end program test
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (derived_type_definition
       (derived_type_statement
+        (whitespace)
         (type_name)
         (end_of_statement))
+      (whitespace)
       (variable_declaration
         (procedure
           (procedure_interface)
+          (whitespace)
           (procedure_attribute))
+        (whitespace)
+        (whitespace)
         (pointer_init_declarator
           (identifier)
+          (whitespace)
+          (whitespace)
           (null_literal))
+        (whitespace)
         (pointer_init_declarator
           (identifier)
+          (whitespace)
+          (whitespace)
           (null_literal
             (identifier))))
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (procedure
           (procedure_interface)
+          (whitespace)
           (procedure_attribute)
+          (whitespace)
           (procedure_attribute))
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (end_type_statement
+        (whitespace)
+        (whitespace)
         (name)
         (end_of_statement)))
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1346,15 +1872,19 @@ END SUBMODULE ConstructorMethods_child
     (submodule_statement
       (module_name
         (name))
+      (whitespace)
       (name)
       (end_of_statement))
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
     (internal_procedures
       (contains_statement)
       (end_of_statement))
     (end_submodule_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement)))
   (submodule
@@ -1363,15 +1893,19 @@ END SUBMODULE ConstructorMethods_child
         (name))
       (module_name
         (name))
+      (whitespace)
       (name)
       (end_of_statement))
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
     (internal_procedures
       (contains_statement)
       (end_of_statement))
     (end_submodule_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1402,6 +1936,7 @@ END MODULE BoundingBox_Method
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
     (private_statement)
@@ -1409,51 +1944,79 @@ END MODULE BoundingBox_Method
     (interface
       (interface_statement
         (end_of_statement))
+      (whitespace)
       (subroutine
         (subroutine_statement
           (procedure_qualifier)
+          (whitespace)
           (procedure_qualifier)
+          (whitespace)
+          (whitespace)
           (name)
           (parameters
             (identifier)
+            (whitespace)
             (identifier)
+            (whitespace)
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (derived_type
             (type_name))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
     (interface
       (interface_statement
         (end_of_statement))
+      (whitespace)
       (function
         (function_statement
           (procedure_qualifier)
+          (whitespace)
+          (whitespace)
           (name)
           (parameters
             (identifier))
+          (whitespace)
           (function_result
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (derived_type
             (type_name))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (end_function_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1480,43 +2043,65 @@ end module test
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (interface
       (interface_statement
         (abstract_specifier)
+        (whitespace)
         (end_of_statement))
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (end_of_statement))
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement)))
+      (whitespace)
       (end_interface_statement
+        (whitespace)
         (end_of_statement)))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
+      (whitespace)
       (subroutine
         (subroutine_statement
+          (whitespace)
           (name)
           (parameters
             (identifier)
+            (whitespace)
             (identifier)
+            (whitespace)
             (identifier))
           (end_of_statement))
+        (whitespace)
         (variable_declaration
           (procedure
             (procedure_interface))
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (variable_declaration
           (procedure
             (procedure_interface))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (variable_declaration
           (procedure
             (intrinsic_type
@@ -1524,17 +2109,27 @@ end module test
                 (keyword_argument
                   (identifier)
                   (identifier)))))
+          (whitespace)
           (type_qualifier)
+          (whitespace)
+          (whitespace)
           (identifier))
         (end_of_statement)
+        (whitespace)
         (subroutine_call
+          (whitespace)
           (identifier)
           (argument_list))
         (end_of_statement)
+        (whitespace)
         (end_subroutine_statement
+          (whitespace)
+          (whitespace)
           (name)
           (end_of_statement))))
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1565,64 +2160,103 @@ end program block_demo
 (translation_unit
   (program
     (program_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (implicit_statement
+      (whitespace)
       (none))
     (end_of_statement)
+    (whitespace)
     (variable_declaration
       (intrinsic_type)
+      (whitespace)
+      (whitespace)
       (init_declarator
         (identifier)
+        (whitespace)
+        (whitespace)
         (number_literal)))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (block_construct
       (end_of_statement)
+      (whitespace)
       (variable_declaration
         (intrinsic_type)
+        (whitespace)
+        (whitespace)
         (init_declarator
           (identifier)
+          (whitespace)
+          (whitespace)
           (number_literal)))
       (end_of_statement)
+      (whitespace)
       (print_statement
         (format_identifier)
+        (whitespace)
         (output_item_list
           (identifier)))
       (end_of_statement)
+      (whitespace)
       (assignment_statement
         (identifier)
+        (whitespace)
+        (whitespace)
         (identifier))
       (end_of_statement)
+      (whitespace)
       (block_construct
         (block_label_start_expression)
+        (whitespace)
         (end_of_statement)
+        (whitespace)
         (variable_declaration
           (intrinsic_type)
+          (whitespace)
+          (whitespace)
           (init_declarator
             (identifier)
+            (whitespace)
+            (whitespace)
             (number_literal)))
         (end_of_statement)
+        (whitespace)
         (print_statement
           (format_identifier)
+          (whitespace)
           (output_item_list
             (identifier)))
         (end_of_statement)
+        (whitespace)
         (end_block_construct_statement
+          (whitespace)
+          (whitespace)
           (block_label)))
       (end_of_statement)
-      (end_block_construct_statement))
+      (whitespace)
+      (end_block_construct_statement
+        (whitespace)))
     (end_of_statement)
+    (whitespace)
     (print_statement
       (format_identifier)
+      (whitespace)
       (output_item_list
         (identifier)))
     (end_of_statement)
     (end_program_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1642,22 +2276,41 @@ end module enumeration_mod
 (translation_unit
   (module
     (module_statement
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (enumeration_type
       (enumeration_type_statement
+        (whitespace)
+        (whitespace)
         (access_specifier)
+        (whitespace)
+        (whitespace)
         (type_name))
+      (whitespace)
       (enumerator_statement
+        (whitespace)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier))
+      (whitespace)
       (enumerator_statement
+        (whitespace)
         (identifier))
+      (whitespace)
       (end_enumeration_type_statement
+        (whitespace)
+        (whitespace)
+        (whitespace)
         (name)))
     (end_of_statement)
     (end_module_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
 
@@ -1718,198 +2371,331 @@ Block Data (Obsolescent)
 --------------------------------------------------------------------------------
 
 (translation_unit
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (whitespace)
+      (end_of_statement)))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name)
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (end_of_statement)))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name)
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
     (end_block_data_statement
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
+      (whitespace)
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
-      (end_of_statement)))
-  (block_data
-    (block_data_statement
-      (name)
-      (end_of_statement))
-    (common_statement
-      (variable_group
-        (name)
-        (identifier)
-        (identifier)
-        (identifier)))
-    (end_of_statement)
-    (data_statement
-      (data_set
-        (identifier)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (end_block_data_statement
-      (end_of_statement)))
-  (block_data
-    (block_data_statement
-      (name)
-      (end_of_statement))
-    (common_statement
-      (variable_group
-        (name)
-        (identifier)
-        (identifier)
-        (identifier)))
-    (end_of_statement)
-    (data_statement
-      (data_set
-        (identifier)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (end_block_data_statement
+      (whitespace)
       (name)
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
+      (whitespace)
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
+      (whitespace)
       (name)
       (end_of_statement)))
+  (whitespace)
   (block_data
     (block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))
+    (whitespace)
     (common_statement
+      (whitespace)
       (variable_group
         (name)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)
+        (whitespace)
         (identifier)))
     (end_of_statement)
+    (whitespace)
     (data_statement
+      (whitespace)
       (data_set
         (identifier)
+        (whitespace)
         (data_value
           (number_literal))))
     (end_of_statement)
+    (whitespace)
     (end_block_data_statement
+      (whitespace)
+      (whitespace)
       (name)
       (end_of_statement))))
