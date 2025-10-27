@@ -134,8 +134,8 @@
           }
         },
         {
-          "type": "PATTERN",
-          "value": "\\r?\\n"
+          "type": "SYMBOL",
+          "name": "_external_end_of_statement"
         }
       ]
     },
@@ -176,15 +176,8 @@
           }
         },
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 1,
-            "content": {
-              "type": "PATTERN",
-              "value": "\\r?\\n"
-            }
-          }
+          "type": "SYMBOL",
+          "name": "_external_end_of_statement"
         }
       ]
     },
@@ -233,11 +226,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "SYMBOL",
+          "name": "_external_end_of_statement"
         }
       ]
     },
@@ -336,11 +326,8 @@
           }
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "SYMBOL",
+          "name": "_external_end_of_statement"
         }
       ]
     },

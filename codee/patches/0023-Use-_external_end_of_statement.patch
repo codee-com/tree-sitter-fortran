@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Mon, 27 Oct 2025 15:27:51 +0100
+Subject: Use `_external_end_of_statement`
+
+---
+ grammar.js | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index f1c074f..a19a824 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -153,14 +153,14 @@ module.exports = grammar({
+         $.system_lib_string,
+         alias($.preproc_call_expression, $.call_expression),
+       )),
+-      /\r?\n/,
++      $._external_end_of_statement,
+     ),
+ 
+     preproc_def: $ => seq(
+       preprocessor('define'),
+       field('name', $.identifier),
+       field('value', optional($.preproc_arg)),
+-      token(prec(1, /\r?\n/)), // force newline to win over preproc_arg
++      $._external_end_of_statement,
+     ),
+ 
+     preproc_function_def: $ => seq(
+@@ -168,7 +168,7 @@ module.exports = grammar({
+       field('name', $.identifier),
+       field('parameters', $.preproc_params),
+       field('value', optional($.preproc_arg)),
+-      token.immediate(/\r?\n/),
++      $._external_end_of_statement,
+     ),
+ 
+     preproc_params: $ => seq(
+@@ -178,7 +178,7 @@ module.exports = grammar({
+     preproc_call: $ => seq(
+       field('directive', $.preproc_directive),
+       field('argument', optional($.preproc_arg)),
+-      token.immediate(/\r?\n/),
++      $._external_end_of_statement,
+     ),
+ 
+     ...preprocIf('', $ => repeat($._top_level_item)),

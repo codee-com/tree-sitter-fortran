@@ -153,14 +153,14 @@ module.exports = grammar({
         $.system_lib_string,
         alias($.preproc_call_expression, $.call_expression),
       )),
-      /\r?\n/,
+      $._external_end_of_statement,
     ),
 
     preproc_def: $ => seq(
       preprocessor('define'),
       field('name', $.identifier),
       field('value', optional($.preproc_arg)),
-      token(prec(1, /\r?\n/)), // force newline to win over preproc_arg
+      $._external_end_of_statement,
     ),
 
     preproc_function_def: $ => seq(
@@ -168,7 +168,7 @@ module.exports = grammar({
       field('name', $.identifier),
       field('parameters', $.preproc_params),
       field('value', optional($.preproc_arg)),
-      token.immediate(/\r?\n/),
+      $._external_end_of_statement,
     ),
 
     preproc_params: $ => seq(
@@ -178,7 +178,7 @@ module.exports = grammar({
     preproc_call: $ => seq(
       field('directive', $.preproc_directive),
       field('argument', optional($.preproc_arg)),
-      token.immediate(/\r?\n/),
+      $._external_end_of_statement,
     ),
 
     ...preprocIf('', $ => repeat($._top_level_item)),
