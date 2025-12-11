@@ -9,7 +9,7 @@ Subject: Allow to parse macro identifiers
  2 files changed, 121 insertions(+), 24 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 6e79004..1215588 100644
+index d40361e..9685d86 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -67,6 +67,7 @@ module.exports = grammar({
@@ -20,7 +20,7 @@ index 6e79004..1215588 100644
    ],
  
    extras: $ => [
-@@ -870,6 +871,7 @@ module.exports = grammar({
+@@ -873,6 +874,7 @@ module.exports = grammar({
          $.derived_type,
          alias($.procedure_declaration, $.procedure),
          $.declared_type,
@@ -28,7 +28,7 @@ index 6e79004..1215588 100644
        )),
        optional(seq(',',
          commaSep1(
-@@ -1178,6 +1180,7 @@ module.exports = grammar({
+@@ -1181,6 +1183,7 @@ module.exports = grammar({
        // Not strictly valid, but can catch extensions and preprocessor macros
        $.call_expression,
        $.include_statement,
@@ -36,7 +36,7 @@ index 6e79004..1215588 100644
      ),
  
      statement_label: $ => prec(1, alias($._integer_literal, 'statement_label')),
-@@ -1941,6 +1944,7 @@ module.exports = grammar({
+@@ -1950,6 +1953,7 @@ module.exports = grammar({
        $.implied_do_loop_expression,
        $.coarray_expression,
        $.conditional_expression,

@@ -8,10 +8,10 @@ Subject: Unhide `class_default` children
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/grammar.js b/grammar.js
-index 14d3573..bfe768f 100644
+index 326e354..d40361e 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -1606,7 +1606,7 @@ module.exports = grammar({
+@@ -1617,7 +1617,7 @@ module.exports = grammar({
      ),
  
      // Standalone rule otherwise it gets aliased as '(default) (default)'

@@ -5,15 +5,15 @@ Subject: Unalias keywords that are `identifier`s
 
 so they don't show as unnamed children of `identifier`s nodes.
 ---
- grammar.js                  | 126 ++++++++++++++++++------------------
+ grammar.js                  | 130 ++++++++++++++++++------------------
  test/corpus/expressions.txt |  31 +++++++++
- 2 files changed, 94 insertions(+), 63 deletions(-)
+ 2 files changed, 96 insertions(+), 65 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index a89ba01..4e6a7f1 100644
+index 4f84bdb..bd68a65 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -2281,69 +2281,69 @@ module.exports = grammar({
+@@ -2292,71 +2292,71 @@ module.exports = grammar({
      // add the keywords here -- and possibly in `conflicts` too.
      identifier: $ => choice(
        /[a-zA-Z_$][\w$]*/,
@@ -31,6 +31,7 @@ index a89ba01..4e6a7f1 100644
 -      caseInsensitive('data'),
 -      caseInsensitive('device'),
 -      prec(-1, caseInsensitive('dimension')),
+-      caseInsensitive('do'),
 -      caseInsensitive('double'),
 -      caseInsensitive('else'),
 -      caseInsensitive('elseif'),
@@ -43,6 +44,7 @@ index a89ba01..4e6a7f1 100644
 -      caseInsensitive('external'),
 -      caseInsensitive('fail'),
 -      prec(-1, caseInsensitive('flush')),
+-      caseInsensitive('fmt'),
 -      caseInsensitive('form'),
 -      caseInsensitive('format'),
 -      caseInsensitive('go'),
@@ -94,6 +96,7 @@ index a89ba01..4e6a7f1 100644
 +      caseInsensitive('data', false),
 +      caseInsensitive('device', false),
 +      prec(-1, caseInsensitive('dimension', false)),
++      caseInsensitive('do', false),
 +      caseInsensitive('double', false),
 +      caseInsensitive('else', false),
 +      caseInsensitive('elseif', false),
@@ -106,6 +109,7 @@ index a89ba01..4e6a7f1 100644
 +      caseInsensitive('external', false),
 +      caseInsensitive('fail', false),
 +      prec(-1, caseInsensitive('flush', false)),
++      caseInsensitive('fmt', false),
 +      caseInsensitive('form', false),
 +      caseInsensitive('format', false),
 +      caseInsensitive('go', false),
@@ -147,10 +151,10 @@ index a89ba01..4e6a7f1 100644
  
      comment: $ => token(seq('!', /.*/)),
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 7032b51..c5a8f3d 100644
+index 384393d..63781fa 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -1348,3 +1348,34 @@ end program test
+@@ -1355,3 +1355,34 @@ end program test
      (comment)
      (end_program_statement
        (name))))

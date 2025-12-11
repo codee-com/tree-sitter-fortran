@@ -12,10 +12,10 @@ from being explicitly represented in the tree.
  3 files changed, 31 insertions(+), 12 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index af06d68..14d3573 100644
+index 200a76a..326e354 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -722,9 +722,10 @@ module.exports = grammar({
+@@ -725,9 +725,10 @@ module.exports = grammar({
      ),
  
      implicit_range: $ => seq(
@@ -28,7 +28,7 @@ index af06d68..14d3573 100644
  
      import_statement: $ => prec.left(seq(
        caseInsensitive('import'),
-@@ -2027,8 +2028,9 @@ module.exports = grammar({
+@@ -2038,8 +2039,9 @@ module.exports = grammar({
      )),
  
      user_defined_operator: $ => prec.right(seq(
@@ -40,10 +40,10 @@ index af06d68..14d3573 100644
      // Due to the fact Fortran uses parentheses for both function calls and
      // array access there is no way to differentiate the two except for the
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 38640c9..a9771e1 100644
+index 1b23f9a..29eacb4 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -1062,8 +1062,12 @@ end program
+@@ -1070,8 +1070,12 @@ end program
              (argument_list
                (number_literal)))
            (ERROR
@@ -57,7 +57,7 @@ index 38640c9..a9771e1 100644
            (number_literal))))
      (end_of_statement)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 372a493..7948402 100644
+index 4302775..005526a 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -208,17 +208,26 @@ END PROGRAM
@@ -107,7 +107,7 @@ index 372a493..7948402 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -2699,7 +2710,8 @@ end program
+@@ -2727,7 +2738,8 @@ end program
        (format_identifier)
        (output_item_list
          (unary_expression
@@ -117,7 +117,7 @@ index 372a493..7948402 100644
            (identifier))))
      (end_of_statement)
      (print_statement
-@@ -2707,7 +2719,8 @@ end program
+@@ -2735,7 +2747,8 @@ end program
        (output_item_list
          (math_expression
            (identifier)

@@ -140,10 +140,10 @@ index 10a22d7..b768d99 100644
          if (scan_boz(lexer)) {
              return true;
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 994158d..38640c9 100644
+index 7316d3b..1b23f9a 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -1042,6 +1042,8 @@ end program
+@@ -1050,6 +1050,8 @@ end program
        (type_qualifier)
        (init_declarator
          (identifier)
@@ -152,7 +152,7 @@ index 994158d..38640c9 100644
          (number_literal)))
      (end_of_statement)
      (variable_declaration
-@@ -1052,18 +1054,17 @@ end program
+@@ -1060,18 +1062,17 @@ end program
        (init_declarator
          (identifier)
          (array_literal

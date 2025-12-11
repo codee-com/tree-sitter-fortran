@@ -10,10 +10,10 @@ This is upstreamable.
  2 files changed, 243 insertions(+), 9 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 16959ac..4bf147c 100644
+index 9288f16..8b2302e 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -412,17 +412,30 @@ module.exports = grammar({
+@@ -415,17 +415,30 @@ module.exports = grammar({
      ),
  
      // Can't use `blockStructureEnding` because it's two keywords
