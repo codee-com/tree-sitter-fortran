@@ -14073,7 +14073,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "do_loop_statement"
+          "name": "do_loop"
         },
         {
           "type": "SYMBOL",
@@ -14891,8 +14891,13 @@
                       "name": "boolean_literal"
                     },
                     {
-                      "type": "SYMBOL",
-                      "name": "unary_expression"
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "_signed_literal"
+                      },
+                      "named": true,
+                      "value": "unary_expression"
                     },
                     {
                       "type": "SYMBOL",
@@ -14980,8 +14985,13 @@
                             "name": "boolean_literal"
                           },
                           {
-                            "type": "SYMBOL",
-                            "name": "unary_expression"
+                            "type": "ALIAS",
+                            "content": {
+                              "type": "SYMBOL",
+                              "name": "_signed_literal"
+                            },
+                            "named": true,
+                            "value": "unary_expression"
                           },
                           {
                             "type": "SYMBOL",
@@ -15010,7 +15020,33 @@
         }
       ]
     },
-    "do_loop_statement": {
+    "_signed_literal": {
+      "type": "PREC_RIGHT",
+      "value": 55,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "STRING",
+                "value": "+"
+              }
+            ]
+          },
+          {
+            "type": "SYMBOL",
+            "name": "number_literal"
+          }
+        ]
+      }
+    },
+    "do_loop": {
       "type": "SEQ",
       "members": [
         {
@@ -15025,6 +15061,42 @@
             }
           ]
         },
+        {
+          "type": "SYMBOL",
+          "name": "do_statement"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_of_statement"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "statement_label"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "end_do_loop_statement"
+        }
+      ]
+    },
+    "do_statement": {
+      "type": "SEQ",
+      "members": [
         {
           "type": "ALIAS",
           "content": {
@@ -15070,33 +15142,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "end_of_statement"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_statement"
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "statement_label"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "end_do_loop_statement"
         }
       ]
     },
@@ -20231,8 +20276,8 @@
       ]
     },
     "unary_expression": {
-      "type": "PREC_LEFT",
-      "value": 90,
+      "type": "PREC_RIGHT",
+      "value": 55,
       "content": {
         "type": "SEQ",
         "members": [
@@ -21935,6 +21980,10 @@
         },
         {
           "type": "PATTERN",
+          "value": "[dD][oO]"
+        },
+        {
+          "type": "PATTERN",
           "value": "[dD][oO][uU][bB][lL][eE]"
         },
         {
@@ -21984,6 +22033,10 @@
             "type": "PATTERN",
             "value": "[fF][lL][uU][sS][hH]"
           }
+        },
+        {
+          "type": "PATTERN",
+          "value": "[fF][mM][tT]"
         },
         {
           "type": "PATTERN",
@@ -22312,6 +22365,10 @@
     ],
     [
       "unit_identifier",
+      "identifier"
+    ],
+    [
+      "format_identifier",
       "identifier"
     ],
     [
