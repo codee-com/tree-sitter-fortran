@@ -4,17 +4,17 @@ Date: Fri, 17 Oct 2025 11:33:43 +0200
 Subject: Unhide `_string_literal`
 
 ---
- grammar.js                         |  15 ++--
+ grammar.js                         |  15 +--
  test/corpus/constructs.txt         |  24 +++--
- test/corpus/expressions.txt        | 136 ++++++++++++++++++++++++-----
+ test/corpus/expressions.txt        | 136 +++++++++++++++++++++++-----
  test/corpus/line_continuations.txt |  33 ++++---
  test/corpus/preprocessor.txt       |   9 +-
  test/corpus/regressions.txt        |  33 ++++---
- test/corpus/statements.txt         | 135 ++++++++++++++++++----------
- 7 files changed, 278 insertions(+), 107 deletions(-)
+ test/corpus/statements.txt         | 141 +++++++++++++++++++----------
+ 7 files changed, 282 insertions(+), 109 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index c6ffa3b..f1c074f 100644
+index 9685d86..bdfa3d6 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -62,7 +62,7 @@ module.exports = grammar({
@@ -26,24 +26,24 @@ index c6ffa3b..f1c074f 100644
      $._string_literal_kind,
      $._external_end_of_statement,
      $._preproc_unary_operator,
-@@ -110,6 +110,7 @@ module.exports = grammar({
-     [$.inline_if_statement, $.arithmetic_if_statement, $.block_if_statement, $.identifier],
+@@ -111,6 +111,7 @@ module.exports = grammar({
      [$.cray_pointer_declaration, $.identifier],
      [$.unit_identifier, $.identifier],
+     [$.format_identifier, $.identifier],
 +    [$._preproc_expression, $.prefixed_string_literal],
    ],
  
    supertypes: $ => [
-@@ -1284,7 +1285,7 @@ module.exports = grammar({
+@@ -1285,7 +1286,7 @@ module.exports = grammar({
          choice(
            $.number_literal,
            $.complex_literal,
 -          $.string_literal,
 +          $.prefixed_string_literal,
            $.boolean_literal,
-           $.unary_expression,
-           $.null_literal,
-@@ -1837,14 +1838,14 @@ module.exports = grammar({
+           // Only constants allowed here, so can't have general expression as child
+           alias($._signed_literal, $.unary_expression),
+@@ -1844,14 +1845,14 @@ module.exports = grammar({
        ),
  
        // Deleted feature -- not quite file position statement
@@ -60,7 +60,7 @@ index c6ffa3b..f1c074f 100644
        $.identifier,
        $.derived_type_member_expression,
        $.concatenation_expression,
-@@ -1930,7 +1931,7 @@ module.exports = grammar({
+@@ -1937,7 +1938,7 @@ module.exports = grammar({
      _expression: $ => choice(
        $.number_literal,
        $.complex_literal,
@@ -69,7 +69,7 @@ index c6ffa3b..f1c074f 100644
        $.boolean_literal,
        $.array_literal,
        $.null_literal,
-@@ -2183,7 +2184,7 @@ module.exports = grammar({
+@@ -2190,7 +2191,7 @@ module.exports = grammar({
        ')',
      )),
  
@@ -78,7 +78,7 @@ index c6ffa3b..f1c074f 100644
        // Having a kind _prefix_, with an underscore and no whitespace,
        // is _really_ hard to parse without breaking other things, so
        // we have to rely on an external scanner
-@@ -2196,7 +2197,7 @@ module.exports = grammar({
+@@ -2203,7 +2204,7 @@ module.exports = grammar({
          // also need to *capture* it here
          token.immediate('_'),
        )),
@@ -172,7 +172,7 @@ index c2eb077..cb771ab 100644
          (identifier))
        (end_of_statement))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index a9771e1..37072de 100644
+index 29eacb4..870a02e 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -191,55 +191,67 @@ END PROGRAM
@@ -257,7 +257,7 @@ index a9771e1..37072de 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -870,7 +882,8 @@ END PROGRAM
+@@ -878,7 +890,8 @@ END PROGRAM
          (number_literal))
        (keyword_argument
          name: (identifier)
@@ -267,7 +267,7 @@ index a9771e1..37072de 100644
      (end_of_statement)
      (assignment_statement
        left: (derived_type_member_expression
-@@ -970,10 +983,12 @@ end program
+@@ -978,10 +991,12 @@ end program
      (write_statement
        (unit_identifier)
        (format_identifier
@@ -282,7 +282,7 @@ index a9771e1..37072de 100644
        (comment)
        (keyword_argument
          (identifier)
-@@ -1008,7 +1023,8 @@ end program test
+@@ -1016,7 +1031,8 @@ end program test
      (print_statement
        (format_identifier)
        (output_item_list
@@ -292,7 +292,7 @@ index a9771e1..37072de 100644
      (end_of_statement)
      (end_program_statement
        (name)
-@@ -1201,9 +1217,12 @@ end program array_constructors
+@@ -1209,9 +1225,12 @@ end program array_constructors
                (keyword_argument
                  (identifier)
                  (number_literal))))
@@ -308,7 +308,7 @@ index a9771e1..37072de 100644
      (end_of_statement)
      (end_program_statement
        (name)
-@@ -1352,7 +1371,8 @@ end subroutine foo
+@@ -1360,7 +1379,8 @@ end subroutine foo
        (concatenation_expression
          (identifier)
          (concatenation_expression
@@ -318,7 +318,7 @@ index a9771e1..37072de 100644
            (identifier))))
      (end_of_statement)
      (assignment_statement
-@@ -1564,3 +1584,75 @@ end
+@@ -1572,3 +1592,75 @@ end
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
@@ -612,7 +612,7 @@ index 0b7937a..ac8d966 100644
      (print_statement
        (format_identifier)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 41a00f8..4b6d8fb 100644
+index 005526a..e4541f7 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -490,7 +490,8 @@ END PROGRAM
@@ -625,7 +625,7 @@ index 41a00f8..4b6d8fb 100644
        declarator: (identifier))
      (end_of_statement)
      (variable_declaration
-@@ -830,7 +831,8 @@ END PROGRAM
+@@ -831,7 +832,8 @@ END PROGRAM
            (identifier))
          (keyword_argument
            (identifier)
@@ -635,7 +635,7 @@ index 41a00f8..4b6d8fb 100644
        (end_of_statement)
        (subroutine_call
          (identifier)
-@@ -1208,7 +1210,8 @@ END PROGRAM
+@@ -1215,7 +1217,8 @@ END PROGRAM
              (call_expression
                (identifier)
                (argument_list
@@ -645,7 +645,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement)
          (assignment_statement
            (identifier)
-@@ -1726,29 +1729,37 @@ END PROGRAM
+@@ -1733,29 +1736,37 @@ END PROGRAM
        (case_statement
          (case_value_range_list
            (extent_specifier
@@ -691,7 +691,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (case_statement
          (case_value_range_list
-@@ -1758,7 +1769,8 @@ END PROGRAM
+@@ -1765,7 +1776,8 @@ END PROGRAM
            (unit_identifier)
            (format_identifier)
            (output_item_list
@@ -701,7 +701,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (case_statement
          (end_of_statement)
-@@ -1766,7 +1778,8 @@ END PROGRAM
+@@ -1773,7 +1785,8 @@ END PROGRAM
            (unit_identifier)
            (format_identifier)
            (output_item_list
@@ -711,7 +711,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (end_select_statement))
      (end_of_statement)
-@@ -1934,7 +1947,8 @@ END PROGRAM
+@@ -1941,7 +1954,8 @@ END PROGRAM
        (unit_identifier
          (identifier))
        (format_identifier
@@ -721,7 +721,7 @@ index 41a00f8..4b6d8fb 100644
        (input_item_list
          (call_expression
            (identifier)
-@@ -1947,13 +1961,15 @@ END PROGRAM
+@@ -1954,13 +1968,15 @@ END PROGRAM
          (identifier))
        (keyword_argument
          (identifier)
@@ -739,7 +739,7 @@ index 41a00f8..4b6d8fb 100644
        (input_item_list
          (identifier)))
      (end_of_statement)
-@@ -1984,7 +2000,8 @@ END PROGRAM
+@@ -1991,7 +2007,8 @@ END PROGRAM
      (print_statement
        (format_identifier)
        (output_item_list
@@ -749,7 +749,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (print_statement
        (format_identifier
-@@ -1996,9 +2013,11 @@ END PROGRAM
+@@ -2003,9 +2020,11 @@ END PROGRAM
      (end_of_statement)
      (print_statement
        (format_identifier
@@ -763,7 +763,17 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -2032,7 +2051,8 @@ END PROGRAM
+@@ -2043,7 +2062,8 @@ END PROGRAM
+       (type_qualifier)
+       (init_declarator
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (write_statement
+       (unit_identifier))
+@@ -2052,7 +2072,8 @@ END PROGRAM
        (unit_identifier)
        (format_identifier)
        (output_item_list
@@ -773,7 +783,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (write_statement
        (unit_identifier
-@@ -2048,7 +2068,8 @@ END PROGRAM
+@@ -2068,7 +2089,8 @@ END PROGRAM
        (unit_identifier
          (identifier))
        (format_identifier
@@ -783,7 +793,7 @@ index 41a00f8..4b6d8fb 100644
        (keyword_argument
          (identifier)
          (identifier)))
-@@ -2057,7 +2078,8 @@ END PROGRAM
+@@ -2077,7 +2099,8 @@ END PROGRAM
        (unit_identifier
          (identifier))
        (format_identifier
@@ -793,7 +803,7 @@ index 41a00f8..4b6d8fb 100644
        (output_item_list
          (call_expression
            (identifier)
-@@ -2070,13 +2092,15 @@ END PROGRAM
+@@ -2090,13 +2113,15 @@ END PROGRAM
          (identifier))
        (keyword_argument
          (identifier)
@@ -811,7 +821,7 @@ index 41a00f8..4b6d8fb 100644
        (output_item_list
          (identifier)))
      (end_of_statement)
-@@ -2084,16 +2108,19 @@ END PROGRAM
+@@ -2104,16 +2129,19 @@ END PROGRAM
        (unit_identifier
          (number_literal))
        (format_identifier
@@ -832,9 +842,19 @@ index 41a00f8..4b6d8fb 100644
 +        (prefixed_string_literal
 +          (string_literal))))
      (end_of_statement)
+     (write_statement
+       (unit_identifier
+@@ -2121,7 +2149,8 @@ END PROGRAM
+       (format_identifier
+         (identifier))
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -2353,7 +2380,8 @@ end subroutine print_decorated_numbers
+@@ -2381,7 +2410,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -844,7 +864,7 @@ index 41a00f8..4b6d8fb 100644
            (output_item_list
              (identifier)))
          (end_of_statement))
-@@ -2368,7 +2396,8 @@ end subroutine print_decorated_numbers
+@@ -2396,7 +2426,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -854,7 +874,7 @@ index 41a00f8..4b6d8fb 100644
            (output_item_list
              (identifier)))
          (end_of_statement))
-@@ -2383,7 +2412,8 @@ end subroutine print_decorated_numbers
+@@ -2411,7 +2442,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -864,7 +884,7 @@ index 41a00f8..4b6d8fb 100644
            (output_item_list
              (identifier)))
          (end_of_statement))
-@@ -2393,7 +2423,8 @@ end subroutine print_decorated_numbers
+@@ -2421,7 +2453,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -874,7 +894,7 @@ index 41a00f8..4b6d8fb 100644
            (output_item_list
              (identifier)))
          (end_of_statement))
-@@ -2403,7 +2434,8 @@ end subroutine print_decorated_numbers
+@@ -2431,7 +2464,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -884,7 +904,7 @@ index 41a00f8..4b6d8fb 100644
            (output_item_list
              (derived_type_member_expression
                (identifier)
-@@ -2415,7 +2447,8 @@ end subroutine print_decorated_numbers
+@@ -2443,7 +2477,8 @@ end subroutine print_decorated_numbers
          (write_statement
            (unit_identifier)
            (format_identifier
@@ -894,7 +914,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (end_select_statement))
      (end_of_statement)
-@@ -2457,14 +2490,16 @@ end program test
+@@ -2485,14 +2520,16 @@ end program test
          (identifier))
        (keyword_argument
          (identifier)
@@ -913,7 +933,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (open_statement
        (keyword_argument
-@@ -2472,14 +2507,16 @@ end program test
+@@ -2500,14 +2537,16 @@ end program test
          (identifier))
        (keyword_argument
          (identifier)
@@ -932,7 +952,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (open_statement
        (unit_identifier
-@@ -2541,7 +2578,8 @@ end subroutine assumed_rank
+@@ -2569,7 +2608,8 @@ end subroutine assumed_rank
            (unit_identifier)
            (format_identifier)
            (output_item_list
@@ -942,7 +962,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (rank_statement
          (case_value_range_list
-@@ -2551,7 +2589,8 @@ end subroutine assumed_rank
+@@ -2579,7 +2619,8 @@ end subroutine assumed_rank
            (unit_identifier)
            (format_identifier)
            (output_item_list
@@ -952,7 +972,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (rank_statement
          (case_value_range_list
-@@ -2561,12 +2600,14 @@ end subroutine assumed_rank
+@@ -2589,12 +2630,14 @@ end subroutine assumed_rank
            (unit_identifier)
            (format_identifier)
            (output_item_list
@@ -969,7 +989,7 @@ index 41a00f8..4b6d8fb 100644
          (end_of_statement))
        (end_select_statement))
      (end_of_statement)
-@@ -2897,7 +2938,8 @@ end program test
+@@ -2925,7 +2968,8 @@ end program test
            (identifier)
            (type_member))
          (data_value
@@ -979,7 +999,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (data_statement
        (data_set
-@@ -2907,7 +2949,8 @@ end program test
+@@ -2935,7 +2979,8 @@ end program test
              (identifier)
              (argument_list
                (number_literal)
@@ -989,7 +1009,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (data_statement
        (data_set
-@@ -3070,7 +3113,8 @@ end program
+@@ -3098,7 +3143,8 @@ end program
            (number_literal))))
      (end_of_statement)
      (file_position_statement
@@ -999,7 +1019,7 @@ index 41a00f8..4b6d8fb 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -3340,7 +3384,8 @@ Statement Functions (Obsolescent)
+@@ -3368,7 +3414,8 @@ Statement Functions (Obsolescent)
      (end_of_statement)
      (assignment_statement
        (identifier)

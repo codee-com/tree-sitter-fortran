@@ -8,10 +8,10 @@ Subject: Use `_external_end_of_statement`
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index f1c074f..a19a824 100644
+index bdfa3d6..c8ce7d9 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -153,14 +153,14 @@ module.exports = grammar({
+@@ -154,14 +154,14 @@ module.exports = grammar({
          $.system_lib_string,
          alias($.preproc_call_expression, $.call_expression),
        )),
@@ -28,7 +28,7 @@ index f1c074f..a19a824 100644
      ),
  
      preproc_function_def: $ => seq(
-@@ -168,7 +168,7 @@ module.exports = grammar({
+@@ -169,7 +169,7 @@ module.exports = grammar({
        field('name', $.identifier),
        field('parameters', $.preproc_params),
        field('value', optional($.preproc_arg)),
@@ -37,7 +37,7 @@ index f1c074f..a19a824 100644
      ),
  
      preproc_params: $ => seq(
-@@ -178,7 +178,7 @@ module.exports = grammar({
+@@ -179,7 +179,7 @@ module.exports = grammar({
      preproc_call: $ => seq(
        field('directive', $.preproc_directive),
        field('argument', optional($.preproc_arg)),

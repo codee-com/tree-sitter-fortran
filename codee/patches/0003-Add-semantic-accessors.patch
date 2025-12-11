@@ -13,10 +13,10 @@ Subject: Add semantic accessors
  6 files changed, 36 insertions(+), 23 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 4e6a7f1..d0af7b9 100644
+index bd68a65..1289710 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -302,7 +302,11 @@ module.exports = grammar({
+@@ -305,7 +305,11 @@ module.exports = grammar({
        $.end_program_statement
      ),
  
@@ -29,7 +29,7 @@ index 4e6a7f1..d0af7b9 100644
      end_program_statement: $ => blockStructureEnding($, 'program'),
  
      module: $ => seq(
-@@ -318,7 +322,11 @@ module.exports = grammar({
+@@ -321,7 +325,11 @@ module.exports = grammar({
        $.end_module_statement
      ),
  
@@ -42,7 +42,7 @@ index 4e6a7f1..d0af7b9 100644
      end_module_statement: $ => blockStructureEnding($, 'module'),
  
      submodule: $ => seq(
-@@ -342,7 +350,7 @@ module.exports = grammar({
+@@ -345,7 +353,7 @@ module.exports = grammar({
          ':', field('parent', $.module_name)
        )),
        ')',
@@ -51,7 +51,7 @@ index 4e6a7f1..d0af7b9 100644
        $._end_of_statement,
      ),
      end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
-@@ -374,7 +382,7 @@ module.exports = grammar({
+@@ -377,7 +385,7 @@ module.exports = grammar({
      interface_statement: $ => seq(
        optional($.abstract_specifier),
        caseInsensitive('interface'),
@@ -60,7 +60,7 @@ index 4e6a7f1..d0af7b9 100644
        $._end_of_statement,
      ),
  
-@@ -768,8 +776,13 @@ module.exports = grammar({
+@@ -771,8 +779,13 @@ module.exports = grammar({
        optional($.statement_label),
        caseInsensitive('type'),
        choice(
@@ -76,7 +76,7 @@ index 4e6a7f1..d0af7b9 100644
        ),
        optional(alias($.argument_list, $.derived_type_parameter_list)),
        $._end_of_statement,
-@@ -2048,7 +2061,7 @@ module.exports = grammar({
+@@ -2059,7 +2072,7 @@ module.exports = grammar({
      // precedence is used to prevent conflict with assignment expression
      keyword_argument: $ => prec(1, seq(
        field("name",$.identifier),
@@ -114,7 +114,7 @@ index ab165f0..9b2eccb 100644
          (name)))
      (end_program_statement)))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index c5a8f3d..eb8b11c 100644
+index 63781fa..cf7f6c4 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -159,7 +159,7 @@ END PROGRAM
@@ -135,7 +135,7 @@ index c5a8f3d..eb8b11c 100644
      (variable_declaration
        type: (intrinsic_type)
        declarator: (init_declarator
-@@ -717,7 +717,7 @@ END PROGRAM
+@@ -724,7 +724,7 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -145,10 +145,10 @@ index c5a8f3d..eb8b11c 100644
        left: (identifier)
        right: (call_expression
 diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
-index 4fe227d..29175d5 100644
+index d9dd3a3..a42ff39 100644
 --- a/test/corpus/preprocessor.txt
 +++ b/test/corpus/preprocessor.txt
-@@ -434,7 +434,7 @@ end program
+@@ -453,7 +453,7 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -157,7 +157,7 @@ index 4fe227d..29175d5 100644
      (use_statement
        (module_name)
        (included_items
-@@ -522,7 +522,7 @@ end module foo
+@@ -541,7 +541,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -166,7 +166,7 @@ index 4fe227d..29175d5 100644
      (internal_procedures
        (contains_statement)
        (subroutine
-@@ -572,7 +572,7 @@ end module foo
+@@ -591,7 +591,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -175,7 +175,7 @@ index 4fe227d..29175d5 100644
      (internal_procedures
        (contains_statement)
        (subroutine
-@@ -632,7 +632,7 @@ end module foo
+@@ -651,7 +651,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -198,7 +198,7 @@ index fc47bf1..1af946a 100644
        left: (call_expression
          (identifier)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index ca8c86e..d6bebae 100644
+index 2065d4f..96bef40 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -289,7 +289,7 @@ END PROGRAM
@@ -210,7 +210,7 @@ index ca8c86e..d6bebae 100644
      (variable_declaration
        type: (intrinsic_type)
        attribute: (type_qualifier)
-@@ -799,7 +799,7 @@ END PROGRAM TEST
+@@ -805,7 +805,7 @@ END PROGRAM TEST
  (translation_unit
    (program
      (program_statement
@@ -219,7 +219,7 @@ index ca8c86e..d6bebae 100644
      (variable_declaration
        type: (intrinsic_type)
        attribute: (type_qualifier
-@@ -1961,7 +1961,7 @@ END PROGRAM test
+@@ -1987,7 +1987,7 @@ END PROGRAM test
  (translation_unit
    (program
      (program_statement
@@ -228,7 +228,7 @@ index ca8c86e..d6bebae 100644
      (enum
        (enum_statement
          (language_binding
-@@ -2711,7 +2711,7 @@ end program test
+@@ -2748,7 +2748,7 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -237,7 +237,7 @@ index ca8c86e..d6bebae 100644
      (allocate_statement
        allocation: (sized_allocation
          (identifier)
-@@ -3499,7 +3499,7 @@ end program
+@@ -3536,7 +3536,7 @@ end program
  (translation_unit
    (program
      (program_statement

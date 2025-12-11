@@ -8,15 +8,15 @@ Subject: Parse whitespaces
  src/scanner.c                      |   35 +-
  test/corpus/constructs.txt         |  810 +++++++++++++-
  test/corpus/cudafortran.txt        |   39 +-
- test/corpus/expressions.txt        |  670 ++++++++++-
+ test/corpus/expressions.txt        |  675 ++++++++++-
  test/corpus/line_continuations.txt |  117 +-
  test/corpus/preprocessor.txt       |  339 +++++-
  test/corpus/regressions.txt        |  140 ++-
- test/corpus/statements.txt         | 1651 +++++++++++++++++++++++++++-
- 9 files changed, 3730 insertions(+), 83 deletions(-)
+ test/corpus/statements.txt         | 1660 +++++++++++++++++++++++++++-
+ 9 files changed, 3744 insertions(+), 83 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index a19a824..95e81f5 100644
+index c8ce7d9..a546930 100644
 --- a/grammar.js
 +++ b/grammar.js
 @@ -68,12 +68,14 @@ module.exports = grammar({
@@ -34,7 +34,7 @@ index a19a824..95e81f5 100644
      $.comment,
      $.multiline_preproc_comment,
      '&',
-@@ -159,6 +161,16 @@ module.exports = grammar({
+@@ -160,6 +162,16 @@ module.exports = grammar({
      preproc_def: $ => seq(
        preprocessor('define'),
        field('name', $.identifier),
@@ -2478,7 +2478,7 @@ index b351532..a0da1f4 100644
 +      (whitespace)
        (end_of_statement))))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 37072de..ac21277 100644
+index 870a02e..c4b4bfe 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -36,130 +36,214 @@ END PROGRAM
@@ -3123,7 +3123,7 @@ index 37072de..ac21277 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -577,74 +784,119 @@ END PROGRAM
+@@ -578,81 +785,131 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -3238,12 +3238,24 @@ index 37072de..ac21277 100644
                (identifier)))
            (number_literal))))
      (end_of_statement)
++    (whitespace)
+     (assignment_statement
+       (identifier)
++      (whitespace)
++      (whitespace)
+       (unary_expression
+         (math_expression
+           (number_literal)
++          (whitespace)
++          (whitespace)
+           (number_literal))))
+     (end_of_statement)
      (end_program_statement
 +      (whitespace)
        (end_of_statement))))
  
  ================================================================================
-@@ -679,139 +931,245 @@ END PROGRAM
+@@ -687,139 +944,245 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -3489,7 +3501,7 @@ index 37072de..ac21277 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -833,29 +1191,43 @@ END PROGRAM
+@@ -841,29 +1204,43 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -3533,7 +3545,7 @@ index 37072de..ac21277 100644
        right: (math_expression
          left: (call_expression
            (identifier)
-@@ -867,28 +1239,41 @@ END PROGRAM
+@@ -875,28 +1252,41 @@ END PROGRAM
                    (math_expression
                      left: (identifier)
                      right: (identifier))
@@ -3575,7 +3587,7 @@ index 37072de..ac21277 100644
        right: (call_expression
          (identifier)
          (argument_list
-@@ -899,8 +1284,11 @@ END PROGRAM
+@@ -907,8 +1297,11 @@ END PROGRAM
                  (number_literal)
                  (identifier)))))))
      (end_of_statement)
@@ -3587,7 +3599,7 @@ index 37072de..ac21277 100644
        right: (call_expression
          (identifier)
          (argument_list
-@@ -920,6 +1308,7 @@ END PROGRAM
+@@ -928,6 +1321,7 @@ END PROGRAM
                (number_literal))))))
      (end_of_statement)
      (end_program_statement
@@ -3595,7 +3607,7 @@ index 37072de..ac21277 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -936,15 +1325,20 @@ end program use_type_bound_procedures
+@@ -944,15 +1338,20 @@ end program use_type_bound_procedures
  (translation_unit
    (program
      (program_statement
@@ -3616,7 +3628,7 @@ index 37072de..ac21277 100644
        (derived_type_member_expression
          (derived_type_member_expression
            (call_expression
-@@ -956,6 +1350,8 @@ end program use_type_bound_procedures
+@@ -964,6 +1363,8 @@ end program use_type_bound_procedures
        (argument_list))
      (end_of_statement)
      (end_program_statement
@@ -3625,7 +3637,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -978,30 +1374,49 @@ end program
+@@ -986,30 +1387,49 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -3676,7 +3688,7 @@ index 37072de..ac21277 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1018,15 +1433,20 @@ end program test
+@@ -1026,15 +1446,20 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -3697,7 +3709,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -1051,43 +1471,70 @@ end program
+@@ -1059,43 +1484,70 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -3768,7 +3780,7 @@ index 37072de..ac21277 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1113,34 +1560,54 @@ end program array_constructors
+@@ -1121,34 +1573,54 @@ end program array_constructors
  (translation_unit
    (program
      (program_statement
@@ -3824,7 +3836,7 @@ index 37072de..ac21277 100644
              (intrinsic_type
                (kind
                  (keyword_argument
-@@ -1151,15 +1618,22 @@ end program array_constructors
+@@ -1159,15 +1631,22 @@ end program array_constructors
                (number_literal)
                (number_literal))))))
      (end_of_statement)
@@ -3847,7 +3859,7 @@ index 37072de..ac21277 100644
        (array_literal
          (implied_do_loop_expression
            (parenthesized_expression
-@@ -1169,20 +1643,31 @@ end program array_constructors
+@@ -1177,20 +1656,31 @@ end program array_constructors
                  (argument_list
                    (math_expression
                      (identifier)
@@ -3879,7 +3891,7 @@ index 37072de..ac21277 100644
        (output_item_list
          (call_expression
            (identifier)
-@@ -1192,24 +1677,34 @@ end program array_constructors
+@@ -1200,24 +1690,34 @@ end program array_constructors
                  (kind
                    (identifier)))
                (number_literal)
@@ -3914,7 +3926,7 @@ index 37072de..ac21277 100644
        (output_item_list
          (array_literal
            (intrinsic_type
-@@ -1217,14 +1712,20 @@ end program array_constructors
+@@ -1225,14 +1725,20 @@ end program array_constructors
                (keyword_argument
                  (identifier)
                  (number_literal))))
@@ -3935,7 +3947,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -1259,108 +1760,168 @@ end subroutine foo
+@@ -1267,108 +1773,168 @@ end subroutine foo
  (translation_unit
    (program
      (program_statement
@@ -4104,7 +4116,7 @@ index 37072de..ac21277 100644
      (assignment_statement
        (call_expression
          (identifier)
-@@ -1368,6 +1929,8 @@ end subroutine foo
+@@ -1376,6 +1942,8 @@ end subroutine foo
            (extent_specifier
              (number_literal)
              (number_literal))))
@@ -4113,7 +4125,7 @@ index 37072de..ac21277 100644
        (concatenation_expression
          (identifier)
          (concatenation_expression
-@@ -1375,14 +1938,19 @@ end subroutine foo
+@@ -1383,14 +1951,19 @@ end subroutine foo
              (string_literal))
            (identifier))))
      (end_of_statement)
@@ -4133,7 +4145,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -1402,43 +1970,71 @@ end subroutine test
+@@ -1410,43 +1983,71 @@ end subroutine test
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -4205,7 +4217,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -1461,10 +2057,14 @@ end program test
+@@ -1469,10 +2070,14 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -4220,7 +4232,7 @@ index 37072de..ac21277 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1472,36 +2072,53 @@ end program test
+@@ -1480,36 +2085,53 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4274,7 +4286,7 @@ index 37072de..ac21277 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1515,10 +2132,14 @@ end program test
+@@ -1523,10 +2145,14 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4289,7 +4301,7 @@ index 37072de..ac21277 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1530,10 +2151,14 @@ end program test
+@@ -1538,10 +2164,14 @@ end program test
                (number_literal)
                (number_literal))
              (number_literal)))))
@@ -4304,7 +4316,7 @@ index 37072de..ac21277 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1544,9 +2169,12 @@ end program test
+@@ -1552,9 +2182,12 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4317,7 +4329,7 @@ index 37072de..ac21277 100644
        (name)
        (end_of_statement))))
  
-@@ -1564,22 +2192,31 @@ end
+@@ -1572,22 +2205,31 @@ end
  (translation_unit
    (program
      (program_statement
@@ -4349,7 +4361,7 @@ index 37072de..ac21277 100644
        (number_literal))
      (end_of_statement)
      (end_program_statement
-@@ -1606,50 +2243,73 @@ end
+@@ -1614,50 +2256,73 @@ end
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -6223,7 +6235,7 @@ index ac8d966..3bc1032 100644
        (name)
        (end_of_statement))))
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 4b6d8fb..ac46744 100644
+index e4541f7..cb9d55b 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -34,74 +34,117 @@ end subroutine foo
@@ -7145,7 +7157,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -812,59 +1116,90 @@ END PROGRAM
+@@ -812,62 +1116,93 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -7153,15 +7165,16 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))
 +    (whitespace)
-     (do_loop_statement
-+      (whitespace)
-       (loop_control_expression
-         (identifier)
+     (do_loop
+       (do_statement
 +        (whitespace)
-+        (whitespace)
-         (number_literal)
-+        (whitespace)
-         (number_literal))
+         (loop_control_expression
+           (identifier)
++          (whitespace)
++          (whitespace)
+           (number_literal)
++          (whitespace)
+           (number_literal)))
        (end_of_statement)
 +      (whitespace)
        (assignment_statement
@@ -7199,20 +7212,21 @@ index 4b6d8fb..ac46744 100644
 +        (whitespace)))
      (end_of_statement)
 +    (whitespace)
-     (do_loop_statement
-+      (whitespace)
-       (loop_control_expression
-         (identifier)
+     (do_loop
+       (do_statement
 +        (whitespace)
-+        (whitespace)
-         (number_literal)
-+        (whitespace)
-         (call_expression
+         (loop_control_expression
            (identifier)
-           (argument_list
-             (identifier)))
-+        (whitespace)
-         (identifier))
++          (whitespace)
++          (whitespace)
+           (number_literal)
++          (whitespace)
+           (call_expression
+             (identifier)
+             (argument_list
+               (identifier)))
++          (whitespace)
+           (identifier)))
        (end_of_statement)
 +      (whitespace)
        (keyword_statement)
@@ -7226,34 +7240,36 @@ index 4b6d8fb..ac46744 100644
        (end_do_loop_statement))
      (end_of_statement)
 +    (whitespace)
-     (do_loop_statement
+     (do_loop
        (block_label_start_expression)
 +      (whitespace)
-+      (whitespace)
-       (loop_control_expression
-         (identifier)
-+        (whitespace)
-+        (whitespace)
-         (number_literal)
-         (call_expression
-           (identifier)
-@@ -876,50 +1211,84 @@ END PROGRAM
-                   (number_literal)
-                   (identifier)))))))
-       (end_of_statement)
-+      (whitespace)
-       (do_loop_statement
+       (do_statement
 +        (whitespace)
          (loop_control_expression
            (identifier)
 +          (whitespace)
 +          (whitespace)
            (number_literal)
+           (call_expression
+             (identifier)
+@@ -879,53 +1214,87 @@ END PROGRAM
+                     (number_literal)
+                     (identifier))))))))
+       (end_of_statement)
++      (whitespace)
+       (do_loop
+         (do_statement
 +          (whitespace)
-           (number_literal)
-+          (whitespace)
-           (unary_expression
-             (number_literal)))
+           (loop_control_expression
+             (identifier)
++            (whitespace)
++            (whitespace)
+             (number_literal)
++            (whitespace)
+             (number_literal)
++            (whitespace)
+             (unary_expression
+               (number_literal))))
          (end_of_statement)
 +        (whitespace)
          (keyword_statement
@@ -7272,12 +7288,13 @@ index 4b6d8fb..ac46744 100644
          (block_label)))
      (end_of_statement)
 +    (whitespace)
-     (do_loop_statement
-+      (whitespace)
-       (while_statement
+     (do_loop
+       (do_statement
 +        (whitespace)
-         (parenthesized_expression
-           (identifier)))
+         (while_statement
++          (whitespace)
+           (parenthesized_expression
+             (identifier))))
        (end_of_statement)
 +      (whitespace)
        (assignment_statement
@@ -7292,15 +7309,16 @@ index 4b6d8fb..ac46744 100644
 +        (whitespace)))
      (end_of_statement)
 +    (whitespace)
-     (do_loop_statement
-+      (whitespace)
-       (loop_control_expression
-         (identifier)
+     (do_loop
+       (do_statement
 +        (whitespace)
-+        (whitespace)
-         (number_literal)
-+        (whitespace)
-         (number_literal))
+         (loop_control_expression
+           (identifier)
++          (whitespace)
++          (whitespace)
+           (number_literal)
++          (whitespace)
+           (number_literal)))
        (end_of_statement)
 +      (whitespace)
        (if_statement
@@ -7325,7 +7343,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -943,91 +1312,139 @@ END PROGRAM TEST
+@@ -949,92 +1318,140 @@ END PROGRAM TEST
  (translation_unit
    (program
      (program_statement
@@ -7368,46 +7386,47 @@ index 4b6d8fb..ac46744 100644
        right: (number_literal))
      (end_of_statement)
 +    (whitespace)
-     (do_loop_statement
-+      (whitespace)
-       (concurrent_statement
-         (concurrent_header
+     (do_loop
+       (do_statement
++        (whitespace)
+         (concurrent_statement
+           (concurrent_header
++            (whitespace)
+             (concurrent_control
+               (identifier)
++              (whitespace)
++              (whitespace)
+               initial: (number_literal)
+               final: (identifier))
++            (whitespace)
+             (concurrent_mask
+               (relational_expression
+                 left: (call_expression
+                   (identifier)
+                   (argument_list
+                     (identifier)))
++                (whitespace)
+                 right: (number_literal))))
 +          (whitespace)
-           (concurrent_control
+           (concurrent_locality
++            (whitespace)
+             (identifier))
++          (whitespace)
+           (concurrent_locality
++            (whitespace)
              (identifier)
 +            (whitespace)
+             (identifier))
++          (whitespace)
+           (concurrent_locality
+             (binary_op)
+             (identifier)
 +            (whitespace)
-             initial: (number_literal)
-             final: (identifier))
+             (identifier))
 +          (whitespace)
-           (concurrent_mask
-             (relational_expression
-               left: (call_expression
-                 (identifier)
-                 (argument_list
-                   (identifier)))
-+              (whitespace)
-               right: (number_literal))))
-+        (whitespace)
-         (concurrent_locality
-+          (whitespace)
-           (identifier))
-+        (whitespace)
-         (concurrent_locality
-+          (whitespace)
-           (identifier)
-+          (whitespace)
-           (identifier))
-+        (whitespace)
-         (concurrent_locality
-           (binary_op)
-           (identifier)
-+          (whitespace)
-           (identifier))
-+        (whitespace)
-         (concurrent_locality
-           (binary_op)
-           (identifier)))
+           (concurrent_locality
+             (binary_op)
+             (identifier))))
        (end_of_statement)
 +      (whitespace)
        (assignment_statement
@@ -7466,7 +7485,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -1051,53 +1468,86 @@ end program test
+@@ -1058,53 +1475,86 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -7554,7 +7573,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -1115,24 +1565,36 @@ end program
+@@ -1122,24 +1572,36 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -7591,7 +7610,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1171,18 +1633,25 @@ END PROGRAM
+@@ -1178,18 +1640,25 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -7617,7 +7636,7 @@ index 4b6d8fb..ac46744 100644
      (if_statement
        (inline_if_statement
          (parenthesized_expression
-@@ -1197,8 +1666,10 @@ END PROGRAM
+@@ -1204,8 +1673,10 @@ END PROGRAM
            (identifier)
            (number_literal))))
      (end_of_statement)
@@ -7628,7 +7647,7 @@ index 4b6d8fb..ac46744 100644
          (parenthesized_expression
            (relational_expression
              (call_expression
-@@ -1207,17 +1678,26 @@ END PROGRAM
+@@ -1214,17 +1685,26 @@ END PROGRAM
                  (extent_specifier
                    (number_literal)
                    (number_literal))))
@@ -7655,7 +7674,7 @@ index 4b6d8fb..ac46744 100644
            (parenthesized_expression
              (relational_expression
                (call_expression
-@@ -1226,6 +1706,8 @@ END PROGRAM
+@@ -1233,6 +1713,8 @@ END PROGRAM
                    (extent_specifier
                      (number_literal)
                      (number_literal))))
@@ -7664,7 +7683,7 @@ index 4b6d8fb..ac46744 100644
                (call_expression
                  (identifier)
                  (argument_list
-@@ -1233,12 +1715,19 @@ END PROGRAM
+@@ -1240,12 +1722,19 @@ END PROGRAM
                      (identifier)
                      (argument_list
                        (number_literal)))))))
@@ -7684,7 +7703,7 @@ index 4b6d8fb..ac46744 100644
            (parenthesized_expression
              (relational_expression
                (call_expression
-@@ -1247,6 +1736,8 @@ END PROGRAM
+@@ -1254,6 +1743,8 @@ END PROGRAM
                    (extent_specifier
                      (number_literal)
                      (number_literal))))
@@ -7693,7 +7712,7 @@ index 4b6d8fb..ac46744 100644
                (call_expression
                  (identifier)
                  (argument_list
-@@ -1254,40 +1745,67 @@ END PROGRAM
+@@ -1261,40 +1752,67 @@ END PROGRAM
                      (identifier)
                      (argument_list
                        (number_literal)))))))
@@ -7761,7 +7780,7 @@ index 4b6d8fb..ac46744 100644
                (parenthesized_expression
                  (call_expression
                    (identifier)
-@@ -1295,30 +1813,49 @@ END PROGRAM
+@@ -1302,30 +1820,49 @@ END PROGRAM
                      (extent_specifier
                        (number_literal)
                        (number_literal)))))
@@ -7812,7 +7831,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1353,6 +1890,7 @@ end program
+@@ -1360,6 +1897,7 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -7820,7 +7839,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))
      (where_statement
-@@ -1360,11 +1898,18 @@ end program
+@@ -1367,11 +1905,18 @@ end program
          (parenthesized_expression
            (relational_expression
              (identifier)
@@ -7839,7 +7858,7 @@ index 4b6d8fb..ac46744 100644
              (identifier)))))
      (end_of_statement)
      (where_statement
-@@ -1372,36 +1917,59 @@ end program
+@@ -1379,36 +1924,59 @@ end program
          (parenthesized_expression
            (relational_expression
              (identifier)
@@ -7899,7 +7918,7 @@ index 4b6d8fb..ac46744 100644
              (boolean_literal))
            (end_of_statement))
          (end_where_statement)))
-@@ -1409,41 +1977,64 @@ end program
+@@ -1416,41 +1984,64 @@ end program
      (where_statement
        (block_where_statement
          (block_label_start_expression)
@@ -7964,7 +7983,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1473,37 +2064,54 @@ END PROGRAM
+@@ -1480,37 +2071,54 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8019,7 +8038,7 @@ index 4b6d8fb..ac46744 100644
                  (identifier)))))))
      (end_of_statement)
      (forall_statement
-@@ -1512,6 +2120,7 @@ END PROGRAM
+@@ -1519,6 +2127,7 @@ END PROGRAM
            (identifier)
            (number_literal)
            (number_literal))
@@ -8027,7 +8046,7 @@ index 4b6d8fb..ac46744 100644
          (pointer_association_statement
            (derived_type_member_expression
              (call_expression
-@@ -1519,6 +2128,8 @@ END PROGRAM
+@@ -1526,6 +2135,8 @@ END PROGRAM
                (argument_list
                  (identifier)))
              (type_member))
@@ -8036,7 +8055,7 @@ index 4b6d8fb..ac46744 100644
            (call_expression
              (identifier)
              (argument_list
-@@ -1534,15 +2145,22 @@ END PROGRAM
+@@ -1541,15 +2152,22 @@ END PROGRAM
      (end_of_statement)
      (forall_statement
        (block_forall_statement
@@ -8059,7 +8078,7 @@ index 4b6d8fb..ac46744 100644
          (where_statement
            (inline_where_statement
              (parenthesized_expression
-@@ -1551,52 +2169,78 @@ END PROGRAM
+@@ -1558,52 +2176,78 @@ END PROGRAM
                    (identifier)
                    (argument_list
                      (identifier)
@@ -8139,7 +8158,7 @@ index 4b6d8fb..ac46744 100644
            (math_expression
              (math_expression
                (math_expression
-@@ -1604,46 +2248,71 @@ END PROGRAM
+@@ -1611,46 +2255,71 @@ END PROGRAM
                    (identifier)
                    (argument_list
                      (identifier)
@@ -8212,7 +8231,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1681,115 +2350,177 @@ END PROGRAM
+@@ -1688,115 +2357,177 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8393,7 +8412,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1812,34 +2543,47 @@ END PROGRAM
+@@ -1819,34 +2550,47 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8441,7 +8460,7 @@ index 4b6d8fb..ac46744 100644
      (format_statement
        (transfer_items
          (edit_descriptor)
-@@ -1848,6 +2592,7 @@ END PROGRAM
+@@ -1855,6 +2599,7 @@ END PROGRAM
          (string_literal)))
      (end_of_statement)
      (statement_label)
@@ -8449,7 +8468,7 @@ index 4b6d8fb..ac46744 100644
      (format_statement
        (transfer_items
          (edit_descriptor)
-@@ -1860,29 +2605,37 @@ END PROGRAM
+@@ -1867,29 +2612,37 @@ END PROGRAM
          (edit_descriptor)))
      (end_of_statement)
      (statement_label)
@@ -8487,7 +8506,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1905,36 +2658,52 @@ END PROGRAM
+@@ -1912,36 +2665,52 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8540,7 +8559,7 @@ index 4b6d8fb..ac46744 100644
      (read_statement
        (unit_identifier
          (number_literal))
-@@ -1943,37 +2712,46 @@ END PROGRAM
+@@ -1950,37 +2719,46 @@ END PROGRAM
          (identifier)
          (identifier)))
      (end_of_statement)
@@ -8587,7 +8606,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -1992,34 +2770,48 @@ END PROGRAM
+@@ -1999,34 +2777,48 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8636,13 +8655,31 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2042,87 +2834,115 @@ END PROGRAM
+@@ -2051,108 +2843,145 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
 +      (whitespace)
        (name)
        (end_of_statement))
++    (whitespace)
+     (variable_declaration
+       (intrinsic_type
+         (kind
+           (keyword_argument
+             (identifier)
+             (assumed_size))))
++      (whitespace)
+       (type_qualifier)
++      (whitespace)
++      (whitespace)
+       (init_declarator
+         (identifier)
++        (whitespace)
++        (whitespace)
+         (prefixed_string_literal
+           (string_literal))))
+     (end_of_statement)
 +    (whitespace)
      (write_statement
        (unit_identifier))
@@ -8747,12 +8784,24 @@ index 4b6d8fb..ac46744 100644
          (prefixed_string_literal
            (string_literal))))
      (end_of_statement)
++    (whitespace)
+     (write_statement
+       (unit_identifier
+         (identifier))
++      (whitespace)
+       (format_identifier
+         (identifier))
++      (whitespace)
+       (output_item_list
+         (prefixed_string_literal
+           (string_literal))))
+     (end_of_statement)
      (end_program_statement
 +      (whitespace)
        (end_of_statement))))
  
  ================================================================================
-@@ -2148,51 +2968,79 @@ end function test4
+@@ -2178,51 +3007,79 @@ end function test4
  (translation_unit
    (function
      (function_statement
@@ -8832,7 +8881,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -2211,34 +3059,49 @@ END PROGRAM
+@@ -2241,34 +3098,49 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8882,7 +8931,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2256,29 +3119,44 @@ END PROGRAM
+@@ -2286,29 +3158,44 @@ END PROGRAM
  (translation_unit
    (program
      (program_statement
@@ -8927,7 +8976,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2300,35 +3178,59 @@ END PROGRAM test
+@@ -2330,35 +3217,59 @@ END PROGRAM test
  (translation_unit
    (program
      (program_statement
@@ -8989,7 +9038,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -2360,32 +3262,48 @@ end subroutine print_decorated_numbers
+@@ -2390,32 +3301,48 @@ end subroutine print_decorated_numbers
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -9038,7 +9087,7 @@ index 4b6d8fb..ac46744 100644
          (intrinsic_type
            (kind
              (call_expression
-@@ -2393,15 +3311,21 @@ end subroutine print_decorated_numbers
+@@ -2423,15 +3350,21 @@ end subroutine print_decorated_numbers
                (argument_list
                  (number_literal)))))
          (end_of_statement)
@@ -9060,7 +9109,7 @@ index 4b6d8fb..ac46744 100644
          (intrinsic_type
            (kind
              (call_expression
-@@ -2409,50 +3333,73 @@ end subroutine print_decorated_numbers
+@@ -2439,50 +3372,73 @@ end subroutine print_decorated_numbers
                (argument_list
                  (number_literal)))))
          (end_of_statement)
@@ -9136,7 +9185,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -2478,55 +3425,71 @@ end program test
+@@ -2508,55 +3464,71 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -9208,7 +9257,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -2554,64 +3517,95 @@ end subroutine assumed_rank
+@@ -2584,64 +3556,95 @@ end subroutine assumed_rank
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -9305,7 +9354,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -2632,38 +3626,59 @@ end program
+@@ -2662,38 +3665,59 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -9366,7 +9415,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2694,77 +3709,122 @@ end program
+@@ -2724,77 +3748,122 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -9490,7 +9539,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2800,73 +3860,125 @@ end module
+@@ -2830,73 +3899,125 @@ end module
  (translation_unit
    (module
      (module_statement
@@ -9618,7 +9667,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -2900,19 +4012,28 @@ end program test
+@@ -2930,19 +4051,28 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -9647,7 +9696,7 @@ index 4b6d8fb..ac46744 100644
            (number_literal)))
        (data_set
          (identifier)
-@@ -2920,39 +4041,62 @@ end program test
+@@ -2950,39 +4080,62 @@ end program test
            (number_literal)
            (number_literal))))
      (end_of_statement)
@@ -9714,7 +9763,7 @@ index 4b6d8fb..ac46744 100644
        (data_set
          (implied_do_loop_expression
            (call_expression
-@@ -2964,69 +4108,119 @@ end program test
+@@ -2994,69 +4147,119 @@ end program test
              (identifier)
              (number_literal)
              (identifier)))
@@ -9838,7 +9887,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3057,37 +4251,50 @@ end program
+@@ -3087,37 +4290,50 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -9889,7 +9938,7 @@ index 4b6d8fb..ac46744 100644
      (file_position_statement
        (unit_identifier
          (parenthesized_expression
-@@ -3096,27 +4303,36 @@ end program
+@@ -3126,27 +4342,36 @@ end program
              (argument_list
                (identifier))))))
      (end_of_statement)
@@ -9926,7 +9975,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -3134,37 +4350,63 @@ end program test
+@@ -3164,37 +4389,63 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -9990,7 +10039,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3193,37 +4435,48 @@ end program test
+@@ -3223,37 +4474,48 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10040,7 +10089,7 @@ index 4b6d8fb..ac46744 100644
        allocation: (sized_allocation
          (derived_type_member_expression
            (derived_type_member_expression
-@@ -3232,11 +4485,14 @@ end program test
+@@ -3262,11 +4524,14 @@ end program test
            (type_member))
          (size
            (number_literal)
@@ -10055,7 +10104,7 @@ index 4b6d8fb..ac46744 100644
      (allocate_statement
        allocation: (sized_allocation
          (derived_type_member_expression
-@@ -3247,42 +4503,56 @@ end program test
+@@ -3277,42 +4542,56 @@ end program test
            (type_member))
          (size
            (identifier)
@@ -10112,7 +10161,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3296,12 +4566,17 @@ end
+@@ -3326,12 +4605,17 @@ end
  --------------------------------------------------------------------------------
  
  (translation_unit
@@ -10130,7 +10179,7 @@ index 4b6d8fb..ac46744 100644
        (statement_label_reference))
      (end_of_statement)
      (end_program_statement
-@@ -3329,65 +4604,105 @@ Statement Functions (Obsolescent)
+@@ -3359,65 +4643,105 @@ Statement Functions (Obsolescent)
  --------------------------------------------------------------------------------
  
  (translation_unit
@@ -10240,7 +10289,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3416,59 +4731,87 @@ Entry statement (Obsolescent)
+@@ -3446,59 +4770,87 @@ Entry statement (Obsolescent)
  --------------------------------------------------------------------------------
  
  (translation_unit
@@ -10328,7 +10377,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3488,16 +4831,23 @@ end program test
+@@ -3518,16 +4870,23 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10352,7 +10401,7 @@ index 4b6d8fb..ac46744 100644
        (coarray_declarator
          (identifier)
          (coarray_size
-@@ -3509,16 +4859,24 @@ end program test
+@@ -3539,16 +4898,24 @@ end program test
            (extent_specifier
              (number_literal)))))
      (end_of_statement)
@@ -10377,7 +10426,7 @@ index 4b6d8fb..ac46744 100644
        (init_declarator
          (coarray_declarator
            (sized_declarator
-@@ -3527,6 +4885,7 @@ end program test
+@@ -3557,6 +4924,7 @@ end program test
                (identifier)))
            (coarray_size))
          (identifier))
@@ -10385,7 +10434,7 @@ index 4b6d8fb..ac46744 100644
        (init_declarator
          (coarray_declarator
            (sized_declarator
-@@ -3537,6 +4896,8 @@ end program test
+@@ -3567,6 +4935,8 @@ end program test
          (identifier)))
      (end_of_statement)
      (end_program_statement
@@ -10394,7 +10443,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3557,23 +4918,30 @@ end program test
+@@ -3587,23 +4957,30 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10425,7 +10474,7 @@ index 4b6d8fb..ac46744 100644
      (assignment_statement
        (coarray_expression
          (call_expression
-@@ -3582,6 +4950,8 @@ end program test
+@@ -3612,6 +4989,8 @@ end program test
              (extent_specifier)))
          (coarray_index
            (identifier)))
@@ -10434,7 +10483,7 @@ index 4b6d8fb..ac46744 100644
        (math_expression
          (coarray_expression
            (call_expression
-@@ -3592,22 +4962,32 @@ end program test
+@@ -3622,22 +5001,32 @@ end program test
              (identifier)))
          (identifier)))
      (end_of_statement)
@@ -10467,7 +10516,7 @@ index 4b6d8fb..ac46744 100644
      (allocate_statement
        (coarray_allocation
          (sized_allocation
-@@ -3617,6 +4997,8 @@ end program test
+@@ -3647,6 +5036,8 @@ end program test
          (coarray_size)))
      (end_of_statement)
      (end_program_statement
@@ -10476,7 +10525,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3640,57 +5022,79 @@ end program test
+@@ -3670,57 +5061,79 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10557,7 +10606,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3713,51 +5117,75 @@ end program test
+@@ -3743,51 +5156,75 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10634,7 +10683,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3776,20 +5204,29 @@ end program test
+@@ -3806,20 +5243,29 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10665,7 +10714,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3808,20 +5245,33 @@ end program test;
+@@ -3838,20 +5284,33 @@ end program test;
  (translation_unit
    (program
      (program_statement
@@ -10699,7 +10748,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3838,16 +5288,25 @@ end program test
+@@ -3868,16 +5327,25 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -10725,7 +10774,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3867,22 +5326,34 @@ end subroutine test
+@@ -3897,22 +5365,34 @@ end subroutine test
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -10760,7 +10809,7 @@ index 4b6d8fb..ac46744 100644
        declarator: (sized_declarator
          (identifier)
          (size
-@@ -3891,19 +5362,27 @@ end subroutine test
+@@ -3921,19 +5401,27 @@ end subroutine test
              (argument_list
                (identifier))))))
      (end_of_statement)
@@ -10788,7 +10837,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -3917,9 +5396,13 @@ end
+@@ -3947,9 +5435,13 @@ end
  --------------------------------------------------------------------------------
  
  (translation_unit
@@ -10802,7 +10851,7 @@ index 4b6d8fb..ac46744 100644
        (identifier))
      (end_of_statement)
      (end_program_statement
-@@ -3935,8 +5418,10 @@ end
+@@ -3965,8 +5457,10 @@ end
  --------------------------------------------------------------------------------
  
  (translation_unit
@@ -10813,7 +10862,7 @@ index 4b6d8fb..ac46744 100644
        (number_literal))
      (end_of_statement)
      (end_program_statement
-@@ -3955,15 +5440,22 @@ end program
+@@ -3985,15 +5479,22 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -10836,7 +10885,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -3988,34 +5480,47 @@ end subroutine pointer_name_clash
+@@ -4018,34 +5519,47 @@ end subroutine pointer_name_clash
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -10885,7 +10934,7 @@ index 4b6d8fb..ac46744 100644
        declarator: (sized_declarator
          (identifier)
          (size
-@@ -4025,51 +5530,85 @@ end subroutine pointer_name_clash
+@@ -4055,51 +5569,85 @@ end subroutine pointer_name_clash
                right: (identifier))
              right: (number_literal)))))
      (end_of_statement)
@@ -10976,7 +11025,7 @@ index 4b6d8fb..ac46744 100644
        (name)
        (end_of_statement))))
  
-@@ -4089,13 +5628,18 @@ end program
+@@ -4119,13 +5667,18 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -10995,7 +11044,7 @@ index 4b6d8fb..ac46744 100644
        declarator: (data_declarator
          left: (sized_declarator
            (identifier)
-@@ -4105,6 +5649,7 @@ end program
+@@ -4135,6 +5688,7 @@ end program
            repeat: (number_literal)
            (number_literal))))
      (end_of_statement)
@@ -11003,7 +11052,7 @@ index 4b6d8fb..ac46744 100644
      (variable_declaration
        type: (intrinsic_type
          kind: (kind
-@@ -4120,16 +5665,20 @@ end program
+@@ -4150,16 +5704,20 @@ end program
          right: (data_value
            (number_literal))))
      (end_of_statement)
@@ -11024,7 +11073,7 @@ index 4b6d8fb..ac46744 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -4147,22 +5696,34 @@ end program test
+@@ -4177,22 +5735,34 @@ end program test
  (translation_unit
    (program
      (program_statement

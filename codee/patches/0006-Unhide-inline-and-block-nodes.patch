@@ -11,10 +11,10 @@ Subject: Unhide `inline*` and `block*` nodes
  4 files changed, 356 insertions(+), 338 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 9aba20e..d2b55d1 100644
+index 6d39d36..3b583ef 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -104,7 +104,7 @@ module.exports = grammar({
+@@ -105,7 +105,7 @@ module.exports = grammar({
      [$.preproc_else_in_specification_part, $.program],
      [$.coarray_critical_statement, $.identifier],
      [$.format_statement, $.identifier],
@@ -22,8 +22,8 @@ index 9aba20e..d2b55d1 100644
 +    [$.inline_if_statement, $.arithmetic_if_statement, $.block_if_statement, $.identifier],
      [$.cray_pointer_declaration, $.identifier],
      [$.unit_identifier, $.identifier],
-   ],
-@@ -1365,11 +1365,11 @@ module.exports = grammar({
+     [$.format_identifier, $.identifier],
+@@ -1376,11 +1376,11 @@ module.exports = grammar({
      binary_op: $ => choice('+', '*', /(\.\w+\.|\w+)/),
  
      if_statement: $ => choice(
@@ -38,7 +38,7 @@ index 9aba20e..d2b55d1 100644
        caseInsensitive('if'),
        $.parenthesized_expression,
        $._statements
-@@ -1385,7 +1385,7 @@ module.exports = grammar({
+@@ -1396,7 +1396,7 @@ module.exports = grammar({
        $.statement_label_reference,
      )),
  
@@ -47,7 +47,7 @@ index 9aba20e..d2b55d1 100644
        optional($.block_label_start_expression),
        caseInsensitive('if'),
        $.parenthesized_expression,
-@@ -1421,17 +1421,17 @@ module.exports = grammar({
+@@ -1432,17 +1432,17 @@ module.exports = grammar({
      ),
  
      where_statement: $ => choice(
@@ -69,7 +69,7 @@ index 9aba20e..d2b55d1 100644
        optional($.block_label_start_expression),
        caseInsensitive('where'),
        $.parenthesized_expression,
-@@ -1455,8 +1455,8 @@ module.exports = grammar({
+@@ -1466,8 +1466,8 @@ module.exports = grammar({
      ),
  
      forall_statement: $ => choice(
@@ -80,7 +80,7 @@ index 9aba20e..d2b55d1 100644
      ),
  
      triplet_spec: $ => seq(
-@@ -1479,12 +1479,12 @@ module.exports = grammar({
+@@ -1490,12 +1490,12 @@ module.exports = grammar({
        ')'
      ),
  
@@ -96,10 +96,10 @@ index 9aba20e..d2b55d1 100644
        $._forall_control_expression,
        $.end_of_statement,
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 855fbcd..994158d 100644
+index 8545f3d..7316d3b 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -1264,42 +1264,43 @@ end subroutine foo
+@@ -1272,42 +1272,43 @@ end subroutine foo
        (number_literal))
      (end_of_statement)
      (if_statement
@@ -234,11 +234,11 @@ index d6b3f37..a5ddddf 100644
      (end_program_statement
        (end_of_statement))))
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index fe7ec84..604ca98 100644
+index f62ba4e..6a645aa 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
-@@ -887,10 +887,11 @@ END PROGRAM
-         (number_literal))
+@@ -893,10 +893,11 @@ END PROGRAM
+           (number_literal)))
        (end_of_statement)
        (if_statement
 -        (parenthesized_expression
@@ -253,7 +253,7 @@ index fe7ec84..604ca98 100644
        (end_of_statement)
        (statement_label)
        (end_do_loop_statement))
-@@ -1150,67 +1151,31 @@ END PROGRAM
+@@ -1157,67 +1158,31 @@ END PROGRAM
        (name)
        (end_of_statement))
      (if_statement
@@ -307,15 +307,15 @@ index fe7ec84..604ca98 100644
          (parenthesized_expression
 -          (relational_expression
 -            (call_expression
--              (identifier)
++          (logical_expression
++            (relational_expression
+               (identifier)
 -              (argument_list
 -                (extent_specifier
 -                  (number_literal)
 -                  (number_literal))))
 -            (call_expression
-+          (logical_expression
-+            (relational_expression
-               (identifier)
+-              (identifier)
 -              (argument_list
 -                (call_expression
 -                  (identifier)
@@ -338,7 +338,7 @@ index fe7ec84..604ca98 100644
          (parenthesized_expression
            (relational_expression
              (call_expression
-@@ -1222,71 +1187,112 @@ END PROGRAM
+@@ -1229,71 +1194,112 @@ END PROGRAM
              (call_expression
                (identifier)
                (argument_list
@@ -494,7 +494,7 @@ index fe7ec84..604ca98 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -1326,35 +1332,19 @@ end program
+@@ -1333,35 +1339,19 @@ end program
        (name)
        (end_of_statement))
      (where_statement
@@ -540,7 +540,7 @@ index fe7ec84..604ca98 100644
          (parenthesized_expression
            (relational_expression
              (identifier)
-@@ -1365,50 +1355,69 @@ end program
+@@ -1372,50 +1362,69 @@ end program
            (math_expression
              (identifier)
              (number_literal)))
@@ -638,7 +638,7 @@ index fe7ec84..604ca98 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -1443,167 +1452,172 @@ END PROGRAM
+@@ -1450,167 +1459,172 @@ END PROGRAM
        (name)
        (end_of_statement))
      (forall_statement
@@ -924,7 +924,7 @@ index fe7ec84..604ca98 100644
      (end_of_statement)
      (end_program_statement
        (end_of_statement))))
-@@ -3496,19 +3510,20 @@ end program test
+@@ -3536,19 +3550,20 @@ end program test
          (identifier)))
      (end_of_statement)
      (if_statement
