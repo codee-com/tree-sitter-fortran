@@ -30,10 +30,10 @@ const PREC = {
   LOGICAL_NOT: 30,
   RELATIONAL: 40,
   ADDITIVE: 50,
+  UNARY: 55,
   MULTIPLICATIVE: 60,
   EXPONENT: 70,
   CALL: 80,
-  UNARY: 90,
   TYPE_MEMBER: 100
 }
 
@@ -112,6 +112,7 @@ module.exports = grammar({
     [$.inline_if_statement, $.arithmetic_if_statement, $.block_if_statement, $.identifier],
     [$.cray_pointer_declaration, $.identifier],
     [$.unit_identifier, $.identifier],
+    [$.format_identifier, $.identifier],
     [$._preproc_expression, $.prefixed_string_literal],
   ],
 
@@ -1170,7 +1171,7 @@ module.exports = grammar({
       $.select_case_statement,
       $.select_type_statement,
       $.select_rank_statement,
-      $.do_loop_statement,
+      $.do_loop,
       $.do_label_statement,
       $.end_do_label_statement,
       $.format_statement,
@@ -1299,7 +1300,8 @@ module.exports = grammar({
           $.complex_literal,
           $.prefixed_string_literal,
           $.boolean_literal,
-          $.unary_expression,
+          // Only constants allowed here, so can't have general expression as child
+          alias($._signed_literal, $.unary_expression),
           $.null_literal,
           $.identifier,
           $.call_expression
@@ -1307,9 +1309,18 @@ module.exports = grammar({
       )),
       '/'
     ),
+    _signed_literal: $ => prec.right(PREC.UNARY, seq(choice('-', '+'), $.number_literal)),
 
-    do_loop_statement: $ => seq(
+    do_loop: $ => seq(
       optional($.block_label_start_expression),
+      $.do_statement,
+      $.end_of_statement,
+      repeat($._statement),
+      optional($.statement_label),
+      $.end_do_loop_statement
+    ),
+
+    do_statement: $ => seq(
       caseInsensitive('do'),
       optional(','),
       optional(choice(
@@ -1317,10 +1328,6 @@ module.exports = grammar({
         $.loop_control_expression,
         $.concurrent_statement
       )),
-      $.end_of_statement,
-      repeat($._statement),
-      optional($.statement_label),
-      $.end_do_loop_statement
     ),
 
     end_do_loop_statement: $ => seq(
@@ -2043,7 +2050,7 @@ module.exports = grammar({
       }))
     },
 
-    unary_expression: $ => prec.left(PREC.UNARY, seq(
+    unary_expression: $ => prec.right(PREC.UNARY, seq(
       field('operator', choice('-', '+', $.user_defined_operator)),
       field('argument', $._expression)
     )),
@@ -2345,6 +2352,7 @@ module.exports = grammar({
       caseInsensitive('data', false),
       caseInsensitive('device', false),
       prec(-1, caseInsensitive('dimension', false)),
+      caseInsensitive('do', false),
       caseInsensitive('double', false),
       caseInsensitive('else', false),
       caseInsensitive('elseif', false),
@@ -2357,6 +2365,7 @@ module.exports = grammar({
       caseInsensitive('external', false),
       caseInsensitive('fail', false),
       prec(-1, caseInsensitive('flush', false)),
+      caseInsensitive('fmt', false),
       caseInsensitive('form', false),
       caseInsensitive('format', false),
       caseInsensitive('go', false),
