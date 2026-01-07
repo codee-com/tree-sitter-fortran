@@ -13,7 +13,7 @@ they can also be consumed as `comment` tokens).
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/src/scanner.c b/src/scanner.c
-index 0b4caef..10a22d7 100644
+index 4a735f7..be574ae 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -226,7 +226,7 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {

@@ -389,6 +389,7 @@ static bool scan_string_literal(TSLexer *lexer) {
                     advance(lexer);
                 }
             }
+            continue;
         }
 
         // If we hit the same kind of quote that opened this literal,

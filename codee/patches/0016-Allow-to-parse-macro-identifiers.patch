@@ -45,7 +45,7 @@ index d40361e..9685d86 100644
  
      parenthesized_expression: $ => seq(
 diff --git a/src/scanner.c b/src/scanner.c
-index b768d99..e5a37ee 100644
+index 9007f34..2c348ff 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -1,4 +1,5 @@
@@ -133,7 +133,7 @@ index b768d99..e5a37ee 100644
    return true;
  }
  
-@@ -393,6 +413,33 @@ static bool scan_string_literal(TSLexer *lexer) {
+@@ -394,6 +414,33 @@ static bool scan_string_literal(TSLexer *lexer) {
      return false;
  }
  
@@ -167,7 +167,7 @@ index b768d99..e5a37ee 100644
  /// Need an external scanner to catch '!' before its parsed as a comment
  static bool scan_preproc_unary_operator(TSLexer *lexer) {
    const char next_char = lexer->lookahead;
-@@ -467,19 +514,57 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -468,19 +515,57 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
          return true;
      }
  
@@ -229,7 +229,7 @@ index b768d99..e5a37ee 100644
  }
  
  bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
-@@ -491,8 +576,9 @@ bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
+@@ -492,8 +577,9 @@ bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
  unsigned tree_sitter_fortran_external_scanner_serialize(void *payload,
                                                          char *buffer) {
      Scanner *scanner = (Scanner *)payload;
@@ -241,7 +241,7 @@ index b768d99..e5a37ee 100644
  }
  
  void tree_sitter_fortran_external_scanner_deserialize(void *payload,
-@@ -500,11 +586,18 @@ void tree_sitter_fortran_external_scanner_deserialize(void *payload,
+@@ -501,11 +587,18 @@ void tree_sitter_fortran_external_scanner_deserialize(void *payload,
                                                        unsigned length) {
      Scanner *scanner = (Scanner *)payload;
      if (length > 0) {

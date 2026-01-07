@@ -9,11 +9,11 @@ Subject: Parse whitespaces
  test/corpus/constructs.txt         |  810 +++++++++++++-
  test/corpus/cudafortran.txt        |   39 +-
  test/corpus/expressions.txt        |  675 ++++++++++-
- test/corpus/line_continuations.txt |  117 +-
+ test/corpus/line_continuations.txt |  124 ++-
  test/corpus/preprocessor.txt       |  339 +++++-
  test/corpus/regressions.txt        |  140 ++-
  test/corpus/statements.txt         | 1660 +++++++++++++++++++++++++++-
- 9 files changed, 3744 insertions(+), 83 deletions(-)
+ 9 files changed, 3751 insertions(+), 83 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
 index c8ce7d9..a546930 100644
@@ -52,7 +52,7 @@ index c8ce7d9..a546930 100644
        $._external_end_of_statement,
      ),
 diff --git a/src/scanner.c b/src/scanner.c
-index e5a37ee..5fabf79 100644
+index 2c348ff..fc1b6bd 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -15,6 +15,7 @@ enum TokenType {
@@ -63,7 +63,7 @@ index e5a37ee..5fabf79 100644
  };
  
  typedef Array(char *) StringArray;
-@@ -451,10 +452,28 @@ static bool scan_preproc_unary_operator(TSLexer *lexer) {
+@@ -452,10 +453,28 @@ static bool scan_preproc_unary_operator(TSLexer *lexer) {
    return false;
  }
  
@@ -95,7 +95,7 @@ index e5a37ee..5fabf79 100644
      }
  
      // Close the current statement if we can
-@@ -468,6 +487,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -469,6 +488,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
      // statements, so we should eat all whitespace including
      // newlines, until we come to something more interesting
      while (iswspace(lexer->lookahead)) {
@@ -4437,7 +4437,7 @@ index 870a02e..c4b4bfe 100644
          (number_literal)
          (string_literal)))
 diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
-index ba12587..32739bf 100644
+index caa7bf2..440f58e 100644
 --- a/test/corpus/line_continuations.txt
 +++ b/test/corpus/line_continuations.txt
 @@ -13,23 +13,34 @@ end program
@@ -4760,7 +4760,7 @@ index ba12587..32739bf 100644
        (end_of_statement))))
  
  ================================================================================
-@@ -338,21 +437,35 @@ end program test
+@@ -338,22 +437,36 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -4791,6 +4791,30 @@ index ba12587..32739bf 100644
 +            (whitespace)
 +            (number_literal))
 +          (whitespace))))
+     (end_of_statement)
+     (end_program_statement
++      (whitespace)
++      (whitespace)
+       (name)
+       (end_of_statement))))
+ 
+@@ -370,15 +483,22 @@ end program main
+ (translation_unit
+   (program
+     (program_statement
++      (whitespace)
+       (name)
+       (end_of_statement))
++    (whitespace)
+     (comment)
++    (whitespace)
+     (print_statement
++      (whitespace)
+       (format_identifier)
++      (whitespace)
+       (output_item_list
+         (prefixed_string_literal
+           (string_literal))))
      (end_of_statement)
      (end_program_statement
 +      (whitespace)

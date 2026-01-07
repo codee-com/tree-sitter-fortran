@@ -8,11 +8,11 @@ Subject: Unhide `end_of_statement`
  test/corpus/constructs.txt         | 482 +++++++++++-----
  test/corpus/cudafortran.txt        |  26 +-
  test/corpus/expressions.txt        | 262 +++++++--
- test/corpus/line_continuations.txt |  86 ++-
+ test/corpus/line_continuations.txt |  93 +++-
  test/corpus/preprocessor.txt       | 259 ++++++---
  test/corpus/regressions.txt        |  68 ++-
  test/corpus/statements.txt         | 846 +++++++++++++++++++++++------
- 8 files changed, 1606 insertions(+), 497 deletions(-)
+ 8 files changed, 1611 insertions(+), 499 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
 index 1289710..6d39d36 100644
@@ -2832,7 +2832,7 @@ index cf7f6c4..8545f3d 100644
 +    (end_program_statement
 +      (end_of_statement))))
 diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
-index c30265a..a3ebedb 100644
+index 952ef1e..5e64143 100644
 --- a/test/corpus/line_continuations.txt
 +++ b/test/corpus/line_continuations.txt
 @@ -13,7 +13,8 @@ end program
@@ -3080,10 +3080,30 @@ index c30265a..a3ebedb 100644
      (variable_declaration
        (intrinsic_type)
        (init_declarator
-@@ -300,5 +340,7 @@ end program test
+@@ -300,8 +340,10 @@ end program test
            (number_literal)
            (number_literal)
            (number_literal))))
++    (end_of_statement)
+     (end_program_statement
+-      (name))))
++      (name)
++      (end_of_statement))))
+ 
+ ================================================================================
+ Line continuation as part of string
+@@ -316,11 +358,14 @@ end program main
+ (translation_unit
+   (program
+     (program_statement
+-      (name))
++      (name)
++      (end_of_statement))
+     (comment)
+     (print_statement
+       (format_identifier)
+       (output_item_list
+         (string_literal)))
 +    (end_of_statement)
      (end_program_statement
 -      (name))))

@@ -14,7 +14,7 @@ explicitly.
  3 files changed, 58 insertions(+), 39 deletions(-)
 
 diff --git a/src/scanner.c b/src/scanner.c
-index 10a22d7..b768d99 100644
+index be574ae..9007f34 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -19,6 +19,16 @@ typedef struct {
@@ -123,7 +123,7 @@ index 10a22d7..b768d99 100644
              }
              lexer->result_symbol = FLOAT_LITERAL;
          }
-@@ -432,8 +444,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -433,8 +445,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
      if (valid_symbols[INTEGER_LITERAL] || valid_symbols[FLOAT_LITERAL] ||
          valid_symbols[BOZ_LITERAL]) {
          // extract out root number from expression
@@ -183,7 +183,7 @@ index 7316d3b..1b23f9a 100644
      (end_of_statement)
      (end_program_statement
 diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
-index a3ebedb..c086fe8 100644
+index 5e64143..fbf4084 100644
 --- a/test/corpus/line_continuations.txt
 +++ b/test/corpus/line_continuations.txt
 @@ -339,7 +339,8 @@ end program test
