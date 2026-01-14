@@ -483,11 +483,22 @@ end program main
 (translation_unit
   (program
     (program_statement
-      (name))
+      (whitespace)
+      (name)
+      (end_of_statement))
+    (whitespace)
     (comment)
+    (whitespace)
     (print_statement
+      (whitespace)
       (format_identifier)
+      (whitespace)
       (output_item_list
-        (string_literal)))
+        (prefixed_string_literal
+          (string_literal))))
+    (end_of_statement)
     (end_program_statement
-      (name))))
+      (whitespace)
+      (whitespace)
+      (name)
+      (end_of_statement))))
