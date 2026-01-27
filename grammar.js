@@ -104,8 +104,6 @@ module.exports = grammar({
     [$.rank_statement],
     [$.stop_statement, $.identifier],
     [$.type_statement],
-    [$.preproc_else_in_specification_part, $.program],
-    [$.preproc_if_in_specification_part, $.program],
     [$._preproc_expression, $._expression],
     [$.coarray_critical_statement, $.identifier],
     [$.format_statement, $.identifier],
@@ -124,26 +122,74 @@ module.exports = grammar({
   ],
 
   rules: {
-    translation_unit: $ => seq(
-      repeat($._top_level_item),
-      optional($.program),
+    translation_unit: $ => choice(
+      // A complete (normal) Fortran source file
+      seq(
+        repeat($._top_level_item_normal),
+        optional($.program),
+      ),
+      // A relaxed top-level parsing, allowing specification parts and
+      // executable statements at top-level. This is particularly useful for
+      // parsing include files, which typically contain fragments of code
+      $._relaxed_translation_unit,
+    ),
+
+    _relaxed_translation_unit: $ => seq(
+      // 0 or more
+      repeat($._top_level_item_normal),
+      // At least one item not typically allowed at top-level
+      $._top_level_item_floating,
+      // Ideally, we would now allow any number of `top_level_item` nodes,
+      // which include both `_top_level_item_normal` and
+      // `_top_level_item_floating`. However, we need a workaround for
+      // implicit programs (those without an explicit starting statement, and
+      // that end abruptly); e.g.:
+      //
+      //     return 1
+      //   end
+      // 
+      // Because implicit programs lack an starting `program` statement,
+      // tree-sitter initially parses the code as "floating". When it later
+      // encounters the `end` that implies a program scope, tree-sitter
+      // creates and immediately closes an empty program node. This isn't an
+      // accurate representation of the source code, as all statements that
+      // looked "floating" actually belong inside the program.
+      // 
+      // I tried to adjust parsing priorities to steer tree-sitter down the
+      // correct path in these scenarios, but every attempt ended up breaking
+      // the handling of floating code in some way.
+      //
+      // Ultimately, the simplest workable compromise I found is to replace
+      // `top_level_item` with `top_level_item_no_program` and allow an
+      // optional `end_program_statement`. This approach preserves correct
+      // parsing of floating code, while also allowing the parse tree to
+      // represent implicit programs via their terminator, instead of
+      // creating empty program nodes.
+      repeat($._top_level_item_no_program),
+      optional($.end_program_statement),
     ),
 
     _top_level_item: $ => prec(2, choice(
-      $.include_statement,
-      $.program,
-      $.module,
-      $.submodule,
-      $.interface,
-      $.subroutine,
-      $.function,
-      $.block_data,
-      $.preproc_if,
-      $.preproc_ifdef,
-      $.preproc_include,
-      $.preproc_def,
-      $.preproc_function_def,
-      $.preproc_call,
+      $._top_level_item_normal,
+      $._top_level_item_floating,
+    )),
+
+    _top_level_item_no_program: $ => prec(2, choice(
+      $._top_level_item_normal_no_program,
+      $._top_level_item_floating,
+    )),
+
+    _top_level_item_normal: $ => prec(4,
+      normalTopLevelItemInFortranFile($, /*allowProgram=*/true)
+    ),
+
+    _top_level_item_normal_no_program: $ => prec(4,
+      normalTopLevelItemInFortranFile($, /*allowProgram=*/false)
+    ),
+
+    _top_level_item_floating: $ => prec(3, choice(
+      $._specification_part,
+      $._statement,
     )),
 
     // Preprocessor
@@ -2560,6 +2606,36 @@ function preprocIf(suffix, content, precedence = 0) {
   */
 function preprocessor(command) {
   return alias(new RegExp('#[ \t]*' + command), '#' + command);
+}
+
+/**
+ * List of top-level items accepted in a normal Fortran translation unit
+ * 
+ * @param {GrammarSymbols<string>} $
+ * @param {boolean} allowProgram 
+ *
+ * @returns {ChoiceRule}
+ */
+function normalTopLevelItemInFortranFile($, allowProgram) {
+  const items = [
+    $.include_statement,
+    $.module,
+    $.submodule,
+    $.interface,
+    $.subroutine,
+    $.function,
+    $.block_data,
+    $.preproc_if,
+    $.preproc_ifdef,
+    $.preproc_include,
+    $.preproc_def,
+    $.preproc_function_def,
+    $.preproc_call,
+  ];
+  if (allowProgram) {
+    items.splice(1, 0, $.program);
+  }
+  return choice(...items);
 }
 
 /**

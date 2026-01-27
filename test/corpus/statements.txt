@@ -4606,20 +4606,19 @@ end
 
 (translation_unit
   (whitespace)
-  (program
-    (arithmetic_if_statement
-      (whitespace)
-      (parenthesized_expression
-        (identifier))
-      (whitespace)
-      (statement_label_reference)
-      (whitespace)
-      (statement_label_reference)
-      (whitespace)
-      (statement_label_reference))
-    (end_of_statement)
-    (end_program_statement
-      (end_of_statement))))
+  (arithmetic_if_statement
+    (whitespace)
+    (parenthesized_expression
+      (identifier))
+    (whitespace)
+    (statement_label_reference)
+    (whitespace)
+    (statement_label_reference)
+    (whitespace)
+    (statement_label_reference))
+  (end_of_statement)
+  (end_program_statement
+    (end_of_statement)))
 
 ================================================================================
 Statement Functions (Obsolescent)
@@ -5436,16 +5435,15 @@ end
 
 (translation_unit
   (whitespace)
-  (program
-    (assign_statement
-      (whitespace)
-      (number_literal)
-      (whitespace)
-      (whitespace)
-      (identifier))
-    (end_of_statement)
-    (end_program_statement
-      (end_of_statement))))
+  (assign_statement
+    (whitespace)
+    (number_literal)
+    (whitespace)
+    (whitespace)
+    (identifier))
+  (end_of_statement)
+  (end_program_statement
+    (end_of_statement)))
 
 ================================================================================
 Alternate Return Statement (Obsolescent)
@@ -5458,13 +5456,12 @@ end
 
 (translation_unit
   (whitespace)
-  (program
-    (keyword_statement
-      (whitespace)
-      (number_literal))
-    (end_of_statement)
-    (end_program_statement
-      (end_of_statement))))
+  (keyword_statement
+    (whitespace)
+    (number_literal))
+  (end_of_statement)
+  (end_program_statement
+    (end_of_statement)))
 
 ================================================================================
 Assigned Goto (Deleted)

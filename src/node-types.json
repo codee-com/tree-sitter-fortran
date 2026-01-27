@@ -6819,15 +6819,31 @@
       "required": false,
       "types": [
         {
+          "type": "_specification_parts",
+          "named": true
+        },
+        {
+          "type": "_statements",
+          "named": true
+        },
+        {
           "type": "block_data",
           "named": true
         },
         {
-          "type": "function",
+          "type": "derived_type_definition",
           "named": true
         },
         {
-          "type": "include_statement",
+          "type": "end_of_statement",
+          "named": true
+        },
+        {
+          "type": "end_program_statement",
+          "named": true
+        },
+        {
+          "type": "function",
           "named": true
         },
         {
@@ -6864,6 +6880,10 @@
         },
         {
           "type": "program",
+          "named": true
+        },
+        {
+          "type": "statement_label",
           "named": true
         },
         {

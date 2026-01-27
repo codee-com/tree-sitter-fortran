@@ -3,13 +3,57 @@
   "name": "fortran",
   "rules": {
     "translation_unit": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_top_level_item_normal"
+              }
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "program"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_relaxed_translation_unit"
+        }
+      ]
+    },
+    "_relaxed_translation_unit": {
       "type": "SEQ",
       "members": [
         {
           "type": "REPEAT",
           "content": {
             "type": "SYMBOL",
-            "name": "_top_level_item"
+            "name": "_top_level_item_normal"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_top_level_item_floating"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_top_level_item_no_program"
           }
         },
         {
@@ -17,7 +61,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "program"
+              "name": "end_program_statement"
             },
             {
               "type": "BLANK"
@@ -29,6 +73,40 @@
     "_top_level_item": {
       "type": "PREC",
       "value": 2,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_top_level_item_normal"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_top_level_item_floating"
+          }
+        ]
+      }
+    },
+    "_top_level_item_no_program": {
+      "type": "PREC",
+      "value": 2,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_top_level_item_normal_no_program"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_top_level_item_floating"
+          }
+        ]
+      }
+    },
+    "_top_level_item_normal": {
+      "type": "PREC",
+      "value": 4,
       "content": {
         "type": "CHOICE",
         "members": [
@@ -87,6 +165,84 @@
           {
             "type": "SYMBOL",
             "name": "preproc_call"
+          }
+        ]
+      }
+    },
+    "_top_level_item_normal_no_program": {
+      "type": "PREC",
+      "value": 4,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "include_statement"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "module"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "submodule"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "interface"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "subroutine"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "function"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "block_data"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_if"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_ifdef"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_include"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_def"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_function_def"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "preproc_call"
+          }
+        ]
+      }
+    },
+    "_top_level_item_floating": {
+      "type": "PREC",
+      "value": 3,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_specification_part"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_statement"
           }
         ]
       }
@@ -22332,14 +22488,6 @@
     ],
     [
       "type_statement"
-    ],
-    [
-      "preproc_else_in_specification_part",
-      "program"
-    ],
-    [
-      "preproc_if_in_specification_part",
-      "program"
     ],
     [
       "_preproc_expression",

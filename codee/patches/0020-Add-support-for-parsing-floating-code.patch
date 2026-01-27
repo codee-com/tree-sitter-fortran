@@ -1,0 +1,1019 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=81lvaro=20G=2E=20Dieste?= <alvaro.dieste@appentra.com>
+Date: Tue, 27 Jan 2026 15:04:11 +0100
+Subject: Add support for parsing "floating" code
+
+The goal is to allow specification parts and executable statements at
+top-level, in addition to the usually allowed Fortran items. This is
+particularly useful for parsing include files, which typically contain
+fragments of code rather than complete Fortran translation units.
+
+Incomplete blocks of code, such as partial derived type declarations or
+do loops, will still trigger parsing errors.
+---
+ grammar.js                 | 114 +++++-
+ test/corpus/floating.txt   | 768 +++++++++++++++++++++++++++++++++++++
+ test/corpus/statements.txt |  59 ++-
+ 3 files changed, 891 insertions(+), 50 deletions(-)
+ create mode 100644 test/corpus/floating.txt
+
+diff --git a/grammar.js b/grammar.js
+index a546930..08f7785 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -104,8 +104,6 @@ module.exports = grammar({
+     [$.rank_statement],
+     [$.stop_statement, $.identifier],
+     [$.type_statement],
+-    [$.preproc_else_in_specification_part, $.program],
+-    [$.preproc_if_in_specification_part, $.program],
+     [$._preproc_expression, $._expression],
+     [$.coarray_critical_statement, $.identifier],
+     [$.format_statement, $.identifier],
+@@ -124,26 +122,74 @@ module.exports = grammar({
+   ],
+ 
+   rules: {
+-    translation_unit: $ => seq(
+-      repeat($._top_level_item),
+-      optional($.program),
++    translation_unit: $ => choice(
++      // A complete (normal) Fortran source file
++      seq(
++        repeat($._top_level_item_normal),
++        optional($.program),
++      ),
++      // A relaxed top-level parsing, allowing specification parts and
++      // executable statements at top-level. This is particularly useful for
++      // parsing include files, which typically contain fragments of code
++      $._relaxed_translation_unit,
++    ),
++
++    _relaxed_translation_unit: $ => seq(
++      // 0 or more
++      repeat($._top_level_item_normal),
++      // At least one item not typically allowed at top-level
++      $._top_level_item_floating,
++      // Ideally, we would now allow any number of `top_level_item` nodes,
++      // which include both `_top_level_item_normal` and
++      // `_top_level_item_floating`. However, we need a workaround for
++      // implicit programs (those without an explicit starting statement, and
++      // that end abruptly); e.g.:
++      //
++      //     return 1
++      //   end
++      // 
++      // Because implicit programs lack an starting `program` statement,
++      // tree-sitter initially parses the code as "floating". When it later
++      // encounters the `end` that implies a program scope, tree-sitter
++      // creates and immediately closes an empty program node. This isn't an
++      // accurate representation of the source code, as all statements that
++      // looked "floating" actually belong inside the program.
++      // 
++      // I tried to adjust parsing priorities to steer tree-sitter down the
++      // correct path in these scenarios, but every attempt ended up breaking
++      // the handling of floating code in some way.
++      //
++      // Ultimately, the simplest workable compromise I found is to replace
++      // `top_level_item` with `top_level_item_no_program` and allow an
++      // optional `end_program_statement`. This approach preserves correct
++      // parsing of floating code, while also allowing the parse tree to
++      // represent implicit programs via their terminator, instead of
++      // creating empty program nodes.
++      repeat($._top_level_item_no_program),
++      optional($.end_program_statement),
+     ),
+ 
+     _top_level_item: $ => prec(2, choice(
+-      $.include_statement,
+-      $.program,
+-      $.module,
+-      $.submodule,
+-      $.interface,
+-      $.subroutine,
+-      $.function,
+-      $.block_data,
+-      $.preproc_if,
+-      $.preproc_ifdef,
+-      $.preproc_include,
+-      $.preproc_def,
+-      $.preproc_function_def,
+-      $.preproc_call,
++      $._top_level_item_normal,
++      $._top_level_item_floating,
++    )),
++
++    _top_level_item_no_program: $ => prec(2, choice(
++      $._top_level_item_normal_no_program,
++      $._top_level_item_floating,
++    )),
++
++    _top_level_item_normal: $ => prec(4,
++      normalTopLevelItemInFortranFile($, /*allowProgram=*/true)
++    ),
++
++    _top_level_item_normal_no_program: $ => prec(4,
++      normalTopLevelItemInFortranFile($, /*allowProgram=*/false)
++    ),
++
++    _top_level_item_floating: $ => prec(3, choice(
++      $._specification_part,
++      $._statement,
+     )),
+ 
+     // Preprocessor
+@@ -2562,6 +2608,36 @@ function preprocessor(command) {
+   return alias(new RegExp('#[ \t]*' + command), '#' + command);
+ }
+ 
++/**
++ * List of top-level items accepted in a normal Fortran translation unit
++ * 
++ * @param {GrammarSymbols<string>} $
++ * @param {boolean} allowProgram 
++ *
++ * @returns {ChoiceRule}
++ */
++function normalTopLevelItemInFortranFile($, allowProgram) {
++  const items = [
++    $.include_statement,
++    $.module,
++    $.submodule,
++    $.interface,
++    $.subroutine,
++    $.function,
++    $.block_data,
++    $.preproc_if,
++    $.preproc_ifdef,
++    $.preproc_include,
++    $.preproc_def,
++    $.preproc_function_def,
++    $.preproc_call,
++  ];
++  if (allowProgram) {
++    items.splice(1, 0, $.program);
++  }
++  return choice(...items);
++}
++
+ /**
+  * Common rule for procedures (function, subroutine, module procedure)
+  *
+diff --git a/test/corpus/floating.txt b/test/corpus/floating.txt
+new file mode 100644
+index 0000000..dcb6a23
+--- /dev/null
++++ b/test/corpus/floating.txt
+@@ -0,0 +1,768 @@
++================================================================================
++[Block] - Block Construct
++================================================================================
++
++block
++  integer :: x
++  x = 1
++end block
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (block_construct
++    (end_of_statement)
++    (whitespace)
++    (variable_declaration
++      (intrinsic_type)
++      (whitespace)
++      (whitespace)
++      (identifier))
++    (end_of_statement)
++    (whitespace)
++    (assignment_statement
++      (identifier)
++      (whitespace)
++      (whitespace)
++      (number_literal))
++    (end_of_statement)
++    (end_block_construct_statement
++      (whitespace)))
++  (end_of_statement))
++
++================================================================================
++[Block] - Do Loop
++================================================================================
++
++do i = 1, 10
++  a = 1
++end do
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (do_loop
++    (do_statement
++      (whitespace)
++      (loop_control_expression
++        (identifier)
++        (whitespace)
++        (whitespace)
++        (number_literal)
++        (whitespace)
++        (number_literal)))
++    (end_of_statement)
++    (whitespace)
++    (assignment_statement
++      (identifier)
++      (whitespace)
++      (whitespace)
++      (number_literal))
++    (end_of_statement)
++    (end_do_loop_statement
++      (whitespace)))
++  (end_of_statement))
++
++================================================================================
++[Block] - If-Then-Else
++================================================================================
++
++if (a > 0) then
++  a = 1
++else
++  a = 2
++end if
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (if_statement
++    (block_if_statement
++      (whitespace)
++      (parenthesized_expression
++        (relational_expression
++          (identifier)
++          (whitespace)
++          (whitespace)
++          (number_literal)))
++      (whitespace)
++      (end_of_statement)
++      (whitespace)
++      (assignment_statement
++        (identifier)
++        (whitespace)
++        (whitespace)
++        (number_literal))
++      (end_of_statement)
++      (else_clause
++        (end_of_statement)
++        (whitespace)
++        (assignment_statement
++          (identifier)
++          (whitespace)
++          (whitespace)
++          (number_literal))
++        (end_of_statement))
++      (end_if_statement
++        (whitespace))))
++  (end_of_statement))
++
++================================================================================
++[Block] - Select-Case
++================================================================================
++
++select case (i)
++case (1)
++  a = 1
++case default
++  a = 0
++end select
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (select_case_statement
++    (whitespace)
++    (whitespace)
++    (selector
++      (identifier))
++    (end_of_statement)
++    (case_statement
++      (whitespace)
++      (case_value_range_list
++        (number_literal))
++      (end_of_statement)
++      (whitespace)
++      (assignment_statement
++        (identifier)
++        (whitespace)
++        (whitespace)
++        (number_literal))
++      (end_of_statement))
++    (case_statement
++      (whitespace)
++      (end_of_statement)
++      (whitespace)
++      (assignment_statement
++        (identifier)
++        (whitespace)
++        (whitespace)
++        (number_literal))
++      (end_of_statement))
++    (end_select_statement
++      (whitespace)))
++  (end_of_statement))
++
++================================================================================
++[Decl] - Common Block
++================================================================================
++
++common /blk/ a, b
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (common_statement
++    (whitespace)
++    (variable_group
++      (name)
++      (whitespace)
++      (identifier)
++      (whitespace)
++      (identifier)))
++  (end_of_statement))
++
++================================================================================
++[Decl] - Derived Type
++================================================================================
++
++type :: t
++  integer :: x
++end type t
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (derived_type_definition
++    (derived_type_statement
++      (whitespace)
++      (whitespace)
++      (type_name)
++      (end_of_statement))
++    (whitespace)
++    (variable_declaration
++      (intrinsic_type)
++      (whitespace)
++      (whitespace)
++      (identifier))
++    (end_of_statement)
++    (end_type_statement
++      (whitespace)
++      (whitespace)
++      (name)
++      (end_of_statement))))
++
++================================================================================
++[Decl] - Implicit None
++================================================================================
++
++implicit none
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (implicit_statement
++    (whitespace)
++    (none))
++  (end_of_statement))
++
++================================================================================
++[Decl] - Interface
++================================================================================
++
++interface
++  subroutine foo(x)
++    integer :: x
++  end subroutine foo
++end interface
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (interface
++    (interface_statement
++      (end_of_statement))
++    (whitespace)
++    (subroutine
++      (subroutine_statement
++        (whitespace)
++        (name)
++        (parameters
++          (identifier))
++        (end_of_statement))
++      (whitespace)
++      (variable_declaration
++        (intrinsic_type)
++        (whitespace)
++        (whitespace)
++        (identifier))
++      (end_of_statement)
++      (whitespace)
++      (end_subroutine_statement
++        (whitespace)
++        (whitespace)
++        (name)
++        (end_of_statement)))
++    (end_interface_statement
++      (whitespace)
++      (end_of_statement))))
++
++================================================================================
++[Decl] - Use
++================================================================================
++
++use iso_fortran_env, only: int32
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (use_statement
++    (whitespace)
++    (module_name
++      (name))
++    (included_items
++      (whitespace)
++      (whitespace)
++      (identifier)))
++  (end_of_statement))
++
++================================================================================
++[Decl] - Variable
++================================================================================
++
++character(len=5) :: string = "Hello"
++
++real, parameter :: pi = 3.1415
++
++real, dimension(:), allocatable :: a, &
++                                   b
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (variable_declaration
++    (intrinsic_type
++      (kind
++        (keyword_argument
++          (identifier)
++          (number_literal))))
++    (whitespace)
++    (whitespace)
++    (init_declarator
++      (identifier)
++      (whitespace)
++      (whitespace)
++      (prefixed_string_literal
++        (string_literal))))
++  (end_of_statement)
++  (variable_declaration
++    (intrinsic_type)
++    (whitespace)
++    (type_qualifier)
++    (whitespace)
++    (whitespace)
++    (init_declarator
++      (identifier)
++      (whitespace)
++      (whitespace)
++      (number_literal)))
++  (end_of_statement)
++  (variable_declaration
++    (intrinsic_type)
++    (whitespace)
++    (type_qualifier
++      (argument_list
++        (extent_specifier)))
++    (whitespace)
++    (type_qualifier)
++    (whitespace)
++    (whitespace)
++    (identifier)
++    (whitespace)
++    (whitespace)
++    (identifier))
++  (end_of_statement))
++
++================================================================================
++[Stmt] - Assignment
++================================================================================
++
++a = 1
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (assignment_statement
++    (identifier)
++    (whitespace)
++    (whitespace)
++    (number_literal))
++  (end_of_statement))
++
++================================================================================
++[Stmt] - GoTo
++================================================================================
++
++10 continue
++goto 10
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (statement_label)
++  (whitespace)
++  (keyword_statement)
++  (end_of_statement)
++  (keyword_statement
++    (whitespace)
++    (statement_label_reference))
++  (end_of_statement))
++
++================================================================================
++[Stmt] - IO
++================================================================================
++
++read(*, *) a
++write(*, '(I0)') a
++
++open(unit=10, file="data")
++close(10)
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (read_statement
++    (unit_identifier)
++    (whitespace)
++    (format_identifier)
++    (whitespace)
++    (input_item_list
++      (identifier)))
++  (end_of_statement)
++  (write_statement
++    (unit_identifier)
++    (whitespace)
++    (format_identifier
++      (prefixed_string_literal
++        (string_literal)))
++    (whitespace)
++    (output_item_list
++      (identifier)))
++  (end_of_statement)
++  (open_statement
++    (unit_identifier
++      (number_literal))
++    (whitespace)
++    (keyword_argument
++      (identifier)
++      (prefixed_string_literal
++        (string_literal))))
++  (end_of_statement)
++  (close_statement
++    (unit_identifier
++      (number_literal)))
++  (end_of_statement))
++
++================================================================================
++[Stmt] - Procedure Call
++================================================================================
++
++call foo(1, 2)
++
++result = bar(3, 4)
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (subroutine_call
++    (whitespace)
++    (identifier)
++    (argument_list
++      (number_literal)
++      (whitespace)
++      (number_literal)))
++  (end_of_statement)
++  (assignment_statement
++    (identifier)
++    (whitespace)
++    (whitespace)
++    (call_expression
++      (identifier)
++      (argument_list
++        (number_literal)
++        (whitespace)
++        (number_literal))))
++  (end_of_statement))
++
++================================================================================
++[Mix] - Derived Type, Variable, Assignment
++================================================================================
++
++type :: t
++  integer :: x
++end type t
++
++integer :: a
++a = 1
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (derived_type_definition
++    (derived_type_statement
++      (whitespace)
++      (whitespace)
++      (type_name)
++      (end_of_statement))
++    (whitespace)
++    (variable_declaration
++      (intrinsic_type)
++      (whitespace)
++      (whitespace)
++      (identifier))
++    (end_of_statement)
++    (end_type_statement
++      (whitespace)
++      (whitespace)
++      (name)
++      (end_of_statement)))
++  (variable_declaration
++    (intrinsic_type)
++    (whitespace)
++    (whitespace)
++    (identifier))
++  (end_of_statement)
++  (assignment_statement
++    (identifier)
++    (whitespace)
++    (whitespace)
++    (number_literal))
++  (end_of_statement))
++
++================================================================================
++[Preprocessor] - Decls. or Procedure
++================================================================================
++
++#ifdef A
++
++type :: t
++end type
++
++integer :: a
++
++#else
++
++subroutine foo()
++end
++
++#endif
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (preproc_ifdef
++    (whitespace)
++    (identifier)
++    (derived_type_definition
++      (derived_type_statement
++        (whitespace)
++        (whitespace)
++        (type_name)
++        (end_of_statement))
++      (end_type_statement
++        (whitespace)
++        (end_of_statement)))
++    (variable_declaration
++      (intrinsic_type)
++      (whitespace)
++      (whitespace)
++      (identifier))
++    (end_of_statement)
++    (preproc_else
++      (subroutine
++        (subroutine_statement
++          (whitespace)
++          (name)
++          (end_of_statement))
++        (end_subroutine_statement
++          (end_of_statement))))))
++
++================================================================================
++[Preprocessor] - Do Loop or If-Then
++================================================================================
++
++#ifdef A
++
++do i = 1, 10
++  a = 1
++end do
++
++#else
++  
++if (a > 0) then
++  a = 1
++end if
++
++#endif
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (preproc_ifdef
++    (whitespace)
++    (identifier)
++    (do_loop
++      (do_statement
++        (whitespace)
++        (loop_control_expression
++          (identifier)
++          (whitespace)
++          (whitespace)
++          (number_literal)
++          (whitespace)
++          (number_literal)))
++      (end_of_statement)
++      (whitespace)
++      (assignment_statement
++        (identifier)
++        (whitespace)
++        (whitespace)
++        (number_literal))
++      (end_of_statement)
++      (end_do_loop_statement
++        (whitespace)))
++    (end_of_statement)
++    (preproc_else
++      (whitespace)
++      (if_statement
++        (block_if_statement
++          (whitespace)
++          (parenthesized_expression
++            (relational_expression
++              (identifier)
++              (whitespace)
++              (whitespace)
++              (number_literal)))
++          (whitespace)
++          (end_of_statement)
++          (whitespace)
++          (assignment_statement
++            (identifier)
++            (whitespace)
++            (whitespace)
++            (number_literal))
++          (end_of_statement)
++          (end_if_statement
++            (whitespace))))
++      (end_of_statement))))
++
++================================================================================
++[Preprocessor] - Module or Interface
++================================================================================
++
++#ifdef A
++
++module mod
++contains
++  subroutine foo()
++  end subroutine foo
++end module mod
++
++#else
++
++interface
++  subroutine foo()
++  end subroutine foo
++end interface
++
++#endif
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (preproc_ifdef
++    (whitespace)
++    (identifier)
++    (module
++      (module_statement
++        (whitespace)
++        (name)
++        (end_of_statement))
++      (internal_procedures
++        (contains_statement)
++        (end_of_statement)
++        (whitespace)
++        (subroutine
++          (subroutine_statement
++            (whitespace)
++            (name)
++            (end_of_statement))
++          (whitespace)
++          (end_subroutine_statement
++            (whitespace)
++            (whitespace)
++            (name)
++            (end_of_statement))))
++      (end_module_statement
++        (whitespace)
++        (whitespace)
++        (name)
++        (end_of_statement)))
++    (preproc_else
++      (interface
++        (interface_statement
++          (end_of_statement))
++        (whitespace)
++        (subroutine
++          (subroutine_statement
++            (whitespace)
++            (name)
++            (end_of_statement))
++          (whitespace)
++          (end_subroutine_statement
++            (whitespace)
++            (whitespace)
++            (name)
++            (end_of_statement)))
++        (end_interface_statement
++          (whitespace)
++          (end_of_statement))))))
++
++================================================================================
++[Incomplete] - Block Construct
++:error
++================================================================================
++
++block
++  integer :: x
++  x = 1
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - Derived Type
++:error
++================================================================================
++
++type :: t
++  integer :: x
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - Do Loop
++:error
++================================================================================
++
++do i = 1, 10
++  a = 1
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - If-Then
++:error
++================================================================================
++
++if (a > 0) then
++  a = 1
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - Dangling Else
++:error
++================================================================================
++
++else
++  a = 2
++end if
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - Interface
++:error
++================================================================================
++
++interface
++  subroutine foo(x)
++    integer :: x
++  end subroutine foo
++
++--------------------------------------------------------------------------------
++
++
++
++================================================================================
++[Incomplete] - Select-Case
++:error
++================================================================================
++
++select case (i)
++case (1)
++  a = 1
++
++--------------------------------------------------------------------------------
++
++
+diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
+index cb9d55b..9964537 100644
+--- a/test/corpus/statements.txt
++++ b/test/corpus/statements.txt
+@@ -4606,20 +4606,19 @@ end
+ 
+ (translation_unit
+   (whitespace)
+-  (program
+-    (arithmetic_if_statement
+-      (whitespace)
+-      (parenthesized_expression
+-        (identifier))
+-      (whitespace)
+-      (statement_label_reference)
+-      (whitespace)
+-      (statement_label_reference)
+-      (whitespace)
+-      (statement_label_reference))
+-    (end_of_statement)
+-    (end_program_statement
+-      (end_of_statement))))
++  (arithmetic_if_statement
++    (whitespace)
++    (parenthesized_expression
++      (identifier))
++    (whitespace)
++    (statement_label_reference)
++    (whitespace)
++    (statement_label_reference)
++    (whitespace)
++    (statement_label_reference))
++  (end_of_statement)
++  (end_program_statement
++    (end_of_statement)))
+ 
+ ================================================================================
+ Statement Functions (Obsolescent)
+@@ -5436,16 +5435,15 @@ end
+ 
+ (translation_unit
+   (whitespace)
+-  (program
+-    (assign_statement
+-      (whitespace)
+-      (number_literal)
+-      (whitespace)
+-      (whitespace)
+-      (identifier))
+-    (end_of_statement)
+-    (end_program_statement
+-      (end_of_statement))))
++  (assign_statement
++    (whitespace)
++    (number_literal)
++    (whitespace)
++    (whitespace)
++    (identifier))
++  (end_of_statement)
++  (end_program_statement
++    (end_of_statement)))
+ 
+ ================================================================================
+ Alternate Return Statement (Obsolescent)
+@@ -5458,13 +5456,12 @@ end
+ 
+ (translation_unit
+   (whitespace)
+-  (program
+-    (keyword_statement
+-      (whitespace)
+-      (number_literal))
+-    (end_of_statement)
+-    (end_program_statement
+-      (end_of_statement))))
++  (keyword_statement
++    (whitespace)
++    (number_literal))
++  (end_of_statement)
++  (end_program_statement
++    (end_of_statement)))
+ 
+ ================================================================================
+ Assigned Goto (Deleted)
