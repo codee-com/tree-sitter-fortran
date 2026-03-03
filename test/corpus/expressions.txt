@@ -37,7 +37,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -272,7 +273,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -390,7 +392,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -427,7 +430,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -544,7 +548,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -677,7 +682,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (pointer_association_statement
@@ -700,7 +706,8 @@ END PROGRAM
     (pointer_association_statement
       (derived_type_member_expression
         (identifier)
-        (type_member))
+        (type_member
+          (identifier)))
       (whitespace)
       (whitespace)
       (identifier))
@@ -725,13 +732,15 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
       (derived_type_member_expression
         (identifier)
-        (type_member))
+        (type_member
+          (identifier)))
       (whitespace)
       (whitespace)
       (identifier))
@@ -743,14 +752,16 @@ END PROGRAM
       (whitespace)
       (derived_type_member_expression
         (identifier)
-        (type_member)))
+        (type_member
+          (identifier))))
     (end_of_statement)
     (whitespace)
     (assignment_statement
       (call_expression
         (derived_type_member_expression
           (identifier)
-          (type_member))
+          (type_member
+            (identifier)))
         (argument_list
           (extent_specifier
             (number_literal)
@@ -786,7 +797,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -945,7 +957,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -1205,7 +1218,8 @@ END PROGRAM
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -1284,7 +1298,8 @@ END PROGRAM
     (assignment_statement
       left: (derived_type_member_expression
         (identifier)
-        (type_member))
+        (type_member
+          (identifier)))
       (whitespace)
       (whitespace)
       right: (call_expression
@@ -1339,14 +1354,16 @@ end program use_type_bound_procedures
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (subroutine_call
       (whitespace)
       (derived_type_member_expression
         (identifier)
-        (type_member))
+        (type_member
+          (identifier)))
       (argument_list))
     (end_of_statement)
     (whitespace)
@@ -1358,14 +1375,17 @@ end program use_type_bound_procedures
             (identifier)
             (argument_list
               (identifier)))
-          (type_member))
-        (type_member))
+          (type_member
+            (identifier)))
+        (type_member
+          (identifier)))
       (argument_list))
     (end_of_statement)
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1388,7 +1408,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (write_statement
@@ -1447,7 +1468,8 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (print_statement
@@ -1460,7 +1482,8 @@ end program test
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1485,7 +1508,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -1540,8 +1564,7 @@ end program
           (ERROR
             (ERROR
               (number_literal))
-            (user_defined_operator_name)
-            (number_literal))
+            (user_defined_operator_name))
           (whitespace)
           (whitespace)
           (number_literal))))
@@ -1574,7 +1597,8 @@ end program array_constructors
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (implicit_statement
@@ -1739,7 +1763,8 @@ end program array_constructors
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1774,7 +1799,8 @@ end subroutine foo
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -1891,7 +1917,8 @@ end subroutine foo
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -1964,7 +1991,8 @@ end subroutine foo
     (end_subroutine_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1984,7 +2012,8 @@ end subroutine test
   (subroutine
     (subroutine_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       parameters: (parameters
         (identifier)
         (whitespace)
@@ -2048,7 +2077,8 @@ end subroutine test
     (end_subroutine_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2071,7 +2101,8 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -2188,7 +2219,8 @@ end program test
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2206,7 +2238,8 @@ end
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -2257,7 +2290,8 @@ end
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration

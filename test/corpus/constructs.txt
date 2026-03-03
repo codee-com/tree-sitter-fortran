@@ -14,7 +14,8 @@ END PROGRAM TEST
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (end_program_statement
       (whitespace)
@@ -22,12 +23,14 @@ END PROGRAM TEST
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -83,7 +86,8 @@ end module
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (private_statement)
@@ -92,13 +96,15 @@ end module
     (use_statement
       (whitespace)
       (module_name
-        (name)))
+        (name
+          (identifier))))
     (end_of_statement)
     (whitespace)
     (interface
       (interface_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (procedure_statement
@@ -106,14 +112,16 @@ end module
           (whitespace))
         (whitespace)
         (method_name
-          (name)))
+          (name
+            (identifier))))
       (whitespace)
       (procedure_statement
         (procedure_kind
           (whitespace))
         (whitespace)
         (method_name
-          (name)))
+          (name
+            (identifier))))
       (whitespace)
       (end_interface_statement
         (whitespace)
@@ -234,7 +242,8 @@ end module
       (function
         (function_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier)
             (whitespace)
@@ -262,7 +271,8 @@ end module
       (function
         (function_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier)
             (whitespace)
@@ -315,7 +325,8 @@ end interface
     (subroutine
       (subroutine_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier)
           (identifier)
@@ -349,13 +360,15 @@ end interface
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (whitespace)
     (function
       (function_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier)
           (identifier))
@@ -385,7 +398,8 @@ end interface
       (end_function_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_interface_statement
       (whitespace)
@@ -420,7 +434,8 @@ end interface
     (subroutine
       (subroutine_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier)
           (identifier)
@@ -454,13 +469,15 @@ end interface
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (whitespace)
     (function
       (function_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier)
           (identifier))
@@ -490,7 +507,8 @@ end interface
       (end_function_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_interface_statement
       (whitespace)
@@ -511,7 +529,8 @@ end interface
   (interface
     (interface_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (procedure_statement
@@ -519,14 +538,16 @@ end interface
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (whitespace)
     (procedure_statement
       (procedure_kind
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (end_interface_statement
       (whitespace)
       (end_of_statement))))
@@ -564,14 +585,16 @@ end interface operator (.not.)
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (whitespace)
     (procedure_statement
       (procedure_kind
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (end_interface_statement
       (whitespace)
       (whitespace)
@@ -592,12 +615,14 @@ end interface operator (.not.)
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (whitespace)
     (function
       (function_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier))
         (end_of_statement))
@@ -651,7 +676,8 @@ end interface assignment (=)
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (end_interface_statement
       (whitespace)
       (whitespace)
@@ -681,7 +707,8 @@ interface operator(+) ; module procedure test_plus ; end interface
         (whitespace))
       (whitespace)
       (method_name
-        (name)))
+        (name
+          (identifier))))
     (whitespace)
     (whitespace)
     (end_interface_statement
@@ -704,13 +731,15 @@ end module
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (use_statement
       (whitespace)
       (module_name
-        (name))
+        (name
+          (identifier)))
       (included_items
         (whitespace)
         (whitespace)
@@ -779,7 +808,8 @@ END SUBROUTINE
       (procedure_qualifier)
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (parameters
         (identifier))
       (end_of_statement))
@@ -817,12 +847,14 @@ END SUBROUTINE
     (end_subroutine_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement)))
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (end_subroutine_statement
       (whitespace)
@@ -830,7 +862,8 @@ END SUBROUTINE
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (parameters
         (identifier)
         (whitespace)
@@ -845,7 +878,8 @@ END SUBROUTINE
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (whitespace)
       (language_binding
         (identifier)
@@ -861,7 +895,8 @@ END SUBROUTINE
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -888,7 +923,8 @@ END SUBROUTINE
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier)
             (whitespace)
@@ -989,7 +1025,8 @@ end function
           (number_literal)))
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (comment)
@@ -997,7 +1034,8 @@ end function
     (use_statement
       (whitespace)
       (module_name
-        (name)))
+        (name
+          (identifier))))
     (end_of_statement)
     (whitespace)
     (assignment_statement
@@ -1014,17 +1052,20 @@ end function
   (function
     (function_statement
       (derived_type
-        (type_name))
+        (type_name
+          (identifier)))
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (comment)
     (whitespace)
     (variable_declaration
       (derived_type
-        (type_name))
+        (type_name
+          (identifier)))
       (whitespace)
       (whitespace)
       (identifier))
@@ -1033,7 +1074,8 @@ end function
     (assignment_statement
       (derived_type_member_expression
         (identifier)
-        (type_member))
+        (type_member
+          (identifier)))
       (whitespace)
       (whitespace)
       (number_literal))
@@ -1055,7 +1097,8 @@ end function
           (number_literal)))
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (parameters
         (identifier)
         (whitespace)
@@ -1074,7 +1117,8 @@ end function
           (number_literal)))
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (whitespace)
       (language_binding
         (identifier)
@@ -1090,7 +1134,8 @@ end function
   (function
     (function_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (whitespace)
       (function_result
         (identifier))
@@ -1109,7 +1154,8 @@ end function
   (function
     (function_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (whitespace)
       (language_binding
         (identifier)
@@ -1163,7 +1209,8 @@ end function test
       (intrinsic_type)
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (parameters
         (identifier)
         (whitespace)
@@ -1210,7 +1257,8 @@ end function test
           (procedure_qualifier)
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (whitespace)
           (function_result
             (identifier))
@@ -1235,7 +1283,8 @@ end function test
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier))
           (end_of_statement))
@@ -1271,14 +1320,16 @@ end function test
           (procedure_qualifier)
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier))
           (end_of_statement))
         (whitespace)
         (variable_declaration
           (derived_type
-            (type_name))
+            (type_name
+              (identifier)))
           (whitespace)
           (whitespace)
           (identifier))
@@ -1287,12 +1338,14 @@ end function test
         (end_function_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))))
     (end_function_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1334,13 +1387,15 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (end_type_statement
@@ -1353,7 +1408,8 @@ end program
         (access_specifier)
         (whitespace)
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (end_of_statement)
@@ -1427,7 +1483,8 @@ end program
           (whitespace)
           (whitespace)
           (method_name
-            (name)))
+            (name
+              (identifier))))
         (whitespace)
         (comment)
         (whitespace)
@@ -1435,7 +1492,8 @@ end program
           (procedure_kind)
           (whitespace)
           (method_name
-            (name)))
+            (name
+              (identifier))))
         (whitespace)
         (comment)
         (whitespace)
@@ -1449,7 +1507,8 @@ end program
           (whitespace)
           (whitespace)
           (method_name
-            (name)))
+            (name
+              (identifier))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
@@ -1463,10 +1522,12 @@ end program
             (whitespace)
             (whitespace)
             (method_name
-              (name)))
+              (name
+                (identifier))))
           (whitespace)
           (method_name
-            (name)))
+            (name
+              (identifier))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
@@ -1480,7 +1541,8 @@ end program
             (whitespace)
             (whitespace)
             (method_name
-              (name))))
+              (name
+                (identifier)))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
@@ -1495,14 +1557,16 @@ end program
             (whitespace)
             (whitespace)
             (method_name
-              (name))))
+              (name
+                (identifier)))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
           (whitespace)
           (whitespace)
           (method_name
-            (name))
+            (name
+              (identifier)))
           (whitespace)
           (binding
             (binding_name
@@ -1510,19 +1574,22 @@ end program
             (whitespace)
             (whitespace)
             (method_name
-              (name))))
+              (name
+                (identifier)))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
           (whitespace)
           (whitespace)
           (method_name
-            (name))))
+            (name
+              (identifier)))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (whitespace)
     (derived_type_definition
@@ -1531,7 +1598,8 @@ end program
         (abstract_specifier)
         (whitespace)
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (derived_type_parameter_list
           (identifier)
           (whitespace)
@@ -1608,7 +1676,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
@@ -1619,13 +1688,15 @@ end program
         (abstract_specifier)
         (whitespace)
         (whitespace)
-        name: (type_name)
+        name: (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (whitespace)
     (derived_type_definition
@@ -1637,13 +1708,15 @@ end program
           (identifier))
         (whitespace)
         (whitespace)
-        name: (type_name)
+        name: (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_program_statement
       (whitespace)
@@ -1670,13 +1743,15 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (derived_type_procedures
@@ -1684,13 +1759,15 @@ end program
         (whitespace)
         (procedure_statement
           (procedure_kind)
-          (procedure_interface)
+          (procedure_interface
+            (identifier))
           (whitespace)
           (procedure_attribute)
           (whitespace)
           (whitespace)
           (method_name
-            (name))))
+            (name
+              (identifier)))))
       (whitespace)
       (end_type_statement
         (whitespace)
@@ -1705,7 +1782,8 @@ end program
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
@@ -1738,13 +1816,15 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (derived_type_procedures
@@ -1757,7 +1837,8 @@ end program test
           (whitespace)
           (whitespace)
           (method_name
-            (name)))
+            (name
+              (identifier))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
@@ -1766,17 +1847,20 @@ end program test
           (whitespace)
           (whitespace)
           (method_name
-            (name))))
+            (name
+              (identifier)))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1796,18 +1880,21 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (variable_declaration
         (procedure
-          (procedure_interface)
+          (procedure_interface
+            (identifier))
           (whitespace)
           (procedure_attribute))
         (whitespace)
@@ -1828,7 +1915,8 @@ end program test
       (whitespace)
       (variable_declaration
         (procedure
-          (procedure_interface)
+          (procedure_interface
+            (identifier))
           (whitespace)
           (procedure_attribute)
           (whitespace)
@@ -1841,12 +1929,14 @@ end program test
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1871,9 +1961,11 @@ END SUBMODULE ConstructorMethods_child
   (submodule
     (submodule_statement
       (module_name
-        (name))
+        (name
+          (identifier)))
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (implicit_statement
       (whitespace)
@@ -1885,16 +1977,20 @@ END SUBMODULE ConstructorMethods_child
     (end_submodule_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement)))
   (submodule
     (submodule_statement
       (module_name
-        (name))
+        (name
+          (identifier)))
       (module_name
-        (name))
+        (name
+          (identifier)))
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (implicit_statement
       (whitespace)
@@ -1906,7 +2002,8 @@ END SUBMODULE ConstructorMethods_child
     (end_submodule_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1937,7 +2034,8 @@ END MODULE BoundingBox_Method
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (private_statement)
     (end_of_statement)
@@ -1952,7 +2050,8 @@ END MODULE BoundingBox_Method
           (procedure_qualifier)
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier)
             (whitespace)
@@ -1963,7 +2062,8 @@ END MODULE BoundingBox_Method
         (whitespace)
         (variable_declaration
           (derived_type
-            (type_name))
+            (type_name
+              (identifier)))
           (whitespace)
           (type_qualifier)
           (whitespace)
@@ -1974,7 +2074,8 @@ END MODULE BoundingBox_Method
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (end_interface_statement
         (whitespace)
@@ -1988,7 +2089,8 @@ END MODULE BoundingBox_Method
           (procedure_qualifier)
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier))
           (whitespace)
@@ -1998,7 +2100,8 @@ END MODULE BoundingBox_Method
         (whitespace)
         (variable_declaration
           (derived_type
-            (type_name))
+            (type_name
+              (identifier)))
           (whitespace)
           (type_qualifier)
           (whitespace)
@@ -2009,7 +2112,8 @@ END MODULE BoundingBox_Method
         (end_function_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (end_interface_statement
         (whitespace)
@@ -2017,7 +2121,8 @@ END MODULE BoundingBox_Method
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2044,7 +2149,8 @@ end module test
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (interface
@@ -2056,13 +2162,15 @@ end module test
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (whitespace)
       (end_interface_statement
@@ -2075,7 +2183,8 @@ end module test
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (parameters
             (identifier)
             (whitespace)
@@ -2086,7 +2195,8 @@ end module test
         (whitespace)
         (variable_declaration
           (procedure
-            (procedure_interface))
+            (procedure_interface
+              (identifier)))
           (whitespace)
           (whitespace)
           (identifier))
@@ -2094,7 +2204,8 @@ end module test
         (whitespace)
         (variable_declaration
           (procedure
-            (procedure_interface))
+            (procedure_interface
+              (identifier)))
           (whitespace)
           (type_qualifier)
           (whitespace)
@@ -2125,12 +2236,14 @@ end module test
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))))
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2161,7 +2274,8 @@ end program block_demo
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (implicit_statement
@@ -2216,7 +2330,8 @@ end program block_demo
       (end_of_statement)
       (whitespace)
       (block_construct
-        (block_label_start_expression)
+        (block_label_start_expression
+          (identifier))
         (whitespace)
         (end_of_statement)
         (whitespace)
@@ -2241,7 +2356,8 @@ end program block_demo
         (end_block_construct_statement
           (whitespace)
           (whitespace)
-          (block_label)))
+          (block_label
+            (identifier))))
       (end_of_statement)
       (whitespace)
       (end_block_construct_statement
@@ -2257,7 +2373,8 @@ end program block_demo
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2277,7 +2394,8 @@ end module enumeration_mod
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (enumeration_type
@@ -2287,7 +2405,8 @@ end module enumeration_mod
         (access_specifier)
         (whitespace)
         (whitespace)
-        (type_name))
+        (type_name
+          (identifier)))
       (whitespace)
       (enumerator_statement
         (whitespace)
@@ -2306,12 +2425,14 @@ end module enumeration_mod
         (whitespace)
         (whitespace)
         (whitespace)
-        (name)))
+        (name
+          (identifier))))
     (end_of_statement)
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -2376,13 +2497,15 @@ Block Data (Obsolescent)
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2407,13 +2530,15 @@ Block Data (Obsolescent)
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2440,76 +2565,15 @@ Block Data (Obsolescent)
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name)
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name)
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2535,13 +2599,15 @@ Block Data (Obsolescent)
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2560,21 +2626,21 @@ Block Data (Obsolescent)
     (end_of_statement)
     (whitespace)
     (end_block_data_statement
-      (whitespace)
-      (name)
       (end_of_statement)))
   (whitespace)
   (block_data
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2594,22 +2660,21 @@ Block Data (Obsolescent)
     (whitespace)
     (end_block_data_statement
       (whitespace)
-      (whitespace)
-      (whitespace)
-      (name)
       (end_of_statement)))
   (whitespace)
   (block_data
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2629,21 +2694,23 @@ Block Data (Obsolescent)
     (whitespace)
     (end_block_data_statement
       (whitespace)
-      (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement)))
   (whitespace)
   (block_data
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2663,20 +2730,25 @@ Block Data (Obsolescent)
     (whitespace)
     (end_block_data_statement
       (whitespace)
-      (name)
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
       (end_of_statement)))
   (whitespace)
   (block_data
     (block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (common_statement
       (whitespace)
       (variable_group
-        (name)
+        (name
+          (identifier))
         (whitespace)
         (identifier)
         (whitespace)
@@ -2697,5 +2769,79 @@ Block Data (Obsolescent)
     (end_block_data_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
+      (end_of_statement)))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement)))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
       (end_of_statement))))

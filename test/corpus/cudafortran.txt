@@ -14,7 +14,8 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -42,7 +43,8 @@ end program test
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -67,7 +69,8 @@ end function
           (number_literal)))
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (comment)
@@ -75,7 +78,8 @@ end function
     (use_statement
       (whitespace)
       (module_name
-        (name)))
+        (name
+          (identifier))))
     (end_of_statement)
     (whitespace)
     (assignment_statement
@@ -109,7 +113,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (subroutine_call

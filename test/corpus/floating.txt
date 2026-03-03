@@ -165,7 +165,8 @@ common /blk/ a, b
   (common_statement
     (whitespace)
     (variable_group
-      (name)
+      (name
+        (identifier))
       (whitespace)
       (identifier)
       (whitespace)
@@ -187,7 +188,8 @@ end type t
     (derived_type_statement
       (whitespace)
       (whitespace)
-      (type_name)
+      (type_name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -199,7 +201,8 @@ end type t
     (end_type_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -236,7 +239,8 @@ end interface
     (subroutine
       (subroutine_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (parameters
           (identifier))
         (end_of_statement))
@@ -251,7 +255,8 @@ end interface
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_interface_statement
       (whitespace)
@@ -269,7 +274,8 @@ use iso_fortran_env, only: int32
   (use_statement
     (whitespace)
     (module_name
-      (name))
+      (name
+        (identifier)))
     (included_items
       (whitespace)
       (whitespace)
@@ -462,7 +468,8 @@ a = 1
     (derived_type_statement
       (whitespace)
       (whitespace)
-      (type_name)
+      (type_name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -474,7 +481,8 @@ a = 1
     (end_type_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement)))
   (variable_declaration
     (intrinsic_type)
@@ -517,7 +525,8 @@ end
       (derived_type_statement
         (whitespace)
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (end_type_statement
         (whitespace)
@@ -532,7 +541,8 @@ end
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))
         (end_subroutine_statement
           (end_of_statement))))))
@@ -636,7 +646,8 @@ end interface
     (module
       (module_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement))
       (internal_procedures
         (contains_statement)
@@ -645,18 +656,21 @@ end interface
         (subroutine
           (subroutine_statement
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement))
           (whitespace)
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement))))
       (end_module_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (preproc_else
       (interface
@@ -666,13 +680,15 @@ end interface
         (subroutine
           (subroutine_statement
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement))
           (whitespace)
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement)))
         (end_interface_statement
           (whitespace)

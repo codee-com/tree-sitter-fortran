@@ -24,13 +24,15 @@ end program example_padl
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (use_statement
       (whitespace)
       (module_name
-        (name))
+        (name
+          (identifier)))
       (included_items
         (whitespace)
         (whitespace)
@@ -45,7 +47,8 @@ end program example_padl
     (use_statement
       (whitespace)
       (module_name
-        (name))
+        (name
+          (identifier)))
       (included_items
         (whitespace)
         (whitespace)
@@ -59,7 +62,8 @@ end program example_padl
     (whitespace)
     (variable_declaration
       (derived_type
-        (type_name))
+        (type_name
+          (identifier)))
       (whitespace)
       (whitespace)
       (identifier))
@@ -109,7 +113,8 @@ end program example_padl
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================
@@ -132,12 +137,14 @@ end program foo
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (if_statement
       (block_if_statement
-        (block_label_start_expression)
+        (block_label_start_expression
+          (identifier))
         (whitespace)
         (whitespace)
         (parenthesized_expression
@@ -153,7 +160,8 @@ end program foo
         (whitespace)
         (else_clause
           (whitespace)
-          (block_label)
+          (block_label
+            (identifier))
           (end_of_statement)
           (whitespace)
           (subroutine_call
@@ -164,12 +172,14 @@ end program foo
         (whitespace)
         (end_if_statement
           (whitespace)
-          (block_label))))
+          (block_label
+            (identifier)))))
     (end_of_statement)
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================
@@ -191,7 +201,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (if_statement
@@ -233,7 +244,8 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
@@ -252,7 +264,8 @@ end program test
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -269,7 +282,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (assignment_statement
@@ -325,7 +339,8 @@ Multiple array assignments
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (parameters
         (identifier)
         (whitespace)
@@ -454,5 +469,6 @@ Multiple array assignments
     (end_subroutine_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))

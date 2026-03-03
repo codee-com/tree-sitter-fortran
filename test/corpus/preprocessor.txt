@@ -169,12 +169,14 @@ end subroutine foo4
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement))))
   (preproc_ifdef
     (whitespace)
@@ -182,12 +184,14 @@ end subroutine foo4
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     content: (preproc_def
       (whitespace)
@@ -203,12 +207,14 @@ end subroutine foo4
         content: (subroutine
           (subroutine_statement
             (whitespace)
-            name: (name)
+            name: (name
+              (identifier))
             (end_of_statement))
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement)))
         content: (preproc_def
           (whitespace)
@@ -223,12 +229,14 @@ end subroutine foo4
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (whitespace)
     (inline_preproc_comment)))
@@ -265,12 +273,14 @@ end subroutine foo5
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     alternative: (preproc_elifdef
       (whitespace)
@@ -278,12 +288,14 @@ end subroutine foo5
       content: (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))))
   (preproc_ifdef
     (whitespace)
@@ -291,12 +303,14 @@ end subroutine foo5
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     alternative: (preproc_elifdef
       (whitespace)
@@ -304,23 +318,27 @@ end subroutine foo5
       content: (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       alternative: (preproc_else
         content: (subroutine
           (subroutine_statement
             (whitespace)
-            name: (name)
+            name: (name
+              (identifier))
             (end_of_statement))
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement)))))))
 
 ================================================================================
@@ -355,12 +373,14 @@ end subroutine e
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     alternative: (preproc_elif
       (whitespace)
@@ -369,12 +389,14 @@ end subroutine e
       content: (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))))
   (preproc_if
     (whitespace)
@@ -384,12 +406,14 @@ end subroutine e
     content: (subroutine
       (subroutine_statement
         (whitespace)
-        name: (name)
+        name: (name
+          (identifier))
         (end_of_statement))
       (end_subroutine_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     alternative: (preproc_elifdef
       (whitespace)
@@ -397,23 +421,27 @@ end subroutine e
       content: (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       alternative: (preproc_else
         content: (subroutine
           (subroutine_statement
             (whitespace)
-            name: (name)
+            name: (name
+              (identifier))
             (end_of_statement))
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement)))))))
 
 ================================================================================
@@ -544,7 +572,8 @@ end program test
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (preproc_call
       (preproc_directive)
@@ -560,7 +589,8 @@ end program test
       (subroutine
         (subroutine_statement
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))
         (preproc_call
           (preproc_directive)
@@ -580,7 +610,8 @@ end program test
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (preproc_call
         (preproc_directive)
@@ -589,7 +620,8 @@ end program test
     (end_program_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -610,13 +642,15 @@ end program
   (program
     (program_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (use_statement
       (whitespace)
       (module_name
-        (name))
+        (name
+          (identifier)))
       (included_items
         (whitespace)
         (whitespace)
@@ -635,7 +669,8 @@ end program
       content: (use_statement
         (whitespace)
         (module_name
-          (name)))
+          (name
+            (identifier))))
       content: (end_of_statement))
     (end_program_statement
       (whitespace)
@@ -665,13 +700,15 @@ end module foo
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
         (whitespace)
-        (type_name)
+        (type_name
+          (identifier))
         (end_of_statement))
       (preproc_include
         (whitespace)
@@ -702,17 +739,20 @@ end module foo
             (whitespace)
             (whitespace)
             (method_name
-              (name)))))
+              (name
+                (identifier))))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement)))
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -741,7 +781,8 @@ end module foo
   (module
     (module_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (internal_procedures
       (contains_statement)
@@ -750,13 +791,15 @@ end module foo
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (preproc_ifdef
         (whitespace)
@@ -765,30 +808,35 @@ end module foo
         content: (subroutine
           (subroutine_statement
             (whitespace)
-            name: (name)
+            name: (name
+              (identifier))
             (end_of_statement))
           (whitespace)
           (end_subroutine_statement
             (whitespace)
             (whitespace)
-            (name)
+            (name
+              (identifier))
             (end_of_statement))))
       (whitespace)
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))))
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -819,7 +867,8 @@ end module foo
   (module
     (module_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (internal_procedures
       (contains_statement)
@@ -828,7 +877,8 @@ end module foo
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (variable_declaration
@@ -873,24 +923,28 @@ end module foo
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (whitespace)
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))))
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -920,7 +974,8 @@ end module foo
   (module
     (module_statement
       (whitespace)
-      name: (name)
+      name: (name
+        (identifier))
       (end_of_statement))
     (internal_procedures
       (contains_statement)
@@ -929,7 +984,8 @@ end module foo
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (variable_declaration
@@ -962,24 +1018,28 @@ end module foo
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement)))
       (whitespace)
       (subroutine
         (subroutine_statement
           (whitespace)
-          name: (name)
+          name: (name
+            (identifier))
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
           (whitespace)
           (whitespace)
-          (name)
+          (name
+            (identifier))
           (end_of_statement))))
     (end_module_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1015,7 +1075,8 @@ end program
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (implicit_statement
@@ -1134,13 +1195,15 @@ end module
   (module
     (module_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (interface
       (interface_statement
         (whitespace)
-        (name)
+        (name
+          (identifier))
         (end_of_statement))
       (whitespace)
       (procedure_statement
@@ -1148,7 +1211,8 @@ end module
           (whitespace))
         (whitespace)
         (method_name
-          (name)))
+          (name
+            (identifier))))
       (preproc_ifdef
         (whitespace)
         (identifier)
@@ -1158,7 +1222,8 @@ end module
             (whitespace))
           (whitespace)
           (method_name
-            (name))))
+            (name
+              (identifier)))))
       (whitespace)
       (end_interface_statement
         (whitespace)
@@ -1198,7 +1263,8 @@ Preprocessor in specification part
   (subroutine
     (subroutine_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (implicit_statement
@@ -1307,7 +1373,8 @@ Preprocessor in specification part
     (end_subroutine_statement
       (whitespace)
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))))
 
 ================================================================================
@@ -1343,7 +1410,8 @@ Baz */
   (program
     (program_statement
       (whitespace)
-      (name)
+      (name
+        (identifier))
       (end_of_statement))
     (whitespace)
     (variable_declaration
