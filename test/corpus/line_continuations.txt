@@ -41,8 +41,8 @@ end program
         (identifier)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Line continuations with comment and blank lines
@@ -95,8 +95,8 @@ end program
       (whitespace))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Line continuation before comma
@@ -133,8 +133,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Line continuation before function suffix
@@ -190,14 +190,14 @@ end program test
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement))))
+            (identifier)))
+        (end_of_statement)))
     (end_program_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Empty Write with FMT
@@ -232,8 +232,8 @@ end program
         (string_literal)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Inline comments
@@ -297,14 +297,14 @@ end program ! comment
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (whitespace)
-          (end_of_statement))))
+            (identifier)))
+        (whitespace)
+        (end_of_statement)))
     (comment)
     (end_program_statement
-      (whitespace)
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (whitespace)
+    (end_of_statement))
   (comment)
   (comment))
 
@@ -384,8 +384,8 @@ end program
           (string_literal))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Line continuation in hollerith constants
@@ -433,8 +433,8 @@ end program
         (hollerith_constant)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Line continuation immediately after number literal
@@ -483,8 +483,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Line continuation as part of string
@@ -518,5 +518,5 @@ end program main
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))

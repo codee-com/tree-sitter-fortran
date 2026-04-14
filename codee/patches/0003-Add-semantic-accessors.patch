@@ -13,11 +13,11 @@ Subject: Add semantic accessors
  6 files changed, 36 insertions(+), 23 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index bd68a65..1289710 100644
+index e85449a..9b6029f 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -305,7 +305,11 @@ module.exports = grammar({
-       $.end_program_statement
+@@ -311,7 +311,11 @@ module.exports = grammar({
+       $._end_of_statement
      ),
  
 -    program_statement: $ => seq(caseInsensitive('program'), $._name, $._end_of_statement),
@@ -26,11 +26,11 @@ index bd68a65..1289710 100644
 +      field('name', $._name),
 +      $._end_of_statement
 +    ),
-     end_program_statement: $ => blockStructureEnding($, 'program'),
+     end_program_statement: $ => blockStructureEnding1($, 'program', $._name),
  
      module: $ => seq(
-@@ -321,7 +325,11 @@ module.exports = grammar({
-       $.end_module_statement
+@@ -328,7 +332,11 @@ module.exports = grammar({
+       $._end_of_statement
      ),
  
 -    module_statement: $ => seq(caseInsensitive('module'), $._name, $._end_of_statement),
@@ -39,10 +39,10 @@ index bd68a65..1289710 100644
 +      field('name', $._name),
 +      $._end_of_statement
 +    ),
-     end_module_statement: $ => blockStructureEnding($, 'module'),
+     end_module_statement: $ => blockStructureEnding1($, 'module', $._name),
  
      submodule: $ => seq(
-@@ -345,7 +353,7 @@ module.exports = grammar({
+@@ -353,7 +361,7 @@ module.exports = grammar({
          ':', field('parent', $.module_name)
        )),
        ')',
@@ -50,8 +50,8 @@ index bd68a65..1289710 100644
 +      field('name', $._name),
        $._end_of_statement,
      ),
-     end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
-@@ -377,7 +385,7 @@ module.exports = grammar({
+     end_submodule_statement: $ => blockStructureEnding1($, 'submodule', $._name),
+@@ -386,7 +394,7 @@ module.exports = grammar({
      interface_statement: $ => seq(
        optional($.abstract_specifier),
        caseInsensitive('interface'),
@@ -60,7 +60,7 @@ index bd68a65..1289710 100644
        $._end_of_statement,
      ),
  
-@@ -771,8 +779,13 @@ module.exports = grammar({
+@@ -772,8 +780,13 @@ module.exports = grammar({
        optional($.statement_label),
        caseInsensitive('type'),
        choice(
@@ -76,7 +76,7 @@ index bd68a65..1289710 100644
        ),
        optional(alias($.argument_list, $.derived_type_parameter_list)),
        $._end_of_statement,
-@@ -2059,7 +2072,7 @@ module.exports = grammar({
+@@ -2111,7 +2124,7 @@ module.exports = grammar({
      // precedence is used to prevent conflict with assignment expression
      keyword_argument: $ => prec(1, seq(
        field("name",$.identifier),
@@ -86,10 +86,10 @@ index bd68a65..1289710 100644
      )),
  
 diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
-index ab165f0..9b2eccb 100644
+index 6c43d2f..ea76986 100644
 --- a/test/corpus/constructs.txt
 +++ b/test/corpus/constructs.txt
-@@ -988,12 +988,12 @@ end program
+@@ -983,12 +983,12 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -104,7 +104,7 @@ index ab165f0..9b2eccb 100644
        (end_type_statement
          (name)))
      (derived_type_definition
-@@ -1001,7 +1001,7 @@ end program
+@@ -996,7 +996,7 @@ end program
          access: (access_specifier)
          base: (base_type_specifier
            (identifier))
@@ -145,7 +145,7 @@ index 63781fa..cf7f6c4 100644
        left: (identifier)
        right: (call_expression
 diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
-index d9dd3a3..a42ff39 100644
+index 2b9de62..0d9b717 100644
 --- a/test/corpus/preprocessor.txt
 +++ b/test/corpus/preprocessor.txt
 @@ -453,7 +453,7 @@ end program
@@ -157,7 +157,7 @@ index d9dd3a3..a42ff39 100644
      (use_statement
        (module_name)
        (included_items
-@@ -541,7 +541,7 @@ end module foo
+@@ -540,7 +540,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -166,7 +166,7 @@ index d9dd3a3..a42ff39 100644
      (internal_procedures
        (contains_statement)
        (subroutine
-@@ -591,7 +591,7 @@ end module foo
+@@ -590,7 +590,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -175,7 +175,7 @@ index d9dd3a3..a42ff39 100644
      (internal_procedures
        (contains_statement)
        (subroutine
-@@ -651,7 +651,7 @@ end module foo
+@@ -650,7 +650,7 @@ end module foo
  (translation_unit
    (module
      (module_statement
@@ -198,7 +198,7 @@ index fc47bf1..1af946a 100644
        left: (call_expression
          (identifier)
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index 2065d4f..96bef40 100644
+index 0df6bfe..613be42 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -289,7 +289,7 @@ END PROGRAM
@@ -219,7 +219,7 @@ index 2065d4f..96bef40 100644
      (variable_declaration
        type: (intrinsic_type)
        attribute: (type_qualifier
-@@ -1987,7 +1987,7 @@ END PROGRAM test
+@@ -2112,7 +2112,7 @@ END PROGRAM test
  (translation_unit
    (program
      (program_statement
@@ -228,7 +228,7 @@ index 2065d4f..96bef40 100644
      (enum
        (enum_statement
          (language_binding
-@@ -2748,7 +2748,7 @@ end program test
+@@ -2893,7 +2893,7 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -237,7 +237,7 @@ index 2065d4f..96bef40 100644
      (allocate_statement
        allocation: (sized_allocation
          (identifier)
-@@ -3536,7 +3536,7 @@ end program
+@@ -3681,7 +3681,7 @@ end program
  (translation_unit
    (program
      (program_statement

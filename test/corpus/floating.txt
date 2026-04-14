@@ -202,8 +202,8 @@ end type t
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 [Decl] - Implicit None
@@ -256,11 +256,11 @@ end interface
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_interface_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 [Decl] - Use
@@ -482,8 +482,8 @@ a = 1
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (variable_declaration
     (intrinsic_type)
     (whitespace)
@@ -529,8 +529,8 @@ end
           (identifier))
         (end_of_statement))
       (end_type_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (variable_declaration
       (intrinsic_type)
       (whitespace)
@@ -544,8 +544,8 @@ end
           (name
             (identifier))
           (end_of_statement))
-        (end_subroutine_statement
-          (end_of_statement))))))
+        (end_subroutine_statement)
+        (end_of_statement)))))
 
 ================================================================================
 [Preprocessor] - Do Loop or If-Then
@@ -664,14 +664,14 @@ end interface
             (whitespace)
             (whitespace)
             (name
-              (identifier))
-            (end_of_statement))))
+              (identifier)))
+          (end_of_statement)))
       (end_module_statement
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (preproc_else
       (interface
         (interface_statement
@@ -688,11 +688,11 @@ end interface
             (whitespace)
             (whitespace)
             (name
-              (identifier))
-            (end_of_statement)))
+              (identifier)))
+          (end_of_statement))
         (end_interface_statement
-          (whitespace)
-          (end_of_statement))))))
+          (whitespace))
+        (end_of_statement)))))
 
 ================================================================================
 [Incomplete] - Block Construct

@@ -10,10 +10,10 @@ so they don't show as unnamed children of `identifier`s nodes.
  2 files changed, 96 insertions(+), 65 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 4f84bdb..bd68a65 100644
+index 82d6070..e85449a 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -2292,71 +2292,71 @@ module.exports = grammar({
+@@ -2341,71 +2341,71 @@ module.exports = grammar({
      // add the keywords here -- and possibly in `conflicts` too.
      identifier: $ => choice(
        /[a-zA-Z_$][\w$]*/,

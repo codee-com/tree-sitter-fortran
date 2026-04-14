@@ -2,6 +2,7 @@
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
 #include <ctype.h>
+#include <string.h>
 #include <wctype.h>
 
 enum TokenType {
@@ -14,16 +15,54 @@ enum TokenType {
     END_OF_STATEMENT,
     PREPROC_UNARY_OPERATOR,
     HOLLERITH_CONSTANT,
+    DO_LABEL,
+    DO_LABEL_VIRTUAL,
+    DO_LABEL_CONTINUE,
     MACRO_IDENTIFIER,
     WHITESPACE,
 };
 
 typedef Array(char *) StringArray;
 
+// at most 100 nested labeled do loops, should be sufficient
+#define MAX_LABEL_STACK 100
+
 typedef struct {
     bool in_line_continuation;
+
+    // stack for tracking active DO labels and their counts
+    int32_t depth;
+    int32_t labels[MAX_LABEL_STACK];
+    int32_t counts[MAX_LABEL_STACK];
+
+    // counter for emitting virtual label token for closing labeled do statements
+    int32_t pending_label_virtual;
+    // flag for emitting eos tokens right after a virtual label token
+    bool is_pending_eos_virtual;
+
     StringArray MacroIdentifiers;
 } Scanner;
+
+
+// first parse number and only then decide what kind of token to emit,
+// for example: we need to check label stack first before we can decide whether
+// we have a do-label or an integer literal
+typedef enum {
+    NUMBER_ERROR,
+    NUMBER_NONE,
+    NUMBER_INTEGER,
+    NUMBER_FLOAT
+} NumberType;
+
+typedef struct {
+    // type of number
+    NumberType type;
+    // value in case it turns out to be a label
+    int32_t value;
+    // count digits to abort value computation after 5 digits
+    // (maximal number for labels)
+    int digit_count;
+} NumberResult;
 
 typedef enum {
     False,
@@ -46,41 +85,71 @@ static bool is_identifier_char(char chr) { return iswalnum(chr) || chr == '_'; }
 
 static bool is_boz_sentinel(char chr) {
     switch (chr) {
-        case 'B':
-        case 'b':
-        case 'O':
-        case 'o':
-        case 'Z':
-        case 'z':
-            return true;
-        default:
-            return false;
+    case 'B':
+    case 'b':
+    case 'O':
+    case 'o':
+    case 'Z':
+    case 'z':
+        return true;
+    default:
+        return false;
     }
 }
 
 static bool is_exp_sentinel(char chr) {
     switch (chr) {
-        case 'D':
-        case 'd':
-        case 'E':
-        case 'e':
-        case 'Q':
-        case 'q':
-            return true;
-        default:
-            return false;
+    case 'D':
+    case 'd':
+    case 'E':
+    case 'e':
+    case 'Q':
+    case 'q':
+        return true;
+    default:
+        return false;
     }
 }
 
-static BoolOrErr scan_int(TSLexer *lexer) {
+// If in the middle of a literal, '&' is required in both lines
+static bool skip_literal_continuation_sequence(TSLexer *lexer) {
+    if (lexer->lookahead != '&') {
+        return true;
+    }
+
+    advance(lexer);
+    while (iswspace(lexer->lookahead)) {
+        advance(lexer);
+    }
+    // second '&' technically required to continue the literal
+    if (lexer->lookahead == '&') {
+        advance(lexer);
+        return true;
+    }
+    return false;
+}
+
+// consume digits and compute value if requested
+static BoolOrErr scan_int(TSLexer *lexer, int32_t *value, int *count) {
     if (!iswdigit(lexer->lookahead)) {
         return False;
     }
+
+    if (value && count) {
+        *value = 0;
+        *count = 0;
+    }
+
     // consume digits
     while (iswdigit(lexer->lookahead)) {
-        advance(lexer); // store all digits
+        if (value && count && *count < 7) {
+            *value = *value * 10 + (lexer->lookahead - '0');
+            (*count)++;
+        }
+        advance(lexer);
     }
     lexer->mark_end(lexer);
+
     // Return an error if a line continuation is found. This scanner cannot
     // handle line continuations, particularly in cases like:
     //
@@ -94,13 +163,22 @@ static BoolOrErr scan_int(TSLexer *lexer) {
     if (lexer->lookahead == '&') {
         return Error;
     }
+
+    // no more digits and no continuation found
     return True;
 }
 
-/// Scan a number of the forms 1XXX, 1.0XXX, 0.1XXX, 1.XDX, etc.
-static BoolOrErr scan_number(TSLexer *lexer) {
-    lexer->result_symbol = INTEGER_LITERAL;
-    BoolOrErr digits = scan_int(lexer);
+/// Scan integer or float of the forms 1XXX, 1.0XXX, 0.1XXX, 1.XDX, .1X etc.
+static NumberResult scan_number(TSLexer *lexer) {
+    NumberResult result = {NUMBER_NONE, 0, 0};
+
+    // assume integer, but if no proper digits are found, reset to NUMBER_NONE
+    result.type = NUMBER_INTEGER;
+
+    // collect initial digits and compute value (specifically required to
+    // determine label value)
+    BoolOrErr digits = scan_int(lexer, &result.value, &result.digit_count);
+
     if (lexer->lookahead == '.') {
         advance(lexer);
         // exclude decimal if followed by any letter other than d/D and e/E
@@ -109,12 +187,15 @@ static BoolOrErr scan_number(TSLexer *lexer) {
         if ((digits == True) && !iswalnum(lexer->lookahead)) {
             lexer->mark_end(lexer); // add decimal to token
         }
-        lexer->result_symbol = FLOAT_LITERAL;
+        // this is not yet decided, we still need to find some digits
+        result.type = NUMBER_FLOAT;
     }
+
     // if next char isn't number return since we handle exp
     // notation and precision identifiers separately. If there are
     // no leading digit it's a nonmatch.
-    digits = bool_or_err_max(scan_int(lexer), digits);
+    digits = bool_or_err_max(scan_int(lexer, NULL, NULL), digits);
+
     if (digits == True) {
         // process exp notation
         if (is_exp_sentinel(lexer->lookahead)) {
@@ -123,18 +204,27 @@ static BoolOrErr scan_number(TSLexer *lexer) {
                 advance(lexer);
                 lexer->mark_end(lexer);
             }
-            switch (scan_int(lexer)) {
-                case False:
-                    return True; // valid number token with junk after it
-                case True:
-                    break;
-                case Error:
-                    return Error;
+            switch (scan_int(lexer, NULL, NULL)) {
+            case Error:
+                result.type = NUMBER_ERROR;
+                return result; // invalid number
+            case True:
+                result.type = NUMBER_INTEGER;
+                return result; // valid number token with junk after it
+            case False:
+                break;
             }
-            lexer->result_symbol = FLOAT_LITERAL;
+            result.type = NUMBER_FLOAT;
         }
     }
-    return digits;
+
+    if (digits == False) {
+        result.type = NUMBER_NONE;
+    }
+    if (digits == Error) {
+        result.type = NUMBER_ERROR;
+    }
+    return result;
 }
 
 static bool scan_boz(TSLexer *lexer) {
@@ -162,24 +252,6 @@ static bool scan_boz(TSLexer *lexer) {
             return false; // no boz suffix or prefix provided
         }
         lexer->mark_end(lexer);
-        return true;
-    }
-    return false;
-}
-
-// If in the middle of a literal, '&' is required in both lines
-static bool skip_literal_continuation_sequence(TSLexer *lexer) {
-    if (lexer->lookahead != '&') {
-        return true;
-    }
-
-    advance(lexer);
-    while (iswspace(lexer->lookahead)) {
-        advance(lexer);
-    }
-    // second '&' technically required to continue the literal
-    if (lexer->lookahead == '&') {
-        advance(lexer);
         return true;
     }
     return false;
@@ -311,43 +383,43 @@ typedef Array(char) String;
 
 // Returns NULL on error, otherwise an allocated char array for an identifier
 static String *scan_identifier(TSLexer *lexer) {
-  if (!iswalpha(lexer->lookahead)) {
-    return NULL;
-  }
-  String *possible_identifier = ts_calloc(1, sizeof(String));
-  while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
-    array_push(possible_identifier, lexer->lookahead);
-    // Don't capture the trailing underscore as part of the kind identifier
-    // If another user of this function wants to mark the end again after
-    // the identifier they're free to do so
-    if (lexer->lookahead == '_') {
-      lexer->mark_end(lexer);
+    if (!iswalpha(lexer->lookahead)) {
+        return NULL;
     }
-    advance(lexer);
-  }
-  if (possible_identifier->size == 0) {
-    // First deallocate the array content itself and then the heap-allocated
-    // array struct
-    array_delete(possible_identifier);
-    ts_free(possible_identifier);
-    return NULL;
-  }
-  return possible_identifier;
+    String *possible_identifier = ts_calloc(1, sizeof(String));
+    while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
+        array_push(possible_identifier, lexer->lookahead);
+        // Don't capture the trailing underscore as part of the kind identifier
+        // If another user of this function wants to mark the end again after
+        // the identifier they're free to do so
+        if (lexer->lookahead == '_') {
+            lexer->mark_end(lexer);
+        }
+        advance(lexer);
+    }
+    if (possible_identifier->size == 0) {
+        // First deallocate the array content itself and then the heap-allocated
+        // array struct
+        array_delete(possible_identifier);
+        ts_free(possible_identifier);
+        return NULL;
+    }
+    return possible_identifier;
 }
 
 static bool scan_string_literal_kind(TSLexer *lexer, String *identifier) {
-  if (identifier->size == 0) {
-    return false;
-  }
+    if (identifier->size == 0) {
+        return false;
+    }
 
-  char last_char = identifier->contents[identifier->size - 1];
-  if ((last_char != '_') ||
-      (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
-    return false;
-  }
+    char last_char = identifier->contents[identifier->size - 1];
+    if ((last_char != '_') ||
+        (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
+        return false;
+    }
 
-  lexer->result_symbol = STRING_LITERAL_KIND;
-  return true;
+    lexer->result_symbol = STRING_LITERAL_KIND;
+    return true;
 }
 
 static bool scan_string_literal(TSLexer *lexer) {
@@ -419,38 +491,162 @@ static bool scan_string_literal(TSLexer *lexer) {
 // that is contained in that list
 static bool scan_macro_identifier(Scanner *scanner, TSLexer *lexer,
                                   String *identifier) {
-  unsigned num_macro_ids = scanner->MacroIdentifiers.size;
-  // Nothing to compare against
-  if (num_macro_ids == 0) {
-    return false;
-  }
+    unsigned num_macro_ids = scanner->MacroIdentifiers.size;
+    // Nothing to compare against
+    if (num_macro_ids == 0) {
+        return false;
+    }
 
-  // Find an equal macro identifier
-  for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
-    char *macro_id = *array_get(&scanner->MacroIdentifiers, i);
-    unsigned macro_id_len = strlen(macro_id);
-    // This will never be equal
-    if (identifier->size != macro_id_len) {
-      continue;
+    // Find an equal macro identifier
+    for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
+        char *macro_id = *array_get(&scanner->MacroIdentifiers, i);
+        unsigned macro_id_len = strlen(macro_id);
+        // This will never be equal
+        if (identifier->size != macro_id_len) {
+            continue;
+        }
+        if (strncmp(macro_id, identifier->contents, identifier->size) == 0) {
+            lexer->mark_end(lexer);
+            lexer->result_symbol = MACRO_IDENTIFIER;
+            return true;
+        }
     }
-    if (strncmp(macro_id, identifier->contents, identifier->size) == 0) {
-      lexer->mark_end(lexer);
-      lexer->result_symbol = MACRO_IDENTIFIER;
-      return true;
-    }
-  }
-  return false;
+    return false;
 }
 
 /// Need an external scanner to catch '!' before its parsed as a comment
 static bool scan_preproc_unary_operator(TSLexer *lexer) {
-  const char next_char = lexer->lookahead;
-  if (next_char == '!' || next_char == '~' || next_char == '-' || next_char == '+') {
-    advance(lexer);
-    lexer->result_symbol = PREPROC_UNARY_OPERATOR;
+    const char next_char = lexer->lookahead;
+    if (next_char == '!' || next_char == '~' || next_char == '-' || next_char == '+') {
+        advance(lexer);
+        lexer->result_symbol = PREPROC_UNARY_OPERATOR;
+        return true;
+    }
+    return false;
+}
+
+
+static void track_labeled_do(Scanner *scanner, int32_t label) {
+    // check if label already exists
+    if (scanner->depth > 0) {
+      int i = scanner->depth - 1;
+      if (scanner->labels[i] == label) {
+        scanner->counts[i]++;
+        return;
+      }
+    }
+
+    // not at top of stack, assume new label, add it to stack
+    if (scanner->depth < MAX_LABEL_STACK) {
+        scanner->labels[scanner->depth] = label;
+        scanner->counts[scanner->depth] = 1;
+        scanner->depth++;
+    } else {
+        // should we properly abort here?
+    }
+}
+
+// check whether an end of statement token for virtual do labels is pending,
+// emit END_OF_STATEMENT and update internal state accordingly
+static inline bool scan_do_label_eos(Scanner *scanner, TSLexer *lexer) {
+    if (scanner->is_pending_eos_virtual) {
+        scanner->is_pending_eos_virtual = false;
+        lexer->result_symbol = END_OF_STATEMENT;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// check whether do labels are pending, emit DO_LABEL_VIRTUAL or DO_LABEL_CONTINUE
+// and update internal state accordingly
+static inline bool scan_do_label_pending(Scanner *scanner, TSLexer *lexer) {
+    if (scanner->pending_label_virtual > 0) {
+        if (scanner->pending_label_virtual > 1) {
+            scanner->pending_label_virtual--;
+            // schedule an eos for the next token to finish the virtual statement
+            scanner->is_pending_eos_virtual = true;
+            lexer->result_symbol = DO_LABEL_VIRTUAL;
+        } else {
+            // emit last termination symbol which is do_label_continue
+            scanner->pending_label_virtual = 0;
+            lexer->result_symbol = DO_LABEL_CONTINUE;
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// only invoked after parser has found a "do" (and thus DO_LABEL is a valid
+// token) and the scan has consumed a proper integer value provided as label
+static void scan_do_label(Scanner *scanner, TSLexer *lexer, int32_t label) {
+    track_labeled_do(scanner, label);
+    lexer->result_symbol = DO_LABEL;
+}
+
+static bool scan_do_label_continue(Scanner *scanner, TSLexer *lexer, int32_t label) {
+    // determine whether this label belongs to the last labeled do,
+    // if it does, remove it from stack and determine how many loops it closes
+    int32_t loops_to_close = 0;
+    if (scanner->depth > 0) {
+        int i = scanner->depth - 1;
+        if (scanner->labels[i] == label) {
+            loops_to_close = scanner->counts[i];
+            // remove from stack
+            scanner->depth--;
+        }
+    }
+
+    // scanner->counts[i] is always greater than zero, if the label is on the stack,
+    // hence loops_to_close == 0 means depth=0 or label is not at top of stack
+    if (loops_to_close == 0) {
+        // label not on stack, hence this does not close a labeled do
+        return false;
+    }
+
+    scanner->pending_label_virtual = loops_to_close;
+    scanner->is_pending_eos_virtual = false;
+    scan_do_label_pending(scanner, lexer);
     return true;
-  }
-  return false;
+}
+
+// check for label, number of boz token
+static BoolOrErr scan_label_number_boz(Scanner *scanner, TSLexer *lexer,
+                                       const bool *valid_symbols) {
+    // extract out root number from expression (without kind if present)
+    NumberResult result = scan_number(lexer);
+    if (result.type == NUMBER_ERROR) {
+        return Error;
+    }
+
+    // check for a do-label, should have at most 5 digits and DO_LABEL
+    // or DO_LABEL_CONTINUE are valid symbols
+    if (result.type == NUMBER_INTEGER && result.digit_count < 6) {
+        if (valid_symbols[DO_LABEL]) {
+            scan_do_label(scanner, lexer, result.value);
+            return True;
+        }
+        if (valid_symbols[DO_LABEL_CONTINUE] &&
+            scan_do_label_continue(scanner, lexer, result.value)) {
+            return True;
+        }
+    }
+
+    // not a label
+    if (result.type == NUMBER_INTEGER) {
+        lexer->result_symbol = INTEGER_LITERAL;
+        return True;
+    } else if (result.type == NUMBER_FLOAT) {
+        lexer->result_symbol = FLOAT_LITERAL;
+        return True;
+    }
+
+    if (scan_boz(lexer)) {
+        return True;
+    }
+
+    return False;
 }
 
 static bool is_horizontal_whitespace(int32_t c) {
@@ -470,6 +666,19 @@ static bool scan_horizontal_whitespace(TSLexer *lexer) {
 }
 
 static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+    // handle pending virtual labels and eos first
+    if (valid_symbols[END_OF_STATEMENT]) {
+        if (scan_do_label_eos(scanner, lexer)) {
+            return true;
+        }
+    }
+
+    if(valid_symbols[DO_LABEL_CONTINUE] || valid_symbols[DO_LABEL_VIRTUAL]) {
+        if (scan_do_label_pending(scanner, lexer)) {
+            return true;
+        }
+    }
+
     if (valid_symbols[WHITESPACE]) {
         // Consume any leading whitespace except newlines
         if (scan_horizontal_whitespace(lexer)) {
@@ -517,27 +726,25 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
         }
     }
 
-
-    if (valid_symbols[INTEGER_LITERAL] || valid_symbols[FLOAT_LITERAL] ||
-        valid_symbols[BOZ_LITERAL]) {
-        // extract out root number from expression
-        switch (scan_number(lexer)) {
-            case False:
-                break;
-            case True:
-                return true;
-            case Error:
-                return false;
-        }
-        if (scan_boz(lexer)) {
+    if (valid_symbols[INTEGER_LITERAL] ||
+        valid_symbols[FLOAT_LITERAL] ||
+        valid_symbols[BOZ_LITERAL] ||
+        valid_symbols[DO_LABEL] ||
+        valid_symbols[DO_LABEL_CONTINUE]) {
+        switch (scan_label_number_boz(scanner, lexer, valid_symbols)) {
+        case False:
+            break;
+        case True:
             return true;
+        case Error:
+            return false;
         }
     }
 
     if (valid_symbols[PREPROC_UNARY_OPERATOR]) {
-      if (scan_preproc_unary_operator(lexer)) {
-        return true;
-      }
+        if (scan_preproc_unary_operator(lexer)) {
+            return true;
+        }
     }
 
     if (scan_start_line_continuation(scanner, lexer)) {
@@ -547,54 +754,60 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
     // These symbols both scan for an identifier, we need to combine the logic
     // and they always need to be the last to look for since we can't backtrack
     if (valid_symbols[STRING_LITERAL_KIND] || valid_symbols[MACRO_IDENTIFIER]) {
-      String *identifier = scan_identifier(lexer);
-      bool identifier_result = false;
-      // This may need a lot of lookahead, so should (probably) always
-      // be the last token to look for
-      if (identifier && valid_symbols[STRING_LITERAL_KIND]) {
-        if (scan_string_literal_kind(lexer, identifier)) {
-          identifier_result = true;
+        String *identifier = scan_identifier(lexer);
+        bool identifier_result = false;
+        // This may need a lot of lookahead, so should (probably) always
+        // be the last token to look for
+        if (identifier && valid_symbols[STRING_LITERAL_KIND]) {
+            if (scan_string_literal_kind(lexer, identifier)) {
+                identifier_result = true;
+            }
         }
-      }
-      if (!identifier_result && identifier && valid_symbols[MACRO_IDENTIFIER]) {
-        if (scan_macro_identifier(scanner, lexer, identifier)) {
-          identifier_result = true;
+        if (!identifier_result && identifier &&
+            valid_symbols[MACRO_IDENTIFIER]) {
+            if (scan_macro_identifier(scanner, lexer, identifier)) {
+                identifier_result = true;
+            }
         }
-      }
-      if (identifier) {
-        // First deallocate the array content itself and then the heap-allocated
-        // array struct
-        array_delete(identifier);
-        ts_free(identifier);
-      }
-      if (identifier_result) {
-        return true;
-      }
+        if (identifier) {
+            // First deallocate the array content itself and then the
+            // heap-allocated array struct
+            array_delete(identifier);
+            ts_free(identifier);
+        }
+        if (identifier_result) {
+            return true;
+        }
     }
     return false;
 }
 
 void *tree_sitter_fortran_external_scanner_create() {
-  Scanner *result = (Scanner *)ts_calloc(1, sizeof(Scanner));
-  // First get the colon separated list of macro IDs from the environment
-  char *macro_ids = getenv("CODEE_TS_MACRO_IDS");
-  if (!macro_ids) {
-    return result;
-  }
-  // Now separate them while we copy them to a list in the scanner state
-  StringArray *macroIdsResult = &result->MacroIdentifiers;
-  char *macro_id = strtok(macro_ids, ":");
-  while (macro_id) {
-    // strlen is safe with strtok's result
-    int length = strlen(macro_id);
-    // length + 1 for the null termination
-    char *new_str = (char *)ts_calloc(1, (length + 1) * sizeof(char));
-    strncpy(new_str, macro_id, length);
-    array_push(macroIdsResult, new_str);
-    // Keep splitting
-    macro_id = strtok(NULL, ":");
-  }
-  return result;
+    Scanner *scanner = ts_calloc(1, sizeof(Scanner));
+    scanner->in_line_continuation = false;
+    scanner->depth = 0;
+    scanner->pending_label_virtual = 0;
+    scanner->is_pending_eos_virtual = false;
+
+    // First get the colon separated list of macro IDs from the environment
+    char *macro_ids = getenv("CODEE_TS_MACRO_IDS");
+    if (!macro_ids) {
+        return scanner;
+    }
+    // Now separate them while we copy them to a list in the scanner state
+    StringArray *macroIdsResult = &scanner->MacroIdentifiers;
+    char *macro_id = strtok(macro_ids, ":");
+    while (macro_id) {
+        // strlen is safe with strtok's result
+        int length = strlen(macro_id);
+        // length + 1 for the null termination
+        char *new_str = (char *)ts_calloc(1, (length + 1) * sizeof(char));
+        strncpy(new_str, macro_id, length);
+        array_push(macroIdsResult, new_str);
+        // Keep splitting
+        macro_id = strtok(NULL, ":");
+    }
+    return scanner;
 }
 
 bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
@@ -606,8 +819,32 @@ bool tree_sitter_fortran_external_scanner_scan(void *payload, TSLexer *lexer,
 unsigned tree_sitter_fortran_external_scanner_serialize(void *payload,
                                                         char *buffer) {
     Scanner *scanner = (Scanner *)payload;
-    unsigned size = sizeof(*scanner);
-    memcpy(buffer, scanner, size);
+
+    if (scanner->depth > MAX_LABEL_STACK) return 0;
+
+    size_t size = 0;
+
+    buffer[size] = (char)scanner->in_line_continuation;
+    size += 1;
+
+    memcpy(&buffer[size], &scanner->depth, sizeof(int32_t));
+    size += sizeof(int32_t);
+
+    memcpy(&buffer[size], scanner->labels, scanner->depth * sizeof(int32_t));
+    size += scanner->depth * sizeof(int32_t);
+
+    memcpy(&buffer[size], scanner->counts, scanner->depth * sizeof(int32_t));
+    size += scanner->depth * sizeof(int32_t);
+
+    memcpy(&buffer[size], &scanner->pending_label_virtual, sizeof(int32_t));
+    size += sizeof(int32_t);
+
+    buffer[size] = (char)scanner->is_pending_eos_virtual;
+    size += 1;
+
+    memcpy(&buffer[size], &scanner->MacroIdentifiers, sizeof(StringArray));
+    size += sizeof(StringArray);
+
     return size;
 }
 
@@ -615,18 +852,52 @@ void tree_sitter_fortran_external_scanner_deserialize(void *payload,
                                                       const char *buffer,
                                                       unsigned length) {
     Scanner *scanner = (Scanner *)payload;
-    if (length > 0) {
-      unsigned size = sizeof(*scanner);
-      memcpy(scanner, buffer, size);
+
+    if (length == 0) {
+        scanner->in_line_continuation = false;
+        scanner->depth = 0;
+        scanner->pending_label_virtual = 0;
+        scanner->is_pending_eos_virtual = false;
+        return;
     }
+
+    size_t size = 0;
+
+    scanner->in_line_continuation = buffer[size];
+    size += 1;
+
+    memcpy(&scanner->depth, &buffer[size], sizeof(int32_t));
+    size += sizeof(int32_t);
+
+    if (scanner->depth > MAX_LABEL_STACK) {
+        scanner->depth = 0;
+        scanner->pending_label_virtual = 0;
+        scanner->is_pending_eos_virtual = false;
+        return;
+    }
+
+    memcpy(scanner->labels, &buffer[size], scanner->depth * sizeof(int32_t));
+    size += scanner->depth * sizeof(int32_t);
+
+    memcpy(scanner->counts, &buffer[size], scanner->depth * sizeof(int32_t));
+    size += scanner->depth * sizeof(int32_t);
+
+    memcpy(&scanner->pending_label_virtual, &buffer[size], sizeof(int32_t));
+    size += sizeof(int32_t);
+
+    scanner->is_pending_eos_virtual = buffer[size];
+    size += 1;
+
+    memcpy(&scanner->MacroIdentifiers, &buffer[size], sizeof(StringArray));
+    size += sizeof(StringArray);
 }
 
 void tree_sitter_fortran_external_scanner_destroy(void *payload) {
     Scanner *scanner = (Scanner *)payload;
     // Destroy the strings allocated in each array element
     for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
-      char *str = *array_get(&scanner->MacroIdentifiers, i);
-      ts_free(str);
+        char *str = *array_get(&scanner->MacroIdentifiers, i);
+        ts_free(str);
     }
     array_delete(&scanner->MacroIdentifiers);
     ts_free(scanner);

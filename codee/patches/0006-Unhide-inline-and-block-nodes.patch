@@ -5,16 +5,16 @@ Subject: Unhide `inline*` and `block*` nodes
 
 ---
  grammar.js                  |  26 +-
- test/corpus/expressions.txt |  53 ++--
+ test/corpus/expressions.txt |  53 +--
  test/corpus/regressions.txt |  40 +--
- test/corpus/statements.txt  | 575 ++++++++++++++++++------------------
- 4 files changed, 356 insertions(+), 338 deletions(-)
+ test/corpus/statements.txt  | 657 ++++++++++++++++++------------------
+ 4 files changed, 397 insertions(+), 379 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
-index 6d39d36..3b583ef 100644
+index 54815c2..2fbcffc 100644
 --- a/grammar.js
 +++ b/grammar.js
-@@ -105,7 +105,7 @@ module.exports = grammar({
+@@ -108,7 +108,7 @@ module.exports = grammar({
      [$.preproc_else_in_specification_part, $.program],
      [$.coarray_critical_statement, $.identifier],
      [$.format_statement, $.identifier],
@@ -23,7 +23,7 @@ index 6d39d36..3b583ef 100644
      [$.cray_pointer_declaration, $.identifier],
      [$.unit_identifier, $.identifier],
      [$.format_identifier, $.identifier],
-@@ -1376,11 +1376,11 @@ module.exports = grammar({
+@@ -1445,11 +1445,11 @@ module.exports = grammar({
      binary_op: $ => choice('+', '*', /(\.\w+\.|\w+)/),
  
      if_statement: $ => choice(
@@ -38,7 +38,7 @@ index 6d39d36..3b583ef 100644
        caseInsensitive('if'),
        $.parenthesized_expression,
        $._statements
-@@ -1396,7 +1396,7 @@ module.exports = grammar({
+@@ -1465,7 +1465,7 @@ module.exports = grammar({
        $.statement_label_reference,
      )),
  
@@ -47,7 +47,7 @@ index 6d39d36..3b583ef 100644
        optional($.block_label_start_expression),
        caseInsensitive('if'),
        $.parenthesized_expression,
-@@ -1432,17 +1432,17 @@ module.exports = grammar({
+@@ -1498,17 +1498,17 @@ module.exports = grammar({
      ),
  
      where_statement: $ => choice(
@@ -69,7 +69,7 @@ index 6d39d36..3b583ef 100644
        optional($.block_label_start_expression),
        caseInsensitive('where'),
        $.parenthesized_expression,
-@@ -1466,8 +1466,8 @@ module.exports = grammar({
+@@ -1529,8 +1529,8 @@ module.exports = grammar({
      ),
  
      forall_statement: $ => choice(
@@ -80,7 +80,7 @@ index 6d39d36..3b583ef 100644
      ),
  
      triplet_spec: $ => seq(
-@@ -1490,12 +1490,12 @@ module.exports = grammar({
+@@ -1553,12 +1553,12 @@ module.exports = grammar({
        ')'
      ),
  
@@ -96,7 +96,7 @@ index 6d39d36..3b583ef 100644
        $._forall_control_expression,
        $.end_of_statement,
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index 8545f3d..7316d3b 100644
+index 7d851c9..c6b7225 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -1272,42 +1272,43 @@ end subroutine foo
@@ -167,10 +167,10 @@ index 8545f3d..7316d3b 100644
 +          (end_of_statement))
 +        (end_if_statement)))
      (end_of_statement)
-     (end_program_statement
-       (end_of_statement)))
+     (end_program_statement)
+     (end_of_statement))
 diff --git a/test/corpus/regressions.txt b/test/corpus/regressions.txt
-index d6b3f37..a5ddddf 100644
+index 0125111..0352689 100644
 --- a/test/corpus/regressions.txt
 +++ b/test/corpus/regressions.txt
 @@ -97,23 +97,24 @@ end program foo
@@ -210,7 +210,7 @@ index d6b3f37..a5ddddf 100644
 +          (block_label))))
      (end_of_statement)
      (end_program_statement
-       (name)
+       (name))
 @@ -140,14 +141,15 @@ end program
        (name)
        (end_of_statement))
@@ -231,10 +231,10 @@ index d6b3f37..a5ddddf 100644
 +          (end_of_statement))
 +        (end_if_statement)))
      (end_of_statement)
-     (end_program_statement
-       (end_of_statement))))
+     (end_program_statement)
+     (end_of_statement)))
 diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
-index f62ba4e..6a645aa 100644
+index 758d9d4..1a00dd5 100644
 --- a/test/corpus/statements.txt
 +++ b/test/corpus/statements.txt
 @@ -893,10 +893,11 @@ END PROGRAM
@@ -253,7 +253,7 @@ index f62ba4e..6a645aa 100644
        (end_of_statement)
        (statement_label)
        (end_do_loop_statement))
-@@ -1157,67 +1158,31 @@ END PROGRAM
+@@ -1300,143 +1301,148 @@ END PROGRAM
        (name)
        (end_of_statement))
      (if_statement
@@ -268,10 +268,8 @@ index f62ba4e..6a645aa 100644
 -    (if_statement
 -      (parenthesized_expression
 -        (logical_expression
-+      (inline_if_statement
-+        (parenthesized_expression
-           (relational_expression
-             (identifier)
+-          (relational_expression
+-            (identifier)
 -            (number_literal))
 -          (relational_expression
 -            (number_literal)
@@ -279,12 +277,8 @@ index f62ba4e..6a645aa 100644
 -      (assignment_statement
 -        (identifier)
 -        (number_literal)))
-+            (number_literal)))
-+        (assignment_statement
-+          (identifier)
-+          (number_literal))))
-     (end_of_statement)
-     (if_statement
+-    (end_of_statement)
+-    (if_statement
 -      (parenthesized_expression
 -        (relational_expression
 -          (call_expression
@@ -303,13 +297,10 @@ index f62ba4e..6a645aa 100644
 -        (number_literal))
 -      (end_of_statement)
 -      (elseif_clause
-+      (inline_if_statement
-         (parenthesized_expression
+-        (parenthesized_expression
 -          (relational_expression
 -            (call_expression
-+          (logical_expression
-+            (relational_expression
-               (identifier)
+-              (identifier)
 -              (argument_list
 -                (extent_specifier
 -                  (number_literal)
@@ -322,39 +313,95 @@ index f62ba4e..6a645aa 100644
 -                  (argument_list
 -                    (number_literal)))))))
 -        (end_of_statement)
-+              (number_literal))
-+            (relational_expression
-+              (number_literal)
-+              (identifier))))
-         (assignment_statement
-           (identifier)
+-        (assignment_statement
+-          (identifier)
 -          (number_literal))
 -        (end_of_statement))
 -      (elseif_clause
-+          (number_literal))))
-+    (end_of_statement)
-+    (if_statement
-+      (block_if_statement
-         (parenthesized_expression
-           (relational_expression
-             (call_expression
-@@ -1229,71 +1194,112 @@ END PROGRAM
-             (call_expression
-               (identifier)
-               (argument_list
+-        (parenthesized_expression
+-          (relational_expression
+-            (call_expression
+-              (identifier)
+-              (argument_list
+-                (extent_specifier
+-                  (number_literal)
+-                  (number_literal))))
+-            (call_expression
+-              (identifier)
+-              (argument_list
 -                (call_expression
 -                  (identifier)
 -                  (argument_list
 -                    (number_literal)))))))
 -        (end_of_statement))
 -      (else_clause
-+                (string_literal)))))
-         (end_of_statement)
-         (assignment_statement
-           (identifier)
-           (number_literal))
+-        (end_of_statement)
+-        (assignment_statement
+-          (identifier)
+-          (number_literal))
 -        (end_of_statement))
 -      (end_if_statement))
+-    (end_of_statement)
+-    (if_statement
+-      (block_label_start_expression)
+-      (parenthesized_expression
+-        (relational_expression
+-          (identifier)
+-          (number_literal)))
+-      (end_of_statement)
+-      (assignment_statement
+-        (identifier)
+-        (number_literal))
+-      (end_of_statement)
+-      (elseif_clause
++      (inline_if_statement
+         (parenthesized_expression
+           (relational_expression
+             (identifier)
+             (number_literal)))
+-        (block_label)
+-        (end_of_statement)
+         (assignment_statement
+           (identifier)
+-          (number_literal))
+-        (end_of_statement)
+-        (if_statement
+-          (parenthesized_expression
++          (number_literal))))
++    (end_of_statement)
++    (if_statement
++      (inline_if_statement
++        (parenthesized_expression
++          (logical_expression
++            (relational_expression
++              (identifier)
++              (number_literal))
++            (relational_expression
++              (number_literal)
++              (identifier))))
++        (assignment_statement
++          (identifier)
++          (number_literal))))
++    (end_of_statement)
++    (if_statement
++      (block_if_statement
++        (parenthesized_expression
++          (relational_expression
+             (call_expression
+               (identifier)
+               (argument_list
+                 (extent_specifier
+                   (number_literal)
+-                  (number_literal)))))
++                  (number_literal))))
++            (call_expression
++              (identifier)
++              (argument_list
++                (string_literal)))))
++        (end_of_statement)
++        (assignment_statement
++          (identifier)
++          (number_literal))
 +        (end_of_statement)
 +        (elseif_clause
 +          (parenthesized_expression
@@ -401,41 +448,23 @@ index f62ba4e..6a645aa 100644
 +            (number_literal))
 +          (end_of_statement))
 +        (end_if_statement)))
-     (end_of_statement)
-     (if_statement
--      (block_label_start_expression)
--      (parenthesized_expression
--        (relational_expression
--          (identifier)
--          (number_literal)))
--      (end_of_statement)
--      (assignment_statement
--        (identifier)
--        (number_literal))
--      (end_of_statement)
--      (elseif_clause
++    (end_of_statement)
++    (if_statement
 +      (block_if_statement
 +        (block_label_start_expression)
-         (parenthesized_expression
-           (relational_expression
-             (identifier)
-             (number_literal)))
--        (block_label)
-         (end_of_statement)
-         (assignment_statement
-           (identifier)
-           (number_literal))
-         (end_of_statement)
--        (if_statement
++        (parenthesized_expression
++          (relational_expression
++            (identifier)
++            (number_literal)))
++        (end_of_statement)
++        (assignment_statement
++          (identifier)
++          (number_literal))
++        (end_of_statement)
 +        (elseif_clause
-           (parenthesized_expression
--            (call_expression
++          (parenthesized_expression
 +            (relational_expression
-               (identifier)
--              (argument_list
--                (extent_specifier
--                  (number_literal)
--                  (number_literal)))))
++              (identifier)
 +              (number_literal)))
 +          (block_label)
            (end_of_statement)
@@ -492,19 +521,14 @@ index f62ba4e..6a645aa 100644
 +        (end_if_statement
 +          (block_label))))
      (end_of_statement)
-     (end_program_statement
-       (end_of_statement))))
-@@ -1333,35 +1339,19 @@ end program
+     (end_program_statement)
+     (end_of_statement)))
+@@ -1476,35 +1482,19 @@ end program
        (name)
        (end_of_statement))
      (where_statement
 -      (parenthesized_expression
 -        (relational_expression
--          (identifier)
--          (number_literal)))
--      (assignment_statement
--        (identifier)
--        (math_expression
 +      (inline_where_statement
 +        (parenthesized_expression
 +          (relational_expression
@@ -512,6 +536,11 @@ index f62ba4e..6a645aa 100644
 +            (number_literal)))
 +        (assignment_statement
            (identifier)
+-          (number_literal)))
+-      (assignment_statement
+-        (identifier)
+-        (math_expression
+-          (identifier)
 -          (identifier))))
 +          (math_expression
 +            (identifier)
@@ -540,21 +569,47 @@ index f62ba4e..6a645aa 100644
          (parenthesized_expression
            (relational_expression
              (identifier)
-@@ -1372,50 +1362,69 @@ end program
+@@ -1515,50 +1505,69 @@ end program
            (math_expression
              (identifier)
              (number_literal)))
 -        (end_of_statement))
 -      (elsewhere_clause
-         (end_of_statement)
-         (assignment_statement
-           (identifier)
+-        (end_of_statement)
+-        (assignment_statement
+-          (identifier)
 -          (boolean_literal))
 -        (end_of_statement))
 -      (end_where_statement))
-+          (math_expression
-+            (identifier)
-+            (number_literal)))
+-    (end_of_statement)
+-    (where_statement
+-      (block_label_start_expression)
+-      (parenthesized_expression
+-        (relational_expression
+-          (identifier)
+-          (number_literal)))
+-      (end_of_statement)
+-      (assignment_statement
+-        (identifier)
+-        (math_expression
+-          (identifier)
+-          (number_literal)))
+-      (end_of_statement)
+-      (elsewhere_clause
+-        (parenthesized_expression
+-          (relational_expression
+-            (identifier)
+-            (number_literal)))
+-        (block_label)
+         (end_of_statement)
+         (assignment_statement
+           (identifier)
+           (math_expression
+             (identifier)
+             (number_literal)))
+-        (end_of_statement))
+-      (elsewhere_clause
+-        (block_label)
 +        (end_of_statement)
 +        (elsewhere_clause
 +          (parenthesized_expression
@@ -575,44 +630,25 @@ index f62ba4e..6a645aa 100644
 +            (boolean_literal))
 +          (end_of_statement))
 +        (end_where_statement)))
-     (end_of_statement)
-     (where_statement
--      (block_label_start_expression)
--      (parenthesized_expression
--        (relational_expression
--          (identifier)
--          (number_literal)))
--      (end_of_statement)
--      (assignment_statement
--        (identifier)
--        (math_expression
--          (identifier)
--          (number_literal)))
--      (end_of_statement)
--      (elsewhere_clause
++    (end_of_statement)
++    (where_statement
 +      (block_where_statement
 +        (block_label_start_expression)
-         (parenthesized_expression
-           (relational_expression
-             (identifier)
-             (number_literal)))
--        (block_label)
++        (parenthesized_expression
++          (relational_expression
++            (identifier)
++            (number_literal)))
          (end_of_statement)
          (assignment_statement
            (identifier)
-           (math_expression
-             (identifier)
-             (number_literal)))
--        (end_of_statement))
--      (elsewhere_clause
--        (block_label)
-         (end_of_statement)
--        (assignment_statement
--          (identifier)
 -          (boolean_literal))
 -        (end_of_statement))
 -      (end_where_statement
 -        (block_label)))
++          (math_expression
++            (identifier)
++            (number_literal)))
++        (end_of_statement)
 +        (elsewhere_clause
 +          (parenthesized_expression
 +            (relational_expression
@@ -636,9 +672,9 @@ index f62ba4e..6a645aa 100644
 +        (end_where_statement
 +          (block_label))))
      (end_of_statement)
-     (end_program_statement
-       (end_of_statement))))
-@@ -1450,167 +1459,172 @@ END PROGRAM
+     (end_program_statement)
+     (end_of_statement)))
+@@ -1593,79 +1602,22 @@ END PROGRAM
        (name)
        (end_of_statement))
      (forall_statement
@@ -661,21 +697,16 @@ index f62ba4e..6a645aa 100644
 -        (number_literal))
 -      (assignment_statement
 -        (call_expression
-+          (number_literal)
-+          (identifier))
-+        (triplet_spec
-           (identifier)
+-          (identifier)
 -          (argument_list
 -            (identifier)
 -            (identifier)))
 -        (math_expression
            (number_literal)
-+          (identifier))
-+        (relational_expression
-           (call_expression
-             (identifier)
-             (argument_list
-               (identifier)
+-          (call_expression
+-            (identifier)
+-            (argument_list
+-              (identifier)
 -              (identifier))))))
 -    (end_of_statement)
 -    (forall_statement
@@ -685,35 +716,27 @@ index f62ba4e..6a645aa 100644
 -        (number_literal))
 -      (pointer_association_statement
 -        (derived_type_member_expression
-+              (identifier)))
-+          (number_literal))
-+        (assignment_statement
-           (call_expression
-             (identifier)
-             (argument_list
-+              (identifier)
-               (identifier)))
+-          (call_expression
+-            (identifier)
+-            (argument_list
+-              (identifier)))
 -          (type_member))
 -        (call_expression
--          (identifier)
++          (identifier))
++        (triplet_spec
+           (identifier)
 -          (argument_list
 -            (math_expression
 -              (number_literal)
 -              (call_expression
-+          (math_expression
-+            (number_literal)
-+            (call_expression
-+              (identifier)
-+              (argument_list
-                 (identifier)
+-                (identifier)
 -                (argument_list
 -                  (math_expression
 -                    (identifier)
 -                    (number_literal))
 -                  (number_literal))))))))
-+                (identifier)))))))
-     (end_of_statement)
-     (forall_statement
+-    (end_of_statement)
+-    (forall_statement
 -      (triplet_spec
 -        (identifier)
 -        (number_literal)
@@ -726,35 +749,68 @@ index f62ba4e..6a645aa 100644
 -      (where_statement
 -        (parenthesized_expression
 -          (relational_expression
+-            (call_expression
++          (number_literal)
++          (identifier))
++        (relational_expression
++          (call_expression
++            (identifier)
++            (argument_list
+               (identifier)
+-              (argument_list
+-                (identifier)
+-                (identifier)))
+-            (number_literal)))
++              (identifier)))
++          (number_literal))
+         (assignment_statement
+           (call_expression
+             (identifier)
+@@ -1678,82 +1630,144 @@ END PROGRAM
+               (identifier)
+               (argument_list
+                 (identifier)
+-                (identifier))))))
+-      (end_of_statement)
+-      (end_forall_statement))
++                (identifier)))))))
+     (end_of_statement)
+     (forall_statement
+-      (triplet_spec
+-        (identifier)
+-        (number_literal)
+-        (math_expression
 +      (inline_forall_statement
 +        (triplet_spec
-+          (identifier)
+           (identifier)
+-          (number_literal)))
+-      (triplet_spec
+-        (identifier)
+-        (number_literal)
+-        (math_expression
+-          (identifier)
+-          (number_literal)))
+-      (relational_expression
+-        (call_expression
+-          (identifier)
+-          (argument_list
 +          (number_literal)
 +          (number_literal))
 +        (pointer_association_statement
 +          (derived_type_member_expression
-             (call_expression
-               (identifier)
-               (argument_list
--                (identifier)
-                 (identifier)))
--            (number_literal)))
--        (assignment_statement
++            (call_expression
++              (identifier)
++              (argument_list
++                (identifier)))
 +            (type_member))
-           (call_expression
++          (call_expression
              (identifier)
-             (argument_list
--              (identifier)
--              (identifier)))
--          (math_expression
--            (number_literal)
--            (call_expression
--              (identifier)
--              (argument_list
--                (identifier)
--                (identifier))))))
+-            (identifier)))
+-        (number_literal))
 -      (end_of_statement)
--      (end_forall_statement))
+-      (assignment_statement
+-        (call_expression
++            (argument_list
 +              (math_expression
 +                (number_literal)
 +                (call_expression
@@ -764,27 +820,16 @@ index f62ba4e..6a645aa 100644
 +                      (identifier)
 +                      (number_literal))
 +                    (number_literal)))))))))
-     (end_of_statement)
-     (forall_statement
--      (triplet_spec
--        (identifier)
--        (number_literal)
--        (math_expression
++    (end_of_statement)
++    (forall_statement
 +      (block_forall_statement
 +        (triplet_spec
            (identifier)
--          (number_literal)))
--      (triplet_spec
--        (identifier)
--        (number_literal)
--        (math_expression
+-          (argument_list
 +          (number_literal)
 +          (identifier))
 +        (triplet_spec
-           (identifier)
--          (number_literal)))
--      (relational_expression
--        (call_expression
++          (identifier)
 +          (number_literal)
 +          (identifier))
 +        (end_of_statement)
@@ -817,25 +862,18 @@ index f62ba4e..6a645aa 100644
 +    (forall_statement
 +      (block_forall_statement
 +        (triplet_spec
-           (identifier)
--          (argument_list
-+          (number_literal)
-+          (math_expression
-             (identifier)
--            (identifier)))
--        (number_literal))
--      (end_of_statement)
--      (assignment_statement
--        (call_expression
-+            (number_literal)))
-+        (triplet_spec
-           (identifier)
--          (argument_list
++          (identifier)
 +          (number_literal)
 +          (math_expression
              (identifier)
 -            (identifier)))
 -        (math_expression
++            (number_literal)))
++        (triplet_spec
++          (identifier)
++          (number_literal)
++          (math_expression
++            (identifier)
 +            (number_literal)))
 +        (relational_expression
 +          (call_expression
@@ -853,16 +891,11 @@ index f62ba4e..6a645aa 100644
 +              (identifier)))
            (math_expression
              (math_expression
--              (call_expression
--                (identifier)
--                (argument_list
 +              (math_expression
 +                (call_expression
-                   (identifier)
--                  (math_expression
++                  (identifier)
 +                  (argument_list
-                     (identifier)
--                    (number_literal))))
++                    (identifier)
 +                    (math_expression
 +                      (identifier)
 +                      (number_literal))))
@@ -879,6 +912,13 @@ index f62ba4e..6a645aa 100644
 -                  (identifier)
                    (math_expression
                      (identifier)
+-                    (number_literal))))
+-              (call_expression
+-                (identifier)
+-                (argument_list
+-                  (identifier)
+-                  (math_expression
+-                    (identifier)
 -                    (number_literal)))))
 +                    (number_literal))
 +                  (identifier))))
@@ -904,15 +944,15 @@ index f62ba4e..6a645aa 100644
 -        (call_expression
 -          (identifier)
 -          (argument_list
--            (identifier)
--            (identifier)))
--        (call_expression
--          (identifier)
--          (argument_list
 +              (identifier)
 +              (identifier)))
 +          (call_expression
              (identifier)
+-            (identifier)))
+-        (call_expression
+-          (identifier)
+-          (argument_list
+-            (identifier)
 -            (identifier))))
 -      (end_of_statement)
 -      (end_forall_statement))
@@ -922,9 +962,9 @@ index f62ba4e..6a645aa 100644
 +        (end_of_statement)
 +        (end_forall_statement)))
      (end_of_statement)
-     (end_program_statement
-       (end_of_statement))))
-@@ -3536,19 +3550,20 @@ end program test
+     (end_program_statement)
+     (end_of_statement)))
+@@ -3703,19 +3717,20 @@ end program test
          (identifier)))
      (end_of_statement)
      (if_statement

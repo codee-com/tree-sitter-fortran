@@ -114,8 +114,8 @@ end program example_padl
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================
 if label
@@ -179,8 +179,8 @@ end program foo
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================
 split if
@@ -226,8 +226,8 @@ end program
           (whitespace))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Assignment/Variable modification clash
@@ -265,8 +265,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Data statement array subscripting clash
@@ -303,8 +303,8 @@ end program
           (number_literal))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Multiple array assignments
@@ -470,5 +470,5 @@ Multiple array assignments
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))

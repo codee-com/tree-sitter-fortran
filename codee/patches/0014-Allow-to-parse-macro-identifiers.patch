@@ -1,0 +1,268 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Diego Alonso <diego.alonso@appentra.com>
+Date: Thu, 26 Jun 2025 14:04:51 +0200
+Subject: Allow to parse macro identifiers
+
+---
+ grammar.js    |   4 ++
+ src/scanner.c | 131 ++++++++++++++++++++++++++++++++++++++++++++------
+ 2 files changed, 119 insertions(+), 16 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index bf52443..afec324 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -70,6 +70,7 @@ module.exports = grammar({
+     $._do_label,
+     $.do_label_virtual,
+     $._do_label_continue,
++    $.macro_identifier,
+   ],
+ 
+   extras: $ => [
+@@ -891,6 +892,7 @@ module.exports = grammar({
+         $.derived_type,
+         alias($.procedure_declaration, $.procedure),
+         $.declared_type,
++        $.macro_identifier,
+       )),
+       optional(seq(',',
+         commaSep1(
+@@ -1197,6 +1199,7 @@ module.exports = grammar({
+       // Not strictly valid, but can catch extensions and preprocessor macros
+       $.call_expression,
+       $.include_statement,
++      $.macro_identifier
+     ),
+ 
+     statement_label: $ => prec(1, alias($._integer_literal, 'statement_label')),
+@@ -1989,6 +1992,7 @@ module.exports = grammar({
+       $.implied_do_loop_expression,
+       $.coarray_expression,
+       $.conditional_expression,
++      $.macro_identifier
+     ),
+ 
+     parenthesized_expression: $ => seq(
+diff --git a/src/scanner.c b/src/scanner.c
+index 86d4135..2c83a47 100644
+--- a/src/scanner.c
++++ b/src/scanner.c
+@@ -1,8 +1,9 @@
+ #include "tree_sitter/alloc.h"
++#include "tree_sitter/array.h"
+ #include "tree_sitter/parser.h"
+ #include <ctype.h>
+-#include <wctype.h>
+ #include <string.h>
++#include <wctype.h>
+ 
+ enum TokenType {
+     LINE_CONTINUATION,
+@@ -17,8 +18,11 @@ enum TokenType {
+     DO_LABEL,
+     DO_LABEL_VIRTUAL,
+     DO_LABEL_CONTINUE,
++    MACRO_IDENTIFIER,
+ };
+ 
++typedef Array(char *) StringArray;
++
+ // at most 100 nested labeled do loops, should be sufficient
+ #define MAX_LABEL_STACK 100
+ 
+@@ -34,6 +38,8 @@ typedef struct {
+     int32_t pending_label_virtual;
+     // flag for emitting eos tokens right after a virtual label token
+     bool is_pending_eos_virtual;
++
++    StringArray MacroIdentifiers;
+ } Scanner;
+ 
+ 
+@@ -372,31 +378,46 @@ static bool scan_end_line_continuation(Scanner *scanner, TSLexer *lexer) {
+     return true;
+ }
+ 
+-static bool scan_string_literal_kind(TSLexer *lexer) {
+-    // Strictly, it's allowed for the kind to be an integer literal, in
+-    // practice I've not seen it
++typedef Array(char) String;
++
++// Returns NULL on error, otherwise an allocated char array for an identifier
++static String *scan_identifier(TSLexer *lexer) {
+     if (!iswalpha(lexer->lookahead)) {
+-        return false;
++        return NULL;
+     }
+-
+-    lexer->result_symbol = STRING_LITERAL_KIND;
+-
+-    // We need two characters of lookahead to see `_"`
+-    char current_char = '\0';
+-
++    String *possible_identifier = ts_calloc(1, sizeof(String));
+     while (is_identifier_char(lexer->lookahead) && !lexer->eof(lexer)) {
+-        current_char = lexer->lookahead;
++        array_push(possible_identifier, lexer->lookahead);
+         // Don't capture the trailing underscore as part of the kind identifier
++        // If another user of this function wants to mark the end again after
++        // the identifier they're free to do so
+         if (lexer->lookahead == '_') {
+             lexer->mark_end(lexer);
+         }
+         advance(lexer);
+     }
++    if (possible_identifier->size == 0) {
++        // First deallocate the array content itself and then the heap-allocated
++        // array struct
++        array_delete(possible_identifier);
++        ts_free(possible_identifier);
++        return NULL;
++    }
++    return possible_identifier;
++}
+ 
+-    if ((current_char != '_') || (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
++static bool scan_string_literal_kind(TSLexer *lexer, String *identifier) {
++    if (identifier->size == 0) {
+         return false;
+     }
+ 
++    char last_char = identifier->contents[identifier->size - 1];
++    if ((last_char != '_') ||
++        (lexer->lookahead != '"' && lexer->lookahead != '\'')) {
++        return false;
++    }
++
++    lexer->result_symbol = STRING_LITERAL_KIND;
+     return true;
+ }
+ 
+@@ -465,6 +486,33 @@ static bool scan_string_literal(TSLexer *lexer) {
+     return false;
+ }
+ 
++// Scans, using the MacroIdentifiers list from the scanner state, an identifier
++// that is contained in that list
++static bool scan_macro_identifier(Scanner *scanner, TSLexer *lexer,
++                                  String *identifier) {
++    unsigned num_macro_ids = scanner->MacroIdentifiers.size;
++    // Nothing to compare against
++    if (num_macro_ids == 0) {
++        return false;
++    }
++
++    // Find an equal macro identifier
++    for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
++        char *macro_id = *array_get(&scanner->MacroIdentifiers, i);
++        unsigned macro_id_len = strlen(macro_id);
++        // This will never be equal
++        if (identifier->size != macro_id_len) {
++            continue;
++        }
++        if (strncmp(macro_id, identifier->contents, identifier->size) == 0) {
++            lexer->mark_end(lexer);
++            lexer->result_symbol = MACRO_IDENTIFIER;
++            return true;
++        }
++    }
++    return false;
++}
++
+ /// Need an external scanner to catch '!' before its parsed as a comment
+ static bool scan_preproc_unary_operator(TSLexer *lexer) {
+     const char next_char = lexer->lookahead;
+@@ -672,14 +720,34 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+         return true;
+     }
+ 
+-    if (valid_symbols[STRING_LITERAL_KIND]) {
++    // These symbols both scan for an identifier, we need to combine the logic
++    // and they always need to be the last to look for since we can't backtrack
++    if (valid_symbols[STRING_LITERAL_KIND] || valid_symbols[MACRO_IDENTIFIER]) {
++        String *identifier = scan_identifier(lexer);
++        bool identifier_result = false;
+         // This may need a lot of lookahead, so should (probably) always
+         // be the last token to look for
+-        if (scan_string_literal_kind(lexer)) {
++        if (identifier && valid_symbols[STRING_LITERAL_KIND]) {
++            if (scan_string_literal_kind(lexer, identifier)) {
++                identifier_result = true;
++            }
++        }
++        if (!identifier_result && identifier &&
++            valid_symbols[MACRO_IDENTIFIER]) {
++            if (scan_macro_identifier(scanner, lexer, identifier)) {
++                identifier_result = true;
++            }
++        }
++        if (identifier) {
++            // First deallocate the array content itself and then the
++            // heap-allocated array struct
++            array_delete(identifier);
++            ts_free(identifier);
++        }
++        if (identifier_result) {
+             return true;
+         }
+     }
+-
+     return false;
+ }
+ 
+@@ -689,6 +757,25 @@ void *tree_sitter_fortran_external_scanner_create() {
+     scanner->depth = 0;
+     scanner->pending_label_virtual = 0;
+     scanner->is_pending_eos_virtual = false;
++
++    // First get the colon separated list of macro IDs from the environment
++    char *macro_ids = getenv("CODEE_TS_MACRO_IDS");
++    if (!macro_ids) {
++        return scanner;
++    }
++    // Now separate them while we copy them to a list in the scanner state
++    StringArray *macroIdsResult = &scanner->MacroIdentifiers;
++    char *macro_id = strtok(macro_ids, ":");
++    while (macro_id) {
++        // strlen is safe with strtok's result
++        int length = strlen(macro_id);
++        // length + 1 for the null termination
++        char *new_str = (char *)ts_calloc(1, (length + 1) * sizeof(char));
++        strncpy(new_str, macro_id, length);
++        array_push(macroIdsResult, new_str);
++        // Keep splitting
++        macro_id = strtok(NULL, ":");
++    }
+     return scanner;
+ }
+ 
+@@ -724,6 +811,9 @@ unsigned tree_sitter_fortran_external_scanner_serialize(void *payload,
+     buffer[size] = (char)scanner->is_pending_eos_virtual;
+     size += 1;
+ 
++    memcpy(&buffer[size], &scanner->MacroIdentifiers, sizeof(StringArray));
++    size += sizeof(StringArray);
++
+     return size;
+ }
+ 
+@@ -766,9 +856,18 @@ void tree_sitter_fortran_external_scanner_deserialize(void *payload,
+ 
+     scanner->is_pending_eos_virtual = buffer[size];
+     size += 1;
++
++    memcpy(&scanner->MacroIdentifiers, &buffer[size], sizeof(StringArray));
++    size += sizeof(StringArray);
+ }
+ 
+ void tree_sitter_fortran_external_scanner_destroy(void *payload) {
+     Scanner *scanner = (Scanner *)payload;
++    // Destroy the strings allocated in each array element
++    for (size_t i = 0, end = scanner->MacroIdentifiers.size; i < end; ++i) {
++        char *str = *array_get(&scanner->MacroIdentifiers, i);
++        ts_free(str);
++    }
++    array_delete(&scanner->MacroIdentifiers);
+     ts_free(scanner);
+ }

@@ -67,6 +67,9 @@ module.exports = grammar({
     $._external_end_of_statement,
     $._preproc_unary_operator,
     $.hollerith_constant,
+    $._do_label,
+    $.do_label_virtual,
+    $._do_label_continue,
     $.macro_identifier,
     $.whitespace,
   ],
@@ -119,6 +122,7 @@ module.exports = grammar({
     $._expression,
     $._statements,
     $._argument_item,
+    $._procedure_binding,
   ],
 
   rules: {
@@ -261,7 +265,7 @@ module.exports = grammar({
     ...preprocIf('_in_internal_procedures', $ => repeat($._internal_procedures)),
     ...preprocIf('_in_interface', $ => repeat($._interface_items)),
     ...preprocIf('_in_derived_type', $ => repeat($.variable_declaration)),
-    ...preprocIf('_in_bound_procedures', $ => repeat($.procedure_statement)),
+    ...preprocIf('_in_bound_procedures', $ => repeat($._procedure_binding)),
     ...preprocIf('_in_select_case', $ => $.case_statement),
     ...preprocIf('_in_select_type', $ => $.type_statement),
     ...preprocIf('_in_select_rank', $ => $.rank_statement),
@@ -363,7 +367,9 @@ module.exports = grammar({
       ),
       repeat($._statement),
       optional($.internal_procedures),
-      $.end_program_statement
+      optional($.statement_label),
+      $.end_program_statement,
+      $.end_of_statement
     ),
 
     program_statement: $ => seq(
@@ -371,7 +377,7 @@ module.exports = grammar({
       field('name', $._name),
       $.end_of_statement
     ),
-    end_program_statement: $ => blockStructureEnding($, 'program'),
+    end_program_statement: $ => blockStructureEnding1($, 'program', $._name),
 
     module: $ => seq(
       $.module_statement,
@@ -383,7 +389,8 @@ module.exports = grammar({
         ),
       ),
       optional($.internal_procedures),
-      $.end_module_statement
+      $.end_module_statement,
+      $.end_of_statement
     ),
 
     module_statement: $ => seq(
@@ -391,7 +398,7 @@ module.exports = grammar({
       field('name', $._name),
       $.end_of_statement
     ),
-    end_module_statement: $ => blockStructureEnding($, 'module'),
+    end_module_statement: $ => blockStructureEnding1($, 'module', $._name),
 
     submodule: $ => seq(
       $.submodule_statement,
@@ -403,7 +410,8 @@ module.exports = grammar({
         ),
       ),
       optional($.internal_procedures),
-      $.end_submodule_statement
+      $.end_submodule_statement,
+      $.end_of_statement
     ),
 
     submodule_statement: $ => seq(
@@ -417,7 +425,7 @@ module.exports = grammar({
       field('name', $._name),
       $.end_of_statement,
     ),
-    end_submodule_statement: $ => blockStructureEnding($, 'submodule'),
+    end_submodule_statement: $ => blockStructureEnding1($, 'submodule', $._name),
     module_name: $ => $._name,
 
     interface: $ => seq(
@@ -432,7 +440,8 @@ module.exports = grammar({
         alias($.preproc_if_in_interface, $.preproc_if),
         alias($.preproc_ifdef_in_interface, $.preproc_ifdef),
       )),
-      $.end_interface_statement
+      $.end_interface_statement,
+      $.end_of_statement
     ),
 
     _interface_items: $ => choice(
@@ -450,11 +459,12 @@ module.exports = grammar({
       $.end_of_statement,
     ),
 
-    end_interface_statement: $ => prec.right(seq(
-      whiteSpacedKeyword('end', 'interface'),
-      optional(choice($._name, $._generic_procedure)),
-      $.end_of_statement
-    )),
+    end_interface_statement: $ => blockStructureEnding1($, 'interface', $._end_interface_spec),
+
+    _end_interface_spec: $ => choice(
+      $._name,
+      $._generic_procedure
+    ),
 
     // Obsolescent feature
     block_data: $ => seq(
@@ -466,7 +476,8 @@ module.exports = grammar({
           alias($.preproc_ifdef_in_module, $.preproc_ifdef)
         ),
       ),
-      $.end_block_data_statement
+      $.end_block_data_statement,
+      $.end_of_statement
     ),
 
     block_data_statement: $ => seq(
@@ -475,31 +486,7 @@ module.exports = grammar({
       $.end_of_statement
     ),
 
-    // Can't use `blockStructureEnding` because it's two keywords
-    end_block_data_statement: $ => seq(
-      alias(
-        choice(
-          caseInsensitive('end', false),
-          seq(
-            caseInsensitive('endblock', false),
-            caseInsensitive('data', false),
-          ),
-          seq(
-            caseInsensitive('end', false),
-            caseInsensitive('blockdata', false),
-          ),
-          seq(
-            caseInsensitive('end', false),
-            caseInsensitive('block', false),
-            caseInsensitive('data', false),
-          ),
-          caseInsensitive('endblockdata', false)
-        ),
-        'endblockdata'
-      ),
-      optional($._name),
-      $.end_of_statement
-    ),
+    end_block_data_statement: $ => blockStructureEnding2($, 'block', 'data', $._name, false),
 
     assignment: $ => seq(caseInsensitive('assignment'), '(', '=', ')'),
     operator: $ => seq(caseInsensitive('operator'), '(', alias(/[^()]+/, $.operator_name), ')'),
@@ -526,7 +513,7 @@ module.exports = grammar({
       $.end_of_statement,
     ),
 
-    end_subroutine_statement: $ => blockStructureEnding($, 'subroutine'),
+    end_subroutine_statement: $ => blockStructureEnding1($, 'subroutine', $._name),
 
     module_procedure: $ => procedure($, $.module_procedure_statement, $.end_module_procedure_statement),
 
@@ -537,7 +524,7 @@ module.exports = grammar({
       $.end_of_statement,
     ),
 
-    end_module_procedure_statement: $ => blockStructureEnding($, 'procedure'),
+    end_module_procedure_statement: $ => blockStructureEnding1($, 'procedure', $._name),
 
     function: $ => procedure($, $.function_statement, $.end_function_statement),
 
@@ -580,7 +567,7 @@ module.exports = grammar({
       ')'
     )),
 
-    end_function_statement: $ => blockStructureEnding($, 'function'),
+    end_function_statement: $ => blockStructureEnding1($, 'function', $._name),
 
     function_result: $ => seq(
       caseInsensitive('result'),
@@ -826,7 +813,8 @@ module.exports = grammar({
         alias($.preproc_ifdef_in_derived_type, $.preproc_ifdef),
       )),
       optional($.derived_type_procedures),
-      $.end_type_statement
+      $.end_type_statement,
+      $.end_of_statement
     ),
 
     abstract_specifier: $ => caseInsensitive('abstract'),
@@ -866,20 +854,25 @@ module.exports = grammar({
       $.end_of_statement,
     ),
 
-    end_type_statement: $ => blockStructureEnding($, 'type'),
+    end_type_statement: $ => blockStructureEnding1($, 'type', $._name),
 
     _type_name: $ => alias($._identifier, $.type_name),
 
     derived_type_procedures: $ => seq(
       $.contains_statement,
       repeat(choice(
-        $.public_statement,
-        $.private_statement,
-        $.procedure_statement,
+        alias('private', $.private_statement),
+        $._procedure_binding,
         $.include_statement,
         alias($.preproc_if_in_bound_procedures, $.preproc_if),
         alias($.preproc_ifdef_in_bound_procedures, $.preproc_ifdef),
       )),
+    ),
+
+    _procedure_binding: $ => choice(
+      $.procedure_statement,
+      $.generic_statement,
+      $.final_statement
     ),
 
     procedure_statement: $ => seq(
@@ -893,24 +886,49 @@ module.exports = grammar({
       )),
       optional('::'),
       commaSep1(field('declarator', choice(
-        $.method_name,
+        $._method_name,
         $.binding,
       ))),
     ),
-    binding: $ => seq($.binding_name, '=>', $.method_name),
+
+    generic_statement: $ => seq(
+      caseInsensitive('generic'),
+      optional(seq(
+        ',',
+        prec.left($.access_specifier)
+      )),
+      '::',
+      field('declarator', $.binding_list)
+    ),
+
+    final_statement: $ => seq(
+      caseInsensitive('final'),
+      '::',
+      commaSep1(field('declarator', $._method_name))
+    ),
+
+    binding: $ => seq(
+      $.binding_name,
+      '=>',
+      $._method_name
+    ),
     binding_name: $ => choice(
       $._identifier,
       $._generic_procedure
     ),
-    method_name: $ => $._name,
+    binding_list: $ => seq(
+      $.binding_name,
+      '=>',
+      commaSep1($._method_name)
+    ),
+
+    _method_name: $ => $._name,
 
     procedure_kind: $ => choice(
-      caseInsensitive('generic'),
       caseInsensitive('initial'),
       caseInsensitive('procedure'),
       seq(caseInsensitive('module'), caseInsensitive('procedure')),
       caseInsensitive('property'),
-      caseInsensitive('final')
     ),
 
     procedure_attribute: $ => prec.left(choice(
@@ -966,10 +984,10 @@ module.exports = grammar({
     ),
 
     variable_modification: $ => seq(
-      repeat1(choice(
+      choice(
         alias($._standalone_type_qualifier, $.type_qualifier),
         $.variable_attributes,
-      )),
+      ),
       optional('::'),
       commaSep1(field('declarator', $._variable_declarator)),
     ),
@@ -1218,8 +1236,6 @@ module.exports = grammar({
       $.select_type_statement,
       $.select_rank_statement,
       $.do_loop,
-      $.do_label_statement,
-      $.end_do_label_statement,
       $.format_statement,
       $.open_statement,
       $.close_statement,
@@ -1357,47 +1373,87 @@ module.exports = grammar({
     ),
     _signed_literal: $ => prec.right(PREC.UNARY, seq(choice('-', '+'), $.number_literal)),
 
+    // old-style labeled do loop does allow a block label (do-construct-name),
+    // but it seems a bit wild and may never have been used in practice
+    // * block_label: do-label     (double-labeled loop, old style)
+    // *              do label     (labeled loop, old style)
+    // * block_label: do           (nonlabeled loop)
+    // *              do           (nonlabeled loop)
+
     do_loop: $ => seq(
-      optional($.block_label_start_expression),
-      $.do_statement,
+      $._do_stmt,
       $.end_of_statement,
       repeat($._statement),
-      optional($.statement_label),
-      $.end_do_loop_statement
+      $._end_do_loop
     ),
 
-    do_statement: $ => seq(
+    // choice between labeled and nonlabeled do
+    _do_stmt: $ => choice(
+      seq(
+        // theoretically permitted, but useful to include?
+        optional($.block_label_start_expression),
+        alias($.do_stmt_label, $.do_statement)
+      ),
+      seq(
+        optional($.block_label_start_expression),
+        alias($.do_stmt_nonlabel, $.do_statement)
+      )
+    ),
+
+    // old style labeled loop
+    do_stmt_label: $ => seq(
       caseInsensitive('do'),
+      field('do_label', alias($._do_label, $.statement_label_reference)),
+      optional($._do_stmt_control)
+    ),
+
+    // new style loop (the optional block name is matched outside, as
+    // it should not be part of this node)
+    do_stmt_nonlabel: $ => seq(
+      caseInsensitive('do'),
+      optional($._do_stmt_control)
+    ),
+
+    // control part of the do statement (after [name:] do [label])
+    // (corresponds to "loop-control" in the F23 standard)
+    _do_stmt_control: $ => seq(
       optional(','),
-      optional(choice(
+      choice(
         $.while_statement,
         $.loop_control_expression,
         $.concurrent_statement
-      )),
+      ),
     ),
 
-    end_do_loop_statement: $ => seq(
-      whiteSpacedKeyword('end', 'do'),
-      optional($._block_label)
+    // choice between old-style and new-style end do,
+    // the external scanner tokens for old-style loops
+    // ensure that only the matching end_do rule is accepted
+    _end_do_loop: $ => choice(
+      $.end_do_label_loop_statement,
+      seq(
+        optional($.statement_label),
+        $.end_do_loop_statement
+      )
     ),
 
-    // Deleted feature: non-block `do`. Actually, labelled-do is still
-    // valid (but obsolescent), but we need to capture them separately
-    // because otherwise it's too had to capture them at all
-    do_label_statement: $ => seq(
-      caseInsensitive('do'),
-      $.statement_label_reference,
-      optional(','),
-      $.loop_control_expression
+    // end statement for old style do loop, there is one continue
+    // statement which might close several loops, the last one has a
+    // do_label_continue, the inner loops get a do_label_virtual, the
+    // innermost loop consumes the label at the start of the line, the
+    // outermost loop gets "continue" or "end do" keywords
+    end_do_label_loop_statement: $ => choice(
+      field('do_label', $.do_label_virtual),
+      seq(
+        field('do_label', alias($._do_label_continue, $.statement_label)),
+        choice(
+          $._statements,
+          blockStructureEnding1($, 'do', $._block_label)
+        )
+      )
     ),
 
-    // Because we've lumped together labelled-do and non-block-do in
-    // `do_label_statement`, we also need to be able to capture `end
-    // do` for a labelled-do
-    end_do_label_statement: $ => prec(-1, seq(
-      $.statement_label,
-      whiteSpacedKeyword('end', 'do'),
-    )),
+    // new style do loop, allows statement label as well as block label
+    end_do_loop_statement: $ => blockStructureEnding1($, 'do', $._block_label),
 
     while_statement: $ => seq(caseInsensitive('while'),
       $.parenthesized_expression),
@@ -1487,10 +1543,7 @@ module.exports = grammar({
       $.end_if_statement
     ),
 
-    end_if_statement: $ => seq(
-      whiteSpacedKeyword('end', 'if'),
-      optional($._block_label)
-    ),
+    end_if_statement: $ => blockStructureEnding1($, 'if', $._block_label),
 
     elseif_clause: $ => seq(
       whiteSpacedKeyword('else', 'if'),
@@ -1529,10 +1582,7 @@ module.exports = grammar({
       $.end_where_statement
     ),
 
-    end_where_statement: $ => seq(
-      whiteSpacedKeyword('end', 'where'),
-      optional($._block_label)
-    ),
+    end_where_statement: $ => blockStructureEnding1($, 'where', $._block_label),
 
     elsewhere_clause: $ => seq(
       whiteSpacedKeyword('else', 'where'),
@@ -1581,10 +1631,7 @@ module.exports = grammar({
       $.end_forall_statement
     ),
 
-    end_forall_statement: $ => seq(
-      whiteSpacedKeyword('end', 'forall'),
-      optional($._block_label)
-    ),
+    end_forall_statement: $ => blockStructureEnding1($, 'forall', $._block_label),
 
     select_case_statement: $ => seq(
       optional($.block_label_start_expression),
@@ -1640,10 +1687,7 @@ module.exports = grammar({
       $.end_select_statement
     ),
 
-    end_select_statement: $ => seq(
-      whiteSpacedKeyword('end', 'select'),
-      optional($._block_label)
-    ),
+    end_select_statement: $ => blockStructureEnding1($, 'select', $._block_label),
 
     selector: $ => seq('(',
       choice($._expression, $.pointer_association_statement),
@@ -1671,15 +1715,15 @@ module.exports = grammar({
             seq('(', field('type', choice($.intrinsic_type, $._identifier)), ')'),
           ),
         ),
-        $.class_default
+        seq(
+          caseInsensitive('class'),
+          caseInsensitive('default')
+        ),
       ),
       optional($._block_label),
       $.end_of_statement,
       repeat($._statement)
     ),
-
-    // Standalone rule otherwise it gets aliased as '(default) (default)'
-    class_default: $ => whiteSpacedKeyword('class', 'default'),
 
     case_value_range_list: $ => commaSep1(choice(
       $._expression,
@@ -1690,6 +1734,7 @@ module.exports = grammar({
       caseInsensitive('rank'),
       choice(
         seq('(', $.case_value_range_list, ')'),
+        seq('(', $.assumed_size, ')'),
         caseInsensitive('default')
       ),
       optional($._block_label),
@@ -1706,20 +1751,21 @@ module.exports = grammar({
       $.end_block_construct_statement
     ),
 
-    end_block_construct_statement: $ => seq(
-      whiteSpacedKeyword('end', 'block'),
-      optional($._block_label)
-    ),
+    end_block_construct_statement: $ => blockStructureEnding1($, 'block', $._block_label),
 
     associate_statement: $ => seq(
       optional($.block_label_start_expression),
       caseInsensitive('associate'),
-      '(',
-      commaSep1($.association),
-      ')',
+      $.association_list,
       $.end_of_statement,
       repeat($._statement),
       $.end_associate_statement
+    ),
+
+    association_list: $ => seq(
+      '(',
+      commaSep1($.association),
+      ')'
     ),
 
     association: $ => seq(
@@ -1728,10 +1774,7 @@ module.exports = grammar({
       field('selector', $._expression)
     ),
 
-    end_associate_statement: $ => seq(
-      whiteSpacedKeyword('end', 'associate'),
-      optional($._block_label)
-    ),
+    end_associate_statement: $ => blockStructureEnding1($, 'associate', $._block_label),
 
     format_statement: $ => prec.dynamic(PREC.CALL, seq(
       caseInsensitive('format'),
@@ -1857,13 +1900,9 @@ module.exports = grammar({
       )))
     ),
 
-    end_enum_statement: $ => whiteSpacedKeyword('end', 'enum'),
-    end_enumeration_type_statement: $ => seq(
-      caseInsensitive('end'),
-      caseInsensitive('enumeration'),
-      caseInsensitive('type'),
-      optional($._name)
-    ),
+    end_enum_statement: $ => blockStructureEnding1($, 'enum'),
+
+    end_enumeration_type_statement: $ => blockStructureEnding2($, 'enumeration', 'type', $._name, true),
 
     // precedence is used to override a conflict with the complex literal
     unit_identifier: $ => seq(
@@ -2345,11 +2384,11 @@ module.exports = grammar({
       $.end_coarray_team_statement,
     ),
 
-    end_coarray_team_statement: $ => seq(
-      whiteSpacedKeyword('end', 'team'),
+    end_coarray_team_statement: $ => prec(2, seq(
+      blockStructureEnding1($, 'team'),
       optional($.argument_list),
       optional($._block_label),
-    ),
+    )),
 
     coarray_critical_statement: $ => seq(
       optional($.block_label_start_expression),
@@ -2360,10 +2399,7 @@ module.exports = grammar({
       $.end_coarray_critical_statement,
     ),
 
-    end_coarray_critical_statement: $ => seq(
-      whiteSpacedKeyword('end', 'critical'),
-      optional($._block_label),
-    ),
+    end_coarray_critical_statement: $ => blockStructureEnding1($, 'critical', $._block_label),
 
     conditional_expression: $ => seq(
       field('condition', $._expression),
@@ -2502,18 +2538,61 @@ function sep1 (rule, separator) {
   return seq(rule, repeat(seq(separator, rule)))
 }
 
-// This can be merged with whiteSpacedKeyword, keeping for now.
-function blockStructureEnding ($, structType) {
-  const obj = prec.right(seq(
-    choice(
-      seq(
-        alias(caseInsensitive('end', false), 'end'),
-        optional(alias(caseInsensitive(structType, false), structType))),
-      alias(caseInsensitive('end' + structType, false), 'end' + structType)),
-    optional($._name),
-    $.end_of_statement
-  ))
-  return obj
+// one structType keyword
+// with optional rule for labels/names, and with optional end-of-statement
+function blockStructureEnding1 ($, structType, labelRule=null) {
+  // just listing all combinations looks easier to read
+  const end      = alias(caseInsensitive('end', false), 'end');
+  const strt     = alias(caseInsensitive(structType, false), structType);
+  const end_strt = alias(caseInsensitive('end' + structType, false), 'end' + structType);
+
+  const obj_end_stmt = choice(
+    // when structure keyword is present, allow the label
+    labelRule ? seq(end, strt, optional(labelRule)) : seq(end, strt),
+    labelRule ? seq(end_strt, optional(labelRule)) : end_strt,
+    // 'end' alone does not accept a label, as this can grab other structure keywords
+    // in incomplete statements (which happens frequently during typing)
+    end
+  );
+
+  return obj_end_stmt
+}
+
+// two structType keywords, example 'block' and 'data', accepted are
+// 'end', 'end block' and 'end block data', with or without white spaces,
+// with optional rule for labels/names, and with optional end-of-statement
+function blockStructureEnding2 ($, structType1, structType2, labelRule=null, require_blank=false) {
+  const end          = alias(caseInsensitive('end', false), 'end');
+  const strt_1       = alias(caseInsensitive(structType1, false), structType1);
+  const strt_2       = alias(caseInsensitive(structType2, false), structType2);
+  const strt_1_2     = alias(caseInsensitive(structType1 + structType2, false), structType1 + structType2);
+  const end_strt_1   = alias(caseInsensitive('end' + structType1, false), 'end' + structType1);
+  const end_strt_1_2 = alias(caseInsensitive('end' + structType1 + structType2, false), 'end' + structType1 + structType2);
+
+
+  let obj_end_stmt;
+
+  // CODEE: Do not use `require_blank` but don't erase it from the grammar to
+  // avoid further merging conflicts. It only makes the grammar more strict
+  // which doesn't favour us. And its existing implementation wasn't working as
+  // intended anyway
+  const _ = require_blank;
+
+  obj_end_stmt = choice(
+    // when both structure keywords are present, allow the label
+    labelRule ? seq(end, strt_1, strt_2, optional(labelRule)) : seq(end, strt_1, strt_2),
+    labelRule ? seq(end_strt_1, strt_2,  optional(labelRule)) : seq(end_strt_1, strt_2),
+    labelRule ? seq(end, strt_1_2,       optional(labelRule)) : seq(end, strt_1_2),
+    labelRule ? seq(end_strt_1_2,        optional(labelRule)) : seq(end_strt_1_2),
+    // 'end' alone or with just one keyword does not accept a label,
+    // as this can grab other structure keywords in incomplete statements
+    // (which happens frequently during typing)
+    seq(end, strt_1),
+    end_strt_1,
+    end
+  );
+
+  return obj_end_stmt
 }
 
 /**
@@ -2669,6 +2748,8 @@ function procedure($, start_statement, end_statement) {
       ),
     ),
     optional($.internal_procedures),
-    end_statement
+    optional($.statement_label),
+    end_statement,
+    $.end_of_statement
   );
 }

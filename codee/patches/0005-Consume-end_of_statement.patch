@@ -13,10 +13,10 @@ they can also be consumed as `comment` tokens).
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/src/scanner.c b/src/scanner.c
-index 4a735f7..be574ae 100644
+index 188fa2b..66f3fc9 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
-@@ -226,7 +226,7 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
+@@ -288,7 +288,7 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
  
      // Semicolons and EOF always end the statement
      if (lexer->eof(lexer)) {
@@ -25,7 +25,7 @@ index 4a735f7..be574ae 100644
          lexer->result_symbol = END_OF_STATEMENT;
          return true;
      }
-@@ -240,13 +240,13 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
+@@ -302,13 +302,13 @@ static bool scan_end_of_statement(Scanner *scanner, TSLexer *lexer) {
      // '\r' to cover unix, MSDOS and old style Macintosh.
      // Handle comments here too, but don't consume them
      if (lexer->lookahead == '\r') {

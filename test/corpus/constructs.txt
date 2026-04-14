@@ -18,8 +18,8 @@ END PROGRAM TEST
         (identifier))
       (end_of_statement))
     (end_program_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (program
     (program_statement
       (whitespace)
@@ -30,8 +30,8 @@ END PROGRAM TEST
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Shortest Program
@@ -43,8 +43,8 @@ END
 
 (translation_unit
   (program
-    (end_program_statement
-      (end_of_statement))))
+    (end_program_statement)
+    (end_of_statement)))
 
 ================================================================================
 Interface (explicit)
@@ -111,21 +111,19 @@ end module
         (procedure_kind
           (whitespace))
         (whitespace)
-        (method_name
-          (name
-            (identifier))))
+        (name
+          (identifier)))
       (whitespace)
       (procedure_statement
         (procedure_kind
           (whitespace))
         (whitespace)
-        (method_name
-          (name
-            (identifier))))
+        (name
+          (identifier)))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (variable_declaration
       (intrinsic_type
@@ -265,8 +263,8 @@ end module
         (end_of_statement)
         (whitespace)
         (end_function_statement
-          (whitespace)
-          (end_of_statement)))
+          (whitespace))
+        (end_of_statement))
       (whitespace)
       (function
         (function_statement
@@ -292,11 +290,11 @@ end module
         (end_of_statement)
         (whitespace)
         (end_function_statement
-          (whitespace)
-          (end_of_statement))))
+          (whitespace))
+        (end_of_statement)))
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Interface (explicit)
@@ -361,8 +359,8 @@ end interface
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (whitespace)
     (function
       (function_statement
@@ -399,11 +397,11 @@ end interface
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_interface_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Interface (abstract)
@@ -470,8 +468,8 @@ end interface
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (whitespace)
     (function
       (function_statement
@@ -508,11 +506,11 @@ end interface
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_interface_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Interface (generic)
@@ -537,20 +535,18 @@ end interface
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (whitespace)
     (procedure_statement
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (end_interface_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Interface (operator)
@@ -584,24 +580,22 @@ end interface operator (.not.)
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (whitespace)
     (procedure_statement
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (end_interface_statement
       (whitespace)
       (whitespace)
       (operator
         (whitespace)
-        (operator_name))
-      (end_of_statement)))
+        (operator_name)))
+    (end_of_statement))
   (interface
     (interface_statement
       (whitespace)
@@ -614,9 +608,8 @@ end interface operator (.not.)
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (whitespace)
     (function
       (function_statement
@@ -643,15 +636,15 @@ end interface operator (.not.)
       (end_of_statement)
       (whitespace)
       (end_function_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (end_interface_statement
       (whitespace)
       (whitespace)
       (operator
         (whitespace)
-        (operator_name))
-      (end_of_statement))))
+        (operator_name)))
+    (end_of_statement)))
 
 ================================================================================
 Interface (assignment)
@@ -675,15 +668,14 @@ end interface assignment (=)
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (end_interface_statement
       (whitespace)
       (whitespace)
       (assignment
-        (whitespace))
-      (end_of_statement))))
+        (whitespace)))
+    (end_of_statement)))
 
 ================================================================================
 Semicolon in interface
@@ -706,14 +698,13 @@ interface operator(+) ; module procedure test_plus ; end interface
       (procedure_kind
         (whitespace))
       (whitespace)
-      (method_name
-        (name
-          (identifier))))
+      (name
+        (identifier)))
     (whitespace)
     (whitespace)
     (end_interface_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Use Operator and Assignment
@@ -761,8 +752,8 @@ end module
         (operator_name)))
     (end_of_statement)
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Subroutine
@@ -848,8 +839,8 @@ END SUBROUTINE
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -857,8 +848,8 @@ END SUBROUTINE
         (identifier))
       (end_of_statement))
     (end_subroutine_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -873,8 +864,8 @@ END SUBROUTINE
         (identifier))
       (end_of_statement))
     (end_subroutine_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -890,8 +881,8 @@ END SUBROUTINE
             (string_literal))))
       (end_of_statement))
     (end_subroutine_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -979,11 +970,11 @@ END SUBROUTINE
         (end_of_statement)
         (whitespace)
         (end_subroutine_statement
-          (whitespace)
-          (end_of_statement))))
+          (whitespace))
+        (end_of_statement)))
     (end_subroutine_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Functions (simple)
@@ -1047,8 +1038,8 @@ end function
         (argument_list)))
     (end_of_statement)
     (end_function_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (function
     (function_statement
       (derived_type
@@ -1088,8 +1079,8 @@ end function
       (identifier))
     (end_of_statement)
     (end_function_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (function
     (function_statement
       (intrinsic_type
@@ -1108,8 +1099,8 @@ end function
         (identifier))
       (end_of_statement))
     (end_function_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (function
     (function_statement
       (intrinsic_type
@@ -1129,8 +1120,8 @@ end function
             (string_literal))))
       (end_of_statement))
     (end_function_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (function
     (function_statement
       (whitespace)
@@ -1149,8 +1140,8 @@ end function
             (string_literal))))
       (end_of_statement))
     (end_function_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (function
     (function_statement
       (whitespace)
@@ -1169,8 +1160,8 @@ end function
         (identifier))
       (end_of_statement))
     (end_function_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Functions (complex)
@@ -1277,8 +1268,8 @@ end function test
         (end_of_statement)
         (whitespace)
         (end_function_statement
-          (whitespace)
-          (end_of_statement)))
+          (whitespace))
+        (end_of_statement))
       (whitespace)
       (subroutine
         (subroutine_statement
@@ -1308,8 +1299,8 @@ end function test
         (end_of_statement)
         (whitespace)
         (end_subroutine_statement
-          (whitespace)
-          (end_of_statement)))
+          (whitespace))
+        (end_of_statement))
       (whitespace)
       (function
         (function_statement
@@ -1339,14 +1330,14 @@ end function test
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement))))
+            (identifier)))
+        (end_of_statement)))
     (end_function_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Variable Declarations
@@ -1366,7 +1357,7 @@ program test
        procedure, nopass, non_overridable :: static_method ! static method
        procedure instance_method ! instance method
        procedure, public, pass(self) :: pass_method
-       generic, pass :: binding_name => method_name, method_name2
+       generic :: binding_name => method_name, method_name2
        generic, private :: assignment(=) => assign_method
        generic, private :: operator(+) => add_method
        procedure :: one, two => three
@@ -1399,8 +1390,8 @@ end program
         (end_of_statement))
       (whitespace)
       (end_type_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
@@ -1482,18 +1473,16 @@ end program
           (procedure_attribute)
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier))))
+          (name
+            (identifier)))
         (whitespace)
         (comment)
         (whitespace)
         (procedure_statement
           (procedure_kind)
           (whitespace)
-          (method_name
-            (name
-              (identifier))))
+          (name
+            (identifier)))
         (whitespace)
         (comment)
         (whitespace)
@@ -1506,91 +1495,77 @@ end program
             (identifier))
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier))))
+          (name
+            (identifier)))
         (whitespace)
-        (procedure_statement
-          (procedure_kind)
-          (whitespace)
-          (procedure_attribute)
+        (generic_statement
           (whitespace)
           (whitespace)
-          (binding
+          (binding_list
             (binding_name
               (identifier))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier))))
-          (whitespace)
-          (method_name
+            (name
+              (identifier))
+            (whitespace)
             (name
               (identifier))))
         (whitespace)
-        (procedure_statement
-          (procedure_kind)
+        (generic_statement
           (whitespace)
-          (procedure_attribute)
+          (access_specifier)
           (whitespace)
           (whitespace)
-          (binding
+          (binding_list
             (binding_name
               (assignment))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier)))))
+            (name
+              (identifier))))
         (whitespace)
-        (procedure_statement
-          (procedure_kind)
+        (generic_statement
           (whitespace)
-          (procedure_attribute)
+          (access_specifier)
           (whitespace)
           (whitespace)
-          (binding
+          (binding_list
             (binding_name
               (operator
                 (operator_name)))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier)))))
+            (name
+              (identifier))))
         (whitespace)
         (procedure_statement
           (procedure_kind)
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier)))
+          (name
+            (identifier))
           (whitespace)
           (binding
             (binding_name
               (identifier))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier)))))
-        (whitespace)
-        (procedure_statement
-          (procedure_kind)
-          (whitespace)
-          (whitespace)
-          (method_name
             (name
-              (identifier)))))
+              (identifier))))
+        (whitespace)
+        (final_statement
+          (whitespace)
+          (whitespace)
+          (name
+            (identifier))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
@@ -1652,12 +1627,12 @@ end program
       (end_of_statement)
       (whitespace)
       (end_type_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Attributes
@@ -1696,8 +1671,8 @@ end program
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
@@ -1716,11 +1691,11 @@ end program
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Deferred binding
@@ -1765,13 +1740,12 @@ end program
           (procedure_attribute)
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier)))))
+          (name
+            (identifier))))
       (whitespace)
       (end_type_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (interface
       (interface_statement
@@ -1787,15 +1761,15 @@ end program
           (end_of_statement))
         (whitespace)
         (end_subroutine_statement
-          (whitespace)
-          (end_of_statement)))
+          (whitespace))
+        (end_of_statement))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Private Type-Bound Procedures
@@ -1836,9 +1810,8 @@ end program test
           (procedure_kind)
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier))))
+          (name
+            (identifier)))
         (whitespace)
         (procedure_statement
           (procedure_kind)
@@ -1846,22 +1819,21 @@ end program test
           (procedure_attribute)
           (whitespace)
           (whitespace)
-          (method_name
-            (name
-              (identifier)))))
+          (name
+            (identifier))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_program_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Procedure Pointer Components
@@ -1930,14 +1902,14 @@ end program test
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_program_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Submodule definition (simple)
@@ -1978,8 +1950,8 @@ END SUBMODULE ConstructorMethods_child
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (submodule
     (submodule_statement
       (module_name
@@ -2003,8 +1975,8 @@ END SUBMODULE ConstructorMethods_child
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Module definition (with internal module procedures)
@@ -2075,11 +2047,11 @@ END MODULE BoundingBox_Method
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (interface
       (interface_statement
         (end_of_statement))
@@ -2113,17 +2085,17 @@ END MODULE BoundingBox_Method
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (end_module_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Procedure as argument
@@ -2170,12 +2142,12 @@ end module test
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (internal_procedures
       (contains_statement)
       (end_of_statement)
@@ -2237,14 +2209,14 @@ end module test
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement))))
+            (identifier)))
+        (end_of_statement)))
     (end_module_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Block Construct
@@ -2374,8 +2346,8 @@ end program block_demo
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Enumeration type
@@ -2386,6 +2358,10 @@ module enumeration_mod
     enumerator :: v_one, v_two, v_three
     enumerator v_four
   end enumeration type v_value
+
+  ENUMERATION TYPE :: editor
+    ENUMERATOR :: emacs, vim, ed
+  END ENUMERATION TYPE
 end module enumeration_mod
 
 --------------------------------------------------------------------------------
@@ -2428,12 +2404,34 @@ end module enumeration_mod
         (name
           (identifier))))
     (end_of_statement)
+    (whitespace)
+    (enumeration_type
+      (enumeration_type_statement
+        (whitespace)
+        (whitespace)
+        (whitespace)
+        (type_name
+          (identifier)))
+      (whitespace)
+      (enumerator_statement
+        (whitespace)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier))
+      (whitespace)
+      (end_enumeration_type_statement
+        (whitespace)
+        (whitespace)))
+    (end_of_statement)
     (end_module_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Block Data (Obsolescent)
@@ -2443,6 +2441,12 @@ Block Data (Obsolescent)
       COMMON /COMBLA/ ICASE, N, INCX
       DATA ICASE /4/
       END
+
+      block data name2
+      end block data
+
+      Block Data name3
+      End Block Data name3
 
       BLOCK DATA combla
       COMMON /COMBLA/ ICASE, N, INCX
@@ -2463,11 +2467,6 @@ Block Data (Obsolescent)
       COMMON /COMBLA/ ICASE, N, INCX
       DATA ICASE /4/
       END BLOCKDATA
-
-      BLOCK DATA combla
-      COMMON /COMBLA/ ICASE, N, INCX
-      DATA ICASE /4/
-      END COMBLA
 
       BLOCK DATA combla
       COMMON /COMBLA/ ICASE, N, INCX
@@ -2523,8 +2522,173 @@ Block Data (Obsolescent)
           (number_literal))))
     (end_of_statement)
     (whitespace)
+    (end_block_data_statement)
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
     (end_block_data_statement
-      (end_of_statement)))
+      (whitespace)
+      (whitespace))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier)))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (whitespace))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement)
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace))
+    (end_of_statement))
   (whitespace)
   (block_data
     (block_data_statement
@@ -2559,255 +2723,10 @@ Block Data (Obsolescent)
     (end_block_data_statement
       (whitespace)
       (whitespace)
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
         (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement)))
-  (whitespace)
-  (block_data
-    (block_data_statement
-      (whitespace)
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement))
-    (whitespace)
-    (common_statement
-      (whitespace)
-      (variable_group
-        (name
-          (identifier))
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)
-        (whitespace)
-        (identifier)))
-    (end_of_statement)
-    (whitespace)
-    (data_statement
-      (whitespace)
-      (data_set
-        (identifier)
-        (whitespace)
-        (data_value
-          (number_literal))))
-    (end_of_statement)
-    (whitespace)
-    (end_block_data_statement
-      (whitespace)
-      (name
-        (identifier))
-      (end_of_statement)))
+    (end_of_statement))
   (whitespace)
   (block_data
     (block_data_statement
@@ -2843,5 +2762,78 @@ Block Data (Obsolescent)
       (whitespace)
       (whitespace)
       (name
+        (identifier)))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
         (identifier))
-      (end_of_statement))))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (name
+        (identifier)))
+    (end_of_statement))
+  (whitespace)
+  (block_data
+    (block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (common_statement
+      (whitespace)
+      (variable_group
+        (name
+          (identifier))
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)
+        (whitespace)
+        (identifier)))
+    (end_of_statement)
+    (whitespace)
+    (data_statement
+      (whitespace)
+      (data_set
+        (identifier)
+        (whitespace)
+        (data_value
+          (number_literal))))
+    (end_of_statement)
+    (whitespace)
+    (end_block_data_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier)))
+    (end_of_statement)))

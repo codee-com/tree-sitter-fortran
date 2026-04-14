@@ -60,8 +60,8 @@ end subroutine foo
         (filename))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (assignment_statement
       (identifier)
@@ -98,11 +98,11 @@ end subroutine foo
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement))))
+            (identifier)))
+        (end_of_statement)))
     (end_program_statement
-      (whitespace)
-      (end_of_statement)))
+      (whitespace))
+    (end_of_statement))
   (comment)
   (module
     (module_statement
@@ -114,8 +114,8 @@ end subroutine foo
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -152,8 +152,8 @@ end subroutine foo
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Use Statements
@@ -293,8 +293,8 @@ END PROGRAM
         (identifier)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Implicit Statements
@@ -377,8 +377,8 @@ END PROGRAM
         (implicit_range_letter)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Save Statements
@@ -414,8 +414,8 @@ END MODULE
       (identifier))
     (end_of_statement)
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Private Statements
@@ -453,8 +453,8 @@ END MODULE
         (operator_name)))
     (end_of_statement)
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Public Statements
@@ -492,8 +492,8 @@ END MODULE
         (operator_name)))
     (end_of_statement)
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Intrinsic Variable Declarations
@@ -733,8 +733,8 @@ END PROGRAM
       declarator: (identifier))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Variable Declarations
@@ -834,8 +834,8 @@ END PROGRAM
       (identifier))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Derived Type Procedure Arguments
@@ -908,8 +908,8 @@ end module foo
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (subroutine
         (subroutine_statement
           (whitespace)
@@ -947,8 +947,8 @@ end module foo
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (subroutine
         (subroutine_statement
           (whitespace)
@@ -988,14 +988,14 @@ end module foo
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement))))
+            (identifier)))
+        (end_of_statement)))
     (end_module_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Variable Modification Statements
@@ -1120,8 +1120,8 @@ END PROGRAM
       (identifier))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Do Loops
@@ -1341,8 +1341,8 @@ END PROGRAM
         (whitespace)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Do Concurrent Statement
@@ -1501,8 +1501,8 @@ END PROGRAM TEST
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Do Label Statement (Obsolescent)
@@ -1517,6 +1517,24 @@ program test
   do 10 i = 1, 10
     bar(i) = i
 10 end do
+
+  do 100 i = 1,10
+    do 100 j = 1,10
+      do 200 k = 1,10
+        do 200 l = 1,10
+          do 200 m = 1,10
+          A(i,j) = A(i,j) + B(k,l,m)
+200 Continue
+100 End Do
+
+    do 300 i = 1,10
+300 A(i) = i
+
+    double_loop: do 400, i=1,10
+      inner: do 500, j=1,10
+500   enddo inner
+400 enddo double_loop
+
 end program test
 
 --------------------------------------------------------------------------------
@@ -1529,85 +1547,267 @@ end program test
         (identifier))
       (end_of_statement))
     (whitespace)
-    (do_label_statement
-      (whitespace)
-      (statement_label_reference)
-      (whitespace)
-      (loop_control_expression
-        (identifier)
+    (do_loop
+      (do_statement
         (whitespace)
+        (statement_label_reference)
         (whitespace)
-        (number_literal)
-        (whitespace)
-        (number_literal)))
-    (end_of_statement)
-    (whitespace)
-    (do_label_statement
-      (whitespace)
-      (statement_label_reference)
-      (whitespace)
-      (loop_control_expression
-        (identifier)
-        (whitespace)
-        (whitespace)
-        (number_literal)
-        (whitespace)
-        (number_literal)))
-    (end_of_statement)
-    (whitespace)
-    (assignment_statement
-      (call_expression
-        (identifier)
-        (argument_list
+        (loop_control_expression
           (identifier)
           (whitespace)
-          (identifier)))
+          (whitespace)
+          (number_literal)
+          (whitespace)
+          (number_literal)))
+      (end_of_statement)
       (whitespace)
-      (whitespace)
-      (math_expression
-        (identifier)
+      (do_loop
+        (do_statement
+          (whitespace)
+          (statement_label_reference)
+          (whitespace)
+          (loop_control_expression
+            (identifier)
+            (whitespace)
+            (whitespace)
+            (number_literal)
+            (whitespace)
+            (number_literal)))
+        (end_of_statement)
         (whitespace)
+        (assignment_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (identifier)
+              (whitespace)
+              (identifier)))
+          (whitespace)
+          (whitespace)
+          (math_expression
+            (identifier)
+            (whitespace)
+            (whitespace)
+            (identifier)))
+        (end_of_statement)
+        (end_do_label_loop_statement
+          (do_label_virtual)))
+      (end_of_statement)
+      (end_do_label_loop_statement
+        (statement_label)
         (whitespace)
-        (identifier)))
+        (keyword_statement)))
     (end_of_statement)
-    (statement_label)
     (whitespace)
-    (keyword_statement)
+    (do_loop
+      (do_statement
+        (whitespace)
+        (statement_label_reference)
+        (whitespace)
+        (loop_control_expression
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (number_literal)
+          (whitespace)
+          (number_literal)))
+      (end_of_statement)
+      (whitespace)
+      (assignment_statement
+        (call_expression
+          (identifier)
+          (argument_list
+            (identifier)))
+        (whitespace)
+        (whitespace)
+        (identifier))
+      (end_of_statement)
+      (end_do_label_loop_statement
+        (statement_label)
+        (whitespace)
+        (whitespace)))
     (end_of_statement)
     (whitespace)
-    (do_label_statement
+    (do_loop
+      (do_statement
+        (whitespace)
+        (statement_label_reference)
+        (whitespace)
+        (loop_control_expression
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (number_literal)
+          (number_literal)))
+      (end_of_statement)
       (whitespace)
-      (statement_label_reference)
-      (whitespace)
-      (loop_control_expression
-        (identifier)
+      (do_loop
+        (do_statement
+          (whitespace)
+          (statement_label_reference)
+          (whitespace)
+          (loop_control_expression
+            (identifier)
+            (whitespace)
+            (whitespace)
+            (number_literal)
+            (number_literal)))
+        (end_of_statement)
         (whitespace)
+        (do_loop
+          (do_statement
+            (whitespace)
+            (statement_label_reference)
+            (whitespace)
+            (loop_control_expression
+              (identifier)
+              (whitespace)
+              (whitespace)
+              (number_literal)
+              (number_literal)))
+          (end_of_statement)
+          (whitespace)
+          (do_loop
+            (do_statement
+              (whitespace)
+              (statement_label_reference)
+              (whitespace)
+              (loop_control_expression
+                (identifier)
+                (whitespace)
+                (whitespace)
+                (number_literal)
+                (number_literal)))
+            (end_of_statement)
+            (whitespace)
+            (do_loop
+              (do_statement
+                (whitespace)
+                (statement_label_reference)
+                (whitespace)
+                (loop_control_expression
+                  (identifier)
+                  (whitespace)
+                  (whitespace)
+                  (number_literal)
+                  (number_literal)))
+              (end_of_statement)
+              (whitespace)
+              (assignment_statement
+                (call_expression
+                  (identifier)
+                  (argument_list
+                    (identifier)
+                    (identifier)))
+                (whitespace)
+                (whitespace)
+                (math_expression
+                  (call_expression
+                    (identifier)
+                    (argument_list
+                      (identifier)
+                      (identifier)))
+                  (whitespace)
+                  (whitespace)
+                  (call_expression
+                    (identifier)
+                    (argument_list
+                      (identifier)
+                      (identifier)
+                      (identifier)))))
+              (end_of_statement)
+              (end_do_label_loop_statement
+                (do_label_virtual)))
+            (end_of_statement)
+            (end_do_label_loop_statement
+              (do_label_virtual)))
+          (end_of_statement)
+          (end_do_label_loop_statement
+            (statement_label)
+            (whitespace)
+            (keyword_statement)))
+        (end_of_statement)
+        (end_do_label_loop_statement
+          (do_label_virtual)))
+      (end_of_statement)
+      (end_do_label_loop_statement
+        (statement_label)
         (whitespace)
-        (number_literal)
-        (whitespace)
-        (number_literal)))
+        (whitespace)))
     (end_of_statement)
     (whitespace)
-    (assignment_statement
-      (call_expression
-        (identifier)
-        (argument_list
-          (identifier)))
-      (whitespace)
-      (whitespace)
-      (identifier))
+    (do_loop
+      (do_statement
+        (whitespace)
+        (statement_label_reference)
+        (whitespace)
+        (loop_control_expression
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (number_literal)
+          (number_literal)))
+      (end_of_statement)
+      (end_do_label_loop_statement
+        (statement_label)
+        (whitespace)
+        (assignment_statement
+          (call_expression
+            (identifier)
+            (argument_list
+              (identifier)))
+          (whitespace)
+          (whitespace)
+          (identifier))))
     (end_of_statement)
-    (end_do_label_statement
-      (statement_label)
+    (whitespace)
+    (do_loop
+      (block_label_start_expression
+        (identifier))
       (whitespace)
-      (whitespace))
+      (do_statement
+        (whitespace)
+        (statement_label_reference)
+        (whitespace)
+        (loop_control_expression
+          (identifier)
+          (number_literal)
+          (number_literal)))
+      (end_of_statement)
+      (whitespace)
+      (do_loop
+        (block_label_start_expression
+          (identifier))
+        (whitespace)
+        (do_statement
+          (whitespace)
+          (statement_label_reference)
+          (whitespace)
+          (loop_control_expression
+            (identifier)
+            (number_literal)
+            (number_literal)))
+        (end_of_statement)
+        (end_do_label_loop_statement
+          (statement_label)
+          (whitespace)
+          (whitespace)
+          (block_label
+            (identifier))))
+      (end_of_statement)
+      (end_do_label_loop_statement
+        (statement_label)
+        (whitespace)
+        (whitespace)
+        (block_label
+          (identifier))))
     (end_of_statement)
     (end_program_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Computed Goto (Obsolescent)
@@ -1653,8 +1853,8 @@ end program
           (number_literal))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 If Statements
@@ -1919,8 +2119,8 @@ END PROGRAM
             (identifier)))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Where Statements
@@ -2103,8 +2303,8 @@ end program
             (identifier)))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Forall Statements
@@ -2383,8 +2583,8 @@ END PROGRAM
           (whitespace))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Select Case Statements
@@ -2597,8 +2797,8 @@ END PROGRAM
         (whitespace)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Format Statements
@@ -2713,8 +2913,8 @@ END PROGRAM
         (hollerith_constant)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Read Statements
@@ -2830,8 +3030,8 @@ END PROGRAM
         (identifier)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Print Statements
@@ -2891,8 +3091,8 @@ END PROGRAM
           (string_literal))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Write Statements
@@ -3055,8 +3255,8 @@ END PROGRAM
           (string_literal))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Import Statements
@@ -3097,8 +3297,8 @@ end function test4
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (function
     (function_statement
       (whitespace)
@@ -3116,8 +3316,8 @@ end function test4
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (function
     (function_statement
       (whitespace)
@@ -3144,8 +3344,8 @@ end function test4
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (function
     (function_statement
       (whitespace)
@@ -3163,8 +3363,8 @@ end function test4
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Common Statement
@@ -3227,8 +3427,8 @@ END PROGRAM
       (identifier))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Namelist Statement
@@ -3285,8 +3485,8 @@ END PROGRAM
         (identifier)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Enum Statements
@@ -3362,8 +3562,8 @@ END PROGRAM test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Select Type Statement
@@ -3515,8 +3715,7 @@ end subroutine print_decorated_numbers
         (end_of_statement))
       (whitespace)
       (type_statement
-        (class_default
-          (whitespace))
+        (whitespace)
         (end_of_statement)
         (whitespace)
         (write_statement
@@ -3534,8 +3733,8 @@ end subroutine print_decorated_numbers
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Open/Close statements
@@ -3626,8 +3825,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Select Rank and Assumed Rank
@@ -3646,6 +3845,11 @@ subroutine assumed_rank(A)
     rank default
       error stop 'assumed_rank: only rank 0..2 is handled for now.'
   end select
+
+  check_assumed_size: select rank(A)
+    rank (*) check_assumed_size
+      write(*, *) "assumed_rank: assumed size array not supported"
+  end select check_assumed_size
 end subroutine assumed_rank
 
 --------------------------------------------------------------------------------
@@ -3740,12 +3944,46 @@ end subroutine assumed_rank
       (end_select_statement
         (whitespace)))
     (end_of_statement)
+    (whitespace)
+    (select_rank_statement
+      (block_label_start_expression
+        (identifier))
+      (whitespace)
+      (whitespace)
+      (selector
+        (identifier))
+      (end_of_statement)
+      (whitespace)
+      (rank_statement
+        (whitespace)
+        (assumed_size)
+        (whitespace)
+        (block_label
+          (identifier))
+        (end_of_statement)
+        (whitespace)
+        (write_statement
+          (unit_identifier)
+          (whitespace)
+          (format_identifier)
+          (whitespace)
+          (output_item_list
+            (prefixed_string_literal
+              (string_literal))))
+        (end_of_statement))
+      (whitespace)
+      (end_select_statement
+        (whitespace)
+        (whitespace)
+        (block_label
+          (identifier))))
+    (end_of_statement)
     (end_subroutine_statement
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Associate Statement
@@ -3770,32 +4008,34 @@ end program
       (end_of_statement))
     (whitespace)
     (associate_statement
-      (association
-        (identifier)
+      (association_list
+        (association
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (identifier))
         (whitespace)
-        (whitespace)
-        (identifier))
-      (whitespace)
-      (association
-        (identifier)
-        (whitespace)
-        (whitespace)
-        (identifier))
+        (association
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (identifier)))
       (end_of_statement)
       (whitespace)
       (associate_statement
         (block_label_start_expression
           (identifier))
-        (association
-          (identifier)
-          (whitespace)
-          (whitespace)
-          (call_expression
-            (derived_type_member_expression
-              (identifier)
-              (type_member
-                (identifier)))
-            (argument_list)))
+        (association_list
+          (association
+            (identifier)
+            (whitespace)
+            (whitespace)
+            (call_expression
+              (derived_type_member_expression
+                (identifier)
+                (type_member
+                  (identifier)))
+              (argument_list))))
         (end_of_statement)
         (whitespace)
         (assignment_statement
@@ -3820,8 +4060,8 @@ end program
         (whitespace)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 User Defined Operator
@@ -3887,12 +4127,12 @@ end program
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (interface
       (interface_statement
@@ -3929,12 +4169,12 @@ end program
           (whitespace)
           (whitespace)
           (name
-            (identifier))
-          (end_of_statement)))
+            (identifier)))
+        (end_of_statement))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (variable_declaration
       (intrinsic_type)
@@ -3971,8 +4211,8 @@ end program
           (identifier))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Defined IO Procedures
@@ -4054,13 +4294,12 @@ end module
           (whitespace))
         (whitespace)
         (whitespace)
-        (method_name
-          (name
-            (identifier))))
+        (name
+          (identifier)))
       (whitespace)
       (end_interface_statement
-        (whitespace)
-        (end_of_statement)))
+        (whitespace))
+      (end_of_statement))
     (whitespace)
     (interface
       (interface_statement
@@ -4072,15 +4311,14 @@ end module
         (procedure_kind
           (whitespace))
         (whitespace)
-        (method_name
-          (name
-            (identifier))))
+        (name
+          (identifier)))
       (whitespace)
       (end_interface_statement
         (whitespace)
         (whitespace)
-        (defined_io_procedure)
-        (end_of_statement)))
+        (defined_io_procedure))
+      (end_of_statement))
     (whitespace)
     (derived_type_definition
       (derived_type_statement
@@ -4094,20 +4332,18 @@ end module
         (whitespace)
         (comment)
         (whitespace)
-        (procedure_statement
-          (procedure_kind)
+        (generic_statement
           (whitespace)
-          (procedure_attribute)
+          (access_specifier)
           (whitespace)
           (whitespace)
-          (binding
+          (binding_list
             (binding_name
               (defined_io_procedure))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier)))))
+            (name
+              (identifier))))
         (whitespace)
         (comment)
         (whitespace)
@@ -4122,19 +4358,18 @@ end module
               (identifier))
             (whitespace)
             (whitespace)
-            (method_name
-              (name
-                (identifier))))))
+            (name
+              (identifier)))))
       (whitespace)
       (end_type_statement
         (whitespace)
         (whitespace)
         (name
-          (identifier))
-        (end_of_statement)))
+          (identifier)))
+      (end_of_statement))
     (end_module_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Data statement
@@ -4379,8 +4614,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 File Position Statments
@@ -4492,8 +4727,8 @@ end program
         (string_literal)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Inquire Statements
@@ -4569,8 +4804,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Allocate statements
@@ -4722,8 +4957,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Arithmetic If Statement (Deleted)
@@ -4747,8 +4982,7 @@ end
     (whitespace)
     (statement_label_reference))
   (end_of_statement)
-  (end_program_statement
-    (end_of_statement)))
+  (end_program_statement))
 
 ================================================================================
 Statement Functions (Obsolescent)
@@ -4873,8 +5107,8 @@ Statement Functions (Obsolescent)
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Entry statement (Obsolescent)
@@ -4958,8 +5192,8 @@ Entry statement (Obsolescent)
     (keyword_statement)
     (end_of_statement)
     (whitespace)
-    (end_subroutine_statement
-      (end_of_statement)))
+    (end_subroutine_statement)
+    (end_of_statement))
   (whitespace)
   (subroutine
     (subroutine_statement
@@ -4988,8 +5222,8 @@ Entry statement (Obsolescent)
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Coarray declarations
@@ -5076,8 +5310,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Coarray indexing
@@ -5179,8 +5413,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Coarray statements
@@ -5277,8 +5511,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Coarray Change Team
@@ -5372,8 +5606,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Coarray Critical
@@ -5415,8 +5649,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Extra semicolon
@@ -5462,8 +5696,8 @@ end program test;
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Dollar in identifiers (extension)
@@ -5499,8 +5733,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Typeof, classof declarations
@@ -5579,8 +5813,8 @@ end subroutine test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Assign Statement (Deleted)
@@ -5600,8 +5834,7 @@ end
     (whitespace)
     (identifier))
   (end_of_statement)
-  (end_program_statement
-    (end_of_statement)))
+  (end_program_statement))
 
 ================================================================================
 Alternate Return Statement (Obsolescent)
@@ -5618,8 +5851,7 @@ end
     (whitespace)
     (number_literal))
   (end_of_statement)
-  (end_program_statement
-    (end_of_statement)))
+  (end_program_statement))
 
 ================================================================================
 Assigned Goto (Deleted)
@@ -5650,8 +5882,8 @@ end program
       (statement_label_reference))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Cray pointer (extension)
@@ -5773,8 +6005,8 @@ end subroutine pointer_name_clash
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement)))
+        (identifier)))
+    (end_of_statement))
   (subroutine
     (subroutine_statement
       (whitespace)
@@ -5808,8 +6040,8 @@ end subroutine pointer_name_clash
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Data declarators (extension)
@@ -5878,8 +6110,8 @@ end program
             (number_literal)))))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Standalone Bind(C) Statement
@@ -5929,5 +6161,5 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))

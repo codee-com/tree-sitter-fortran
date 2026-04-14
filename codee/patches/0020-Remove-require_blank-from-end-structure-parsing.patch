@@ -1,0 +1,63 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Diego Alonso <diego.alonso@appentra.com>
+Date: Thu, 9 Apr 2026 10:06:48 +0200
+Subject: Remove require_blank from end structure parsing
+
+The reasoning is the one in the code comment
+---
+ grammar.js | 42 +++++++++++++++++++-----------------------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index 99c1d05..57d9d08 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -2572,29 +2572,25 @@ function blockStructureEnding2 ($, structType1, structType2, labelRule=null, req
+ 
+   let obj_end_stmt;
+ 
+-  if (require_blank) {
+-    // blank(s) between structure keywords are mandatory
+-    obj_end_stmt = choice(
+-      labelRule ? seq(end, strt_1, strt_2, optional(labelRule)) : seq(end, strt_1, strt_2),
+-      seq(end, strt_1),
+-      end_strt_1,
+-      end
+-    )
+-  } else {
+-    obj_end_stmt = choice(
+-      // when both structure keywords are present, allow the label
+-      labelRule ? seq(end, strt_1, strt_2, optional(labelRule)) : seq(end, strt_1, strt_2),
+-      labelRule ? seq(end_strt_1, strt_2,  optional(labelRule)) : seq(end_strt_1, strt_2),
+-      labelRule ? seq(end, strt_1_2,       optional(labelRule)) : seq(end, strt_1_2),
+-      labelRule ? seq(end_strt_1_2,        optional(labelRule)) : seq(end_strt_1_2),
+-      // 'end' alone or with just one keyword does not accept a label,
+-      // as this can grab other structure keywords in incomplete statements
+-      // (which happens frequently during typing)
+-      seq(end, strt_1),
+-      end_strt_1,
+-      end
+-    );
+-  }
++  // CODEE: Do not use `require_blank` but don't erase it from the grammar to
++  // avoid further merging conflicts. It only makes the grammar more strict
++  // which doesn't favour us. And its existing implementation wasn't working as
++  // intended anyway
++  const _ = require_blank;
++
++  obj_end_stmt = choice(
++    // when both structure keywords are present, allow the label
++    labelRule ? seq(end, strt_1, strt_2, optional(labelRule)) : seq(end, strt_1, strt_2),
++    labelRule ? seq(end_strt_1, strt_2,  optional(labelRule)) : seq(end_strt_1, strt_2),
++    labelRule ? seq(end, strt_1_2,       optional(labelRule)) : seq(end, strt_1_2),
++    labelRule ? seq(end_strt_1_2,        optional(labelRule)) : seq(end_strt_1_2),
++    // 'end' alone or with just one keyword does not accept a label,
++    // as this can grab other structure keywords in incomplete statements
++    // (which happens frequently during typing)
++    seq(end, strt_1),
++    end_strt_1,
++    end
++  );
+ 
+   return obj_end_stmt
+ }

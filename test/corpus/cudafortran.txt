@@ -44,8 +44,8 @@ end program test
       (whitespace)
       (whitespace)
       (name
-        (identifier))
-      (end_of_statement))))
+        (identifier)))
+    (end_of_statement)))
 
 ================================================================================
 Functions (with attributes)
@@ -91,8 +91,8 @@ end function
         (argument_list)))
     (end_of_statement)
     (end_function_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))
 
 ================================================================================
 Cuda Kernel Call Expressions
@@ -163,5 +163,5 @@ end program
         (identifier)))
     (end_of_statement)
     (end_program_statement
-      (whitespace)
-      (end_of_statement))))
+      (whitespace))
+    (end_of_statement)))

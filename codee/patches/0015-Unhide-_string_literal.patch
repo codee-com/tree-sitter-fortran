@@ -1,0 +1,1063 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?I=C3=B1aki=20Amatria=20Barral?= <inaki.amatria@appentra.com>
+Date: Fri, 17 Oct 2025 11:33:43 +0200
+Subject: Unhide `_string_literal`
+
+---
+ grammar.js                         |  15 +--
+ test/corpus/constructs.txt         |  24 +++--
+ test/corpus/expressions.txt        | 136 ++++++++++++++++++++++-----
+ test/corpus/line_continuations.txt |  60 +++++++-----
+ test/corpus/preprocessor.txt       |   9 +-
+ test/corpus/regressions.txt        |  33 ++++---
+ test/corpus/statements.txt         | 144 +++++++++++++++++++----------
+ 7 files changed, 298 insertions(+), 123 deletions(-)
+
+diff --git a/grammar.js b/grammar.js
+index afec324..a802a39 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -62,7 +62,7 @@ module.exports = grammar({
+     $._integer_literal,
+     $._float_literal,
+     $._boz_literal,
+-    $._string_literal,
++    $.string_literal,
+     $._string_literal_kind,
+     $._external_end_of_statement,
+     $._preproc_unary_operator,
+@@ -114,6 +114,7 @@ module.exports = grammar({
+     [$.cray_pointer_declaration, $.identifier],
+     [$.unit_identifier, $.identifier],
+     [$.format_identifier, $.identifier],
++    [$._preproc_expression, $.prefixed_string_literal],
+   ],
+ 
+   supertypes: $ => [
+@@ -1301,7 +1302,7 @@ module.exports = grammar({
+         choice(
+           $.number_literal,
+           $.complex_literal,
+-          $.string_literal,
++          $.prefixed_string_literal,
+           $.boolean_literal,
+           // Only constants allowed here, so can't have general expression as child
+           alias($._signed_literal, $.unary_expression),
+@@ -1883,14 +1884,14 @@ module.exports = grammar({
+       ),
+ 
+       // Deleted feature -- not quite file position statement
+-      seq(caseInsensitive('pause'), optional($.string_literal)),
++      seq(caseInsensitive('pause'), optional($.prefixed_string_literal)),
+     ),
+ 
+     // This is a limited set of expressions that can be used in IO statements
+     // precedence is used to override a conflict with the complex literal
+     _io_expressions: $ => prec(1, choice(
+       '*',
+-      $.string_literal,
++      $.prefixed_string_literal,
+       $.identifier,
+       $.derived_type_member_expression,
+       $.concatenation_expression,
+@@ -1976,7 +1977,7 @@ module.exports = grammar({
+     _expression: $ => choice(
+       $.number_literal,
+       $.complex_literal,
+-      $.string_literal,
++      $.prefixed_string_literal,
+       $.boolean_literal,
+       $.array_literal,
+       $.null_literal,
+@@ -2229,7 +2230,7 @@ module.exports = grammar({
+       ')',
+     )),
+ 
+-    string_literal: $ => seq(
++    prefixed_string_literal: $ => seq(
+       // Having a kind _prefix_, with an underscore and no whitespace,
+       // is _really_ hard to parse without breaking other things, so
+       // we have to rely on an external scanner
+@@ -2242,7 +2243,7 @@ module.exports = grammar({
+         // also need to *capture* it here
+         token.immediate('_'),
+       )),
+-      $._string_literal,
++      $.string_literal,
+     ),
+ 
+     // Coarrays
+diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
+index ed23535..8ffadde 100644
+--- a/test/corpus/constructs.txt
++++ b/test/corpus/constructs.txt
+@@ -131,7 +131,8 @@ end module
+             (identifier)
+             (argument_list
+               (number_literal)))
+-          (string_literal))))
++          (prefixed_string_literal
++            (string_literal)))))
+     (end_of_statement)
+     (comment)
+     (variable_declaration
+@@ -145,7 +146,8 @@ end module
+             (identifier)
+             (argument_list
+               (number_literal)))
+-          (string_literal))))
++          (prefixed_string_literal
++            (string_literal)))))
+     (end_of_statement)
+     (comment)
+     (variable_declaration
+@@ -159,7 +161,8 @@ end module
+             (identifier)
+             (argument_list
+               (number_literal)))
+-          (string_literal))))
++          (prefixed_string_literal
++            (string_literal)))))
+     (end_of_statement)
+     (comment)
+     (public_statement
+@@ -618,7 +621,8 @@ END SUBROUTINE
+         (identifier)
+         (keyword_argument
+           (identifier)
+-          (string_literal)))
++          (prefixed_string_literal
++            (string_literal))))
+       (end_of_statement))
+     (end_subroutine_statement)
+     (end_of_statement))
+@@ -633,7 +637,8 @@ END SUBROUTINE
+     (subroutine_call
+       (identifier)
+       (argument_list
+-        (string_literal)
++        (prefixed_string_literal
++          (string_literal))
+         (identifier)))
+     (end_of_statement)
+     (internal_procedures
+@@ -782,7 +787,8 @@ end function
+         (identifier)
+         (keyword_argument
+           (identifier)
+-          (string_literal)))
++          (prefixed_string_literal
++            (string_literal))))
+       (end_of_statement))
+     (end_function_statement)
+     (end_of_statement))
+@@ -795,7 +801,8 @@ end function
+         (identifier)
+         (keyword_argument
+           (identifier)
+-          (string_literal)))
++          (prefixed_string_literal
++            (string_literal))))
+       (end_of_statement))
+     (end_function_statement)
+     (end_of_statement))
+@@ -806,7 +813,8 @@ end function
+         (identifier)
+         (keyword_argument
+           (identifier)
+-          (string_literal)))
++          (prefixed_string_literal
++            (string_literal))))
+       (function_result
+         (identifier))
+       (end_of_statement))
+diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
+index f1f67b5..d1df55b 100644
+--- a/test/corpus/expressions.txt
++++ b/test/corpus/expressions.txt
+@@ -191,55 +191,67 @@ END PROGRAM
+       (end_of_statement))
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal))
++      right: (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+       right: (concatenation_expression
+-        left: (string_literal)
++        left: (prefixed_string_literal
++          (string_literal))
+         right: (concatenation_expression
+-          left: (string_literal)
++          left: (prefixed_string_literal
++            (string_literal))
+           right: (concatenation_expression
+             left: (identifier)
+             right: (identifier)))))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal
+-        kind: (identifier)))
++      right: (prefixed_string_literal
++        kind: (identifier)
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       left: (identifier)
+-      right: (string_literal
+-        kind: (number_literal)))
++      right: (prefixed_string_literal
++        kind: (number_literal)
++        (string_literal)))
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
+@@ -878,7 +890,8 @@ END PROGRAM
+         (number_literal))
+       (keyword_argument
+         name: (identifier)
+-        value: (string_literal)))
++        value: (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (assignment_statement
+       left: (derived_type_member_expression
+@@ -978,10 +991,12 @@ end program
+     (write_statement
+       (unit_identifier)
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (comment)
+       (keyword_argument
+         (identifier)
+@@ -1016,7 +1031,8 @@ end program test
+     (print_statement
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (end_program_statement
+       (name))
+@@ -1209,9 +1225,12 @@ end program array_constructors
+               (keyword_argument
+                 (identifier)
+                 (number_literal))))
+-          (string_literal)
+-          (string_literal)
+-          (string_literal))))
++          (prefixed_string_literal
++            (string_literal))
++          (prefixed_string_literal
++            (string_literal))
++          (prefixed_string_literal
++            (string_literal)))))
+     (end_of_statement)
+     (end_program_statement
+       (name))
+@@ -1360,7 +1379,8 @@ end subroutine foo
+       (concatenation_expression
+         (identifier)
+         (concatenation_expression
+-          (string_literal)
++          (prefixed_string_literal
++            (string_literal))
+           (identifier))))
+     (end_of_statement)
+     (assignment_statement
+@@ -1572,3 +1592,75 @@ end
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
++
++================================================================================
++Valid statements with prefixed strings
++================================================================================
++
++subroutine foo()
++  integer, parameter :: k = 4
++  character(len=128, kind=k) :: baz
++
++  data baz / k_"baz" /
++
++  open(unit=1, file=1_"mux")
++
++  baz = k_"bux"
++  pause 1_"fux"
++end
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (subroutine
++    (subroutine_statement
++      (name)
++      (end_of_statement))
++    (variable_declaration
++      (intrinsic_type)
++      (type_qualifier)
++      (init_declarator
++        (identifier)
++        (number_literal)))
++    (end_of_statement)
++    (variable_declaration
++      (intrinsic_type
++        (kind
++          (keyword_argument
++            (identifier)
++            (number_literal))
++          (keyword_argument
++            (identifier)
++            (identifier))))
++      (identifier))
++    (end_of_statement)
++    (data_statement
++      (data_set
++        (identifier)
++        (data_value
++          (prefixed_string_literal
++            (identifier)
++            (string_literal)))))
++    (end_of_statement)
++    (open_statement
++      (unit_identifier
++        (number_literal))
++      (keyword_argument
++        (identifier)
++        (prefixed_string_literal
++          (number_literal)
++          (string_literal))))
++    (end_of_statement)
++    (assignment_statement
++      (identifier)
++      (prefixed_string_literal
++        (identifier)
++        (string_literal)))
++    (end_of_statement)
++    (file_position_statement
++      (prefixed_string_literal
++        (number_literal)
++        (string_literal)))
++    (end_of_statement)
++    (end_subroutine_statement)
++    (end_of_statement)))
+diff --git a/test/corpus/line_continuations.txt b/test/corpus/line_continuations.txt
+index 46c2e04..77b26a6 100644
+--- a/test/corpus/line_continuations.txt
++++ b/test/corpus/line_continuations.txt
+@@ -18,10 +18,12 @@ end program
+     (write_statement
+       (unit_identifier)
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (comment)
+       (keyword_argument
+         (identifier)
+@@ -56,11 +58,13 @@ end program
+     (write_statement
+       (unit_identifier)
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (comment)
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+         (identifier)))
+@@ -244,30 +248,37 @@ end program
+     (print_statement
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
+-    (end_of_statement)
+-    (print_statement
+-      (format_identifier)
+-      (output_item_list
+-        (string_literal)))
+-    (end_of_statement)
+-    (print_statement
+-      (format_identifier)
+-      (output_item_list
+-        (string_literal)))
+-    (end_of_statement)
+-    (print_statement
+-      (format_identifier)
+-      (output_item_list
+-        (concatenation_expression
+-          (string_literal)
++        (prefixed_string_literal
+           (string_literal))))
+     (end_of_statement)
+     (print_statement
+       (format_identifier)
+       (output_item_list
+-        (string_literal)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
++    (end_of_statement)
++    (print_statement
++      (format_identifier)
++      (output_item_list
++        (prefixed_string_literal
++          (string_literal))))
++    (end_of_statement)
++    (print_statement
++      (format_identifier)
++      (output_item_list
++        (concatenation_expression
++          (prefixed_string_literal
++            (string_literal))
++          (prefixed_string_literal
++            (string_literal)))))
++    (end_of_statement)
++    (print_statement
++      (format_identifier)
++      (output_item_list
++        (prefixed_string_literal
++          (string_literal))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
+@@ -365,7 +376,8 @@ end program main
+     (print_statement
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (end_program_statement
+       (name))
+diff --git a/test/corpus/preprocessor.txt b/test/corpus/preprocessor.txt
+index ca52212..83015f9 100644
+--- a/test/corpus/preprocessor.txt
++++ b/test/corpus/preprocessor.txt
+@@ -805,7 +805,8 @@ end program
+     (end_of_statement)
+     (assignment_statement
+       (identifier)
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (select_case_statement
+       (selector
+@@ -815,7 +816,8 @@ end program
+         (identifier)
+         (case_statement
+           (case_value_range_list
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (end_of_statement)
+           (assignment_statement
+             (identifier)
+@@ -827,7 +829,8 @@ end program
+           (number_literal))
+         (case_statement
+           (case_value_range_list
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (end_of_statement)
+           (assignment_statement
+             (identifier)
+diff --git a/test/corpus/regressions.txt b/test/corpus/regressions.txt
+index 37490b0..e7cc931 100644
+--- a/test/corpus/regressions.txt
++++ b/test/corpus/regressions.txt
+@@ -49,19 +49,22 @@ end program example_padl
+     (end_of_statement)
+     (assignment_statement
+       (identifier)
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (comment)
+     (print_statement
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (output_item_list
+         (call_expression
+           (identifier)
+           (argument_list
+             (identifier)
+             (number_literal)
+-            (string_literal)))))
++            (prefixed_string_literal
++              (string_literal))))))
+     (end_of_statement)
+     (comment)
+     (assignment_statement
+@@ -266,56 +269,64 @@ Multiple array assignments
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (assignment_statement
+       (call_expression
+         (identifier)
+         (argument_list
+           (identifier)))
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (print_statement
+       (format_identifier)
+diff --git a/test/corpus/statements.txt b/test/corpus/statements.txt
+index 0f43fe9..1b70605 100644
+--- a/test/corpus/statements.txt
++++ b/test/corpus/statements.txt
+@@ -490,7 +490,8 @@ END PROGRAM
+         (identifier)
+         (keyword_argument
+           name: (identifier)
+-          value: (string_literal)))
++          value: (prefixed_string_literal
++            (string_literal))))
+       declarator: (identifier))
+     (end_of_statement)
+     (variable_declaration
+@@ -831,7 +832,8 @@ END PROGRAM
+           (identifier))
+         (keyword_argument
+           (identifier)
+-          (string_literal)))
++          (prefixed_string_literal
++            (string_literal))))
+       (end_of_statement)
+       (subroutine_call
+         (identifier)
+@@ -1358,7 +1360,8 @@ END PROGRAM
+             (call_expression
+               (identifier)
+               (argument_list
+-                (string_literal)))))
++                (prefixed_string_literal
++                  (string_literal))))))
+         (end_of_statement)
+         (assignment_statement
+           (identifier)
+@@ -1876,29 +1879,37 @@ END PROGRAM
+       (case_statement
+         (case_value_range_list
+           (extent_specifier
+-            (string_literal)
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (extent_specifier
+-            (string_literal)
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement)
+         (write_statement
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (case_statement
+         (case_value_range_list
+           (extent_specifier
+-            (string_literal)
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement)
+         (write_statement
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (case_statement
+         (case_value_range_list
+@@ -1908,7 +1919,8 @@ END PROGRAM
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (case_statement
+         (end_of_statement)
+@@ -1916,7 +1928,8 @@ END PROGRAM
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (end_select_statement))
+     (end_of_statement)
+@@ -2084,7 +2097,8 @@ END PROGRAM
+       (unit_identifier
+         (identifier))
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (input_item_list
+         (call_expression
+           (identifier)
+@@ -2097,13 +2111,15 @@ END PROGRAM
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (input_item_list
+         (identifier)))
+     (end_of_statement)
+@@ -2134,7 +2150,8 @@ END PROGRAM
+     (print_statement
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (print_statement
+       (format_identifier
+@@ -2146,9 +2163,11 @@ END PROGRAM
+     (end_of_statement)
+     (print_statement
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
+@@ -2186,7 +2205,8 @@ END PROGRAM
+       (type_qualifier)
+       (init_declarator
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (write_statement
+       (unit_identifier))
+@@ -2195,7 +2215,8 @@ END PROGRAM
+       (unit_identifier)
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (write_statement
+       (unit_identifier
+@@ -2211,7 +2232,8 @@ END PROGRAM
+       (unit_identifier
+         (identifier))
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+         (identifier)))
+@@ -2220,7 +2242,8 @@ END PROGRAM
+       (unit_identifier
+         (identifier))
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (output_item_list
+         (call_expression
+           (identifier)
+@@ -2233,13 +2256,15 @@ END PROGRAM
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (keyword_argument
+         (identifier)
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (output_item_list
+         (identifier)))
+     (end_of_statement)
+@@ -2247,16 +2272,19 @@ END PROGRAM
+       (unit_identifier
+         (number_literal))
+       (format_identifier
+-        (string_literal))
++        (prefixed_string_literal
++          (string_literal)))
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (write_statement
+       (unit_identifier
+         (number_literal))
+       (format_identifier)
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (write_statement
+       (unit_identifier
+@@ -2264,7 +2292,8 @@ END PROGRAM
+       (format_identifier
+         (identifier))
+       (output_item_list
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
+@@ -2524,7 +2553,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (output_item_list
+             (identifier)))
+         (end_of_statement))
+@@ -2539,7 +2569,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (output_item_list
+             (identifier)))
+         (end_of_statement))
+@@ -2554,7 +2585,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (output_item_list
+             (identifier)))
+         (end_of_statement))
+@@ -2564,7 +2596,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (output_item_list
+             (identifier)))
+         (end_of_statement))
+@@ -2574,7 +2607,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal))
++            (prefixed_string_literal
++              (string_literal)))
+           (output_item_list
+             (derived_type_member_expression
+               (identifier)
+@@ -2585,7 +2619,8 @@ end subroutine print_decorated_numbers
+         (write_statement
+           (unit_identifier)
+           (format_identifier
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (end_select_statement))
+     (end_of_statement)
+@@ -2627,14 +2662,16 @@ end program test
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (close_statement
+       (unit_identifier
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (open_statement
+       (keyword_argument
+@@ -2642,14 +2679,16 @@ end program test
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (close_statement
+       (unit_identifier
+         (identifier))
+       (keyword_argument
+         (identifier)
+-        (string_literal)))
++        (prefixed_string_literal
++          (string_literal))))
+     (end_of_statement)
+     (open_statement
+       (unit_identifier
+@@ -2716,7 +2755,8 @@ end subroutine assumed_rank
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (rank_statement
+         (case_value_range_list
+@@ -2726,7 +2766,8 @@ end subroutine assumed_rank
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (rank_statement
+         (case_value_range_list
+@@ -2736,12 +2777,14 @@ end subroutine assumed_rank
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (rank_statement
+         (end_of_statement)
+         (stop_statement
+-          (string_literal))
++          (prefixed_string_literal
++            (string_literal)))
+         (end_of_statement))
+       (end_select_statement))
+     (end_of_statement)
+@@ -2758,7 +2801,8 @@ end subroutine assumed_rank
+           (unit_identifier)
+           (format_identifier)
+           (output_item_list
+-            (string_literal)))
++            (prefixed_string_literal
++              (string_literal))))
+         (end_of_statement))
+       (end_select_statement
+         (block_label)))
+@@ -3087,7 +3131,8 @@ end program test
+           (identifier)
+           (type_member))
+         (data_value
+-          (string_literal))))
++          (prefixed_string_literal
++            (string_literal)))))
+     (end_of_statement)
+     (data_statement
+       (data_set
+@@ -3097,7 +3142,8 @@ end program test
+             (identifier)
+             (argument_list
+               (number_literal)
+-              (string_literal))))))
++              (prefixed_string_literal
++                (string_literal)))))))
+     (end_of_statement)
+     (data_statement
+       (data_set
+@@ -3260,7 +3306,8 @@ end program
+           (number_literal))))
+     (end_of_statement)
+     (file_position_statement
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (end_program_statement)
+     (end_of_statement)))
+@@ -3530,7 +3577,8 @@ Statement Functions (Obsolescent)
+     (end_of_statement)
+     (assignment_statement
+       (identifier)
+-      (string_literal))
++      (prefixed_string_literal
++        (string_literal)))
+     (end_of_statement)
+     (end_subroutine_statement
+       (name))
