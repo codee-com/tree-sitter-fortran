@@ -9,12 +9,12 @@ them as a parsing error. This allows library users to handle such cases
 explicitly.
 ---
  src/scanner.c                      | 104 +++++++++++++++++++----------
- test/corpus/expressions.txt        |  33 ++++-----
+ test/corpus/expressions.txt        |  31 ++++-----
  test/corpus/line_continuations.txt |   3 +-
- 3 files changed, 86 insertions(+), 54 deletions(-)
+ 3 files changed, 85 insertions(+), 53 deletions(-)
 
 diff --git a/src/scanner.c b/src/scanner.c
-index 66f3fc9..86d4135 100644
+index 846a5d8..4b1a626 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -41,6 +41,7 @@ typedef struct {
@@ -166,7 +166,7 @@ index 66f3fc9..86d4135 100644
      return result;
  }
  
-@@ -540,37 +561,41 @@ static bool scan_do_label_continue(Scanner *scanner, TSLexer *lexer, int32_t lab
+@@ -542,37 +563,41 @@ static bool scan_do_label_continue(Scanner *scanner, TSLexer *lexer, int32_t lab
  }
  
  // check for label, number of boz token
@@ -215,7 +215,7 @@ index 66f3fc9..86d4135 100644
  }
  
  static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
-@@ -627,8 +652,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -629,8 +654,13 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
          valid_symbols[BOZ_LITERAL] ||
          valid_symbols[DO_LABEL] ||
          valid_symbols[DO_LABEL_CONTINUE]) {
@@ -231,18 +231,9 @@ index 66f3fc9..86d4135 100644
      }
  
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index c6b7225..f55923b 100644
+index c6b7225..623668b 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
-@@ -964,7 +964,7 @@ program test
-           iostat=istat, &  ! Comment followed by line continuation
-        &  iomsg=imsg)
-     ! Note trailing whitespace after line continuation on next line
--    error &    
-+    error &
-       stop
- end program
- 
 @@ -1048,9 +1048,11 @@ end program
      (variable_declaration
        (intrinsic_type)

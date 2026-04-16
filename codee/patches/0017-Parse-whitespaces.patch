@@ -8,12 +8,12 @@ Subject: Parse whitespaces
  src/scanner.c                      |   35 +-
  test/corpus/constructs.txt         | 1118 ++++++++++++++---
  test/corpus/cudafortran.txt        |   43 +-
- test/corpus/expressions.txt        |  728 ++++++++++-
+ test/corpus/expressions.txt        |  733 ++++++++++-
  test/corpus/line_continuations.txt |  136 ++-
  test/corpus/preprocessor.txt       |  347 +++++-
  test/corpus/regressions.txt        |  144 ++-
  test/corpus/statements.txt         | 1829 ++++++++++++++++++++++++++--
- 9 files changed, 4042 insertions(+), 350 deletions(-)
+ 9 files changed, 4045 insertions(+), 352 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
 index e006244..cf370b6 100644
@@ -52,7 +52,7 @@ index e006244..cf370b6 100644
        $._external_end_of_statement,
      ),
 diff --git a/src/scanner.c b/src/scanner.c
-index 2c83a47..4e9e5eb 100644
+index 87cb1b7..b3f0b24 100644
 --- a/src/scanner.c
 +++ b/src/scanner.c
 @@ -19,6 +19,7 @@ enum TokenType {
@@ -63,7 +63,7 @@ index 2c83a47..4e9e5eb 100644
  };
  
  typedef Array(char *) StringArray;
-@@ -646,6 +647,22 @@ static BoolOrErr scan_label_number_boz(Scanner *scanner, TSLexer *lexer,
+@@ -648,6 +649,22 @@ static BoolOrErr scan_label_number_boz(Scanner *scanner, TSLexer *lexer,
      return False;
  }
  
@@ -86,7 +86,7 @@ index 2c83a47..4e9e5eb 100644
  static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
      // handle pending virtual labels and eos first
      if (valid_symbols[END_OF_STATEMENT]) {
-@@ -660,9 +677,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -662,9 +679,11 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
          }
      }
  
@@ -101,7 +101,7 @@ index 2c83a47..4e9e5eb 100644
      }
  
      // Close the current statement if we can
-@@ -676,6 +695,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
+@@ -678,6 +697,16 @@ static bool scan(Scanner *scanner, TSLexer *lexer, const bool *valid_symbols) {
      // statements, so we should eat all whitespace including
      // newlines, until we come to something more interesting
      while (iswspace(lexer->lookahead)) {
@@ -2646,7 +2646,7 @@ index 8345910..6a9fae4 100644
 +      (whitespace))
      (end_of_statement)))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index d1df55b..b06b578 100644
+index 89412d2..9688894 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -36,130 +36,214 @@ END PROGRAM
@@ -3828,7 +3828,7 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -986,30 +1387,48 @@ end program
+@@ -986,30 +1387,49 @@ end program
  (translation_unit
    (program
      (program_statement
@@ -3871,6 +3871,7 @@ index d1df55b..b06b578 100644
 +    (whitespace)
 +    (stop_statement
 +      (whitespace)
++      (whitespace)
 +      (whitespace))
      (end_of_statement)
 -    (end_program_statement)
@@ -3879,7 +3880,7 @@ index d1df55b..b06b578 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -1026,15 +1445,20 @@ end program test
+@@ -1026,15 +1446,20 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -3900,14 +3901,14 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -1059,43 +1483,70 @@ end program
+@@ -1059,43 +1484,70 @@ end program
  (translation_unit
    (program
      (program_statement
 +      (whitespace)
        (name)
        (end_of_statement))
-+      (whitespace)
++    (whitespace)
      (variable_declaration
        (intrinsic_type)
 +      (whitespace)
@@ -3915,14 +3916,17 @@ index d1df55b..b06b578 100644
 +      (whitespace)
 +      (whitespace)
        (identifier))
-+      (whitespace)
-         (ERROR
+-        (ERROR
 -          (ERROR
-+        (whitespace)
-+        (whitespace)
+-            (number_literal))
+-          (statement_label_reference))
++    (whitespace)
++    (ERROR
++      (whitespace)
++      (whitespace)
 +      (ERROR
-             (number_literal))
-           (statement_label_reference))
++        (number_literal))
++      (statement_label_reference))
      (end_of_statement)
 +    (whitespace)
      (variable_declaration
@@ -3943,7 +3947,7 @@ index d1df55b..b06b578 100644
 +            (whitespace)
 +            (whitespace)
              (number_literal))
-+            (whitespace)
++          (whitespace)
            (identifier)
 +          (whitespace)
            (call_expression
@@ -3958,10 +3962,9 @@ index d1df55b..b06b578 100644
              (implicit_range_letter)
 +            (whitespace))
 +          (whitespace)
++          (ERROR
              (ERROR
--              (number_literal))
-+              (ERROR
-+                (number_literal))
+               (number_literal))
              (user_defined_operator_name)
              (number_literal))
 +          (whitespace)
@@ -3974,7 +3977,7 @@ index d1df55b..b06b578 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -1121,34 +1572,54 @@ end program array_constructors
+@@ -1121,34 +1573,54 @@ end program array_constructors
  (translation_unit
    (program
      (program_statement
@@ -4030,7 +4033,7 @@ index d1df55b..b06b578 100644
              (intrinsic_type
                (kind
                  (keyword_argument
-@@ -1159,15 +1630,22 @@ end program array_constructors
+@@ -1159,15 +1631,22 @@ end program array_constructors
                (number_literal)
                (number_literal))))))
      (end_of_statement)
@@ -4053,7 +4056,7 @@ index d1df55b..b06b578 100644
        (array_literal
          (implied_do_loop_expression
            (parenthesized_expression
-@@ -1177,20 +1655,31 @@ end program array_constructors
+@@ -1177,20 +1656,31 @@ end program array_constructors
                  (argument_list
                    (math_expression
                      (identifier)
@@ -4085,7 +4088,7 @@ index d1df55b..b06b578 100644
        (output_item_list
          (call_expression
            (identifier)
-@@ -1200,24 +1689,34 @@ end program array_constructors
+@@ -1200,24 +1690,34 @@ end program array_constructors
                  (kind
                    (identifier)))
                (number_literal)
@@ -4120,7 +4123,7 @@ index d1df55b..b06b578 100644
        (output_item_list
          (array_literal
            (intrinsic_type
-@@ -1225,14 +1724,20 @@ end program array_constructors
+@@ -1225,14 +1725,20 @@ end program array_constructors
                (keyword_argument
                  (identifier)
                  (number_literal))))
@@ -4141,7 +4144,7 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -1267,108 +1772,168 @@ end subroutine foo
+@@ -1267,108 +1773,168 @@ end subroutine foo
  (translation_unit
    (program
      (program_statement
@@ -4311,7 +4314,7 @@ index d1df55b..b06b578 100644
      (assignment_statement
        (call_expression
          (identifier)
-@@ -1376,6 +1941,8 @@ end subroutine foo
+@@ -1376,6 +1942,8 @@ end subroutine foo
            (extent_specifier
              (number_literal)
              (number_literal))))
@@ -4320,7 +4323,7 @@ index d1df55b..b06b578 100644
        (concatenation_expression
          (identifier)
          (concatenation_expression
-@@ -1383,14 +1950,19 @@ end subroutine foo
+@@ -1383,14 +1951,19 @@ end subroutine foo
              (string_literal))
            (identifier))))
      (end_of_statement)
@@ -4340,7 +4343,7 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -1410,43 +1982,71 @@ end subroutine test
+@@ -1410,43 +1983,71 @@ end subroutine test
  (translation_unit
    (subroutine
      (subroutine_statement
@@ -4412,7 +4415,7 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -1469,10 +2069,14 @@ end program test
+@@ -1469,10 +2070,14 @@ end program test
  (translation_unit
    (program
      (program_statement
@@ -4427,7 +4430,7 @@ index d1df55b..b06b578 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1480,36 +2084,53 @@ end program test
+@@ -1480,36 +2085,53 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4481,7 +4484,7 @@ index d1df55b..b06b578 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1523,10 +2144,14 @@ end program test
+@@ -1523,10 +2145,14 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4496,7 +4499,7 @@ index d1df55b..b06b578 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1538,10 +2163,14 @@ end program test
+@@ -1538,10 +2164,14 @@ end program test
                (number_literal)
                (number_literal))
              (number_literal)))))
@@ -4511,7 +4514,7 @@ index d1df55b..b06b578 100644
        (call_expression
          (identifier)
          (argument_list
-@@ -1552,9 +2181,12 @@ end program test
+@@ -1552,9 +2182,12 @@ end program test
              (array_literal
                (number_literal)
                (number_literal))))))
@@ -4524,7 +4527,7 @@ index d1df55b..b06b578 100644
        (name))
      (end_of_statement)))
  
-@@ -1572,22 +2204,31 @@ end
+@@ -1572,22 +2205,31 @@ end
  (translation_unit
    (program
      (program_statement
@@ -4556,7 +4559,7 @@ index d1df55b..b06b578 100644
        (number_literal))
      (end_of_statement)
      (end_program_statement)
-@@ -1614,50 +2255,73 @@ end
+@@ -1614,50 +2256,73 @@ end
  (translation_unit
    (subroutine
      (subroutine_statement

@@ -7,13 +7,13 @@ Subject: Allow macro_identifier everywhere an identifier is
  grammar.js                         | 134 ++++----
  test/corpus/constructs.txt         | 441 ++++++++++++++++--------
  test/corpus/cudafortran.txt        |  15 +-
- test/corpus/expressions.txt        | 126 ++++---
+ test/corpus/expressions.txt        | 108 ++++--
  test/corpus/floating.txt           |  48 ++-
  test/corpus/line_continuations.txt |  54 ++-
  test/corpus/preprocessor.txt       | 204 +++++++----
  test/corpus/regressions.txt        |  48 ++-
  test/corpus/statements.txt         | 525 +++++++++++++++++++----------
- 9 files changed, 1039 insertions(+), 556 deletions(-)
+ 9 files changed, 1030 insertions(+), 547 deletions(-)
 
 diff --git a/grammar.js b/grammar.js
 index 674c697..99c1d05 100644
@@ -1947,7 +1947,7 @@ index 6a9fae4..ef80ee3 100644
      (whitespace)
      (subroutine_call
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index b06b578..4db06bc 100644
+index 9688894..2b0aa07 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -37,7 +37,8 @@ END PROGRAM
@@ -2147,7 +2147,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (write_statement
-@@ -1446,7 +1467,8 @@ end program test
+@@ -1447,7 +1468,8 @@ end program test
    (program
      (program_statement
        (whitespace)
@@ -2157,7 +2157,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (print_statement
-@@ -1459,7 +1481,8 @@ end program test
+@@ -1460,7 +1482,8 @@ end program test
      (end_program_statement
        (whitespace)
        (whitespace)
@@ -2167,7 +2167,7 @@ index b06b578..4db06bc 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -1484,9 +1507,10 @@ end program
+@@ -1485,7 +1508,8 @@ end program
    (program
      (program_statement
        (whitespace)
@@ -2175,55 +2175,19 @@ index b06b578..4db06bc 100644
 +      (name
 +        (identifier))
        (end_of_statement))
--      (whitespace)
-+    (whitespace)
-     (variable_declaration
-       (intrinsic_type)
-       (whitespace)
-@@ -1494,13 +1518,13 @@ end program
-       (whitespace)
-       (whitespace)
-       (identifier))
-+    (whitespace)
-+    (ERROR
-+      (whitespace)
-       (whitespace)
--        (ERROR
--        (whitespace)
--        (whitespace)
-       (ERROR
--            (number_literal))
--          (statement_label_reference))
-+        (number_literal))
-+      (statement_label_reference))
-     (end_of_statement)
      (whitespace)
      (variable_declaration
-@@ -1521,7 +1545,7 @@ end program
-             (whitespace)
-             (whitespace)
-             (number_literal))
--            (whitespace)
-+          (whitespace)
-           (identifier)
-           (whitespace)
-           (call_expression
-@@ -1536,11 +1560,10 @@ end program
-             (implicit_range_letter)
-             (whitespace))
-           (whitespace)
-+          (ERROR
+@@ -1540,8 +1564,7 @@ end program
+           (ERROR
              (ERROR
--              (ERROR
--                (number_literal))
+               (number_literal))
 -            (user_defined_operator_name)
 -            (number_literal))
-+              (number_literal))
 +            (user_defined_operator_name))
            (whitespace)
            (whitespace)
            (number_literal))))
-@@ -1573,7 +1596,8 @@ end program array_constructors
+@@ -1574,7 +1597,8 @@ end program array_constructors
    (program
      (program_statement
        (whitespace)
@@ -2233,7 +2197,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (implicit_statement
-@@ -1738,7 +1762,8 @@ end program array_constructors
+@@ -1739,7 +1763,8 @@ end program array_constructors
      (end_program_statement
        (whitespace)
        (whitespace)
@@ -2243,7 +2207,7 @@ index b06b578..4db06bc 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -1773,7 +1798,8 @@ end subroutine foo
+@@ -1774,7 +1799,8 @@ end subroutine foo
    (program
      (program_statement
        (whitespace)
@@ -2253,7 +2217,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (variable_declaration
-@@ -1890,7 +1916,8 @@ end subroutine foo
+@@ -1891,7 +1917,8 @@ end subroutine foo
    (subroutine
      (subroutine_statement
        (whitespace)
@@ -2263,7 +2227,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (variable_declaration
-@@ -1963,7 +1990,8 @@ end subroutine foo
+@@ -1964,7 +1991,8 @@ end subroutine foo
      (end_subroutine_statement
        (whitespace)
        (whitespace)
@@ -2273,7 +2237,7 @@ index b06b578..4db06bc 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -1983,7 +2011,8 @@ end subroutine test
+@@ -1984,7 +2012,8 @@ end subroutine test
    (subroutine
      (subroutine_statement
        (whitespace)
@@ -2283,7 +2247,7 @@ index b06b578..4db06bc 100644
        parameters: (parameters
          (identifier)
          (whitespace)
-@@ -2047,7 +2076,8 @@ end subroutine test
+@@ -2048,7 +2077,8 @@ end subroutine test
      (end_subroutine_statement
        (whitespace)
        (whitespace)
@@ -2293,7 +2257,7 @@ index b06b578..4db06bc 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -2070,7 +2100,8 @@ end program test
+@@ -2071,7 +2101,8 @@ end program test
    (program
      (program_statement
        (whitespace)
@@ -2303,7 +2267,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (assignment_statement
-@@ -2187,7 +2218,8 @@ end program test
+@@ -2188,7 +2219,8 @@ end program test
      (end_program_statement
        (whitespace)
        (whitespace)
@@ -2313,7 +2277,7 @@ index b06b578..4db06bc 100644
      (end_of_statement)))
  
  ================================================================================
-@@ -2205,7 +2237,8 @@ end
+@@ -2206,7 +2238,8 @@ end
    (program
      (program_statement
        (whitespace)
@@ -2323,7 +2287,7 @@ index b06b578..4db06bc 100644
        (end_of_statement))
      (whitespace)
      (variable_declaration
-@@ -2256,7 +2289,8 @@ end
+@@ -2257,7 +2290,8 @@ end
    (subroutine
      (subroutine_statement
        (whitespace)

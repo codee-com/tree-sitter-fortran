@@ -172,7 +172,7 @@ index ed23535..8ffadde 100644
          (identifier))
        (end_of_statement))
 diff --git a/test/corpus/expressions.txt b/test/corpus/expressions.txt
-index f1f67b5..d1df55b 100644
+index 2c56a86..89412d2 100644
 --- a/test/corpus/expressions.txt
 +++ b/test/corpus/expressions.txt
 @@ -191,55 +191,67 @@ END PROGRAM
