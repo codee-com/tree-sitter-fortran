@@ -1,0 +1,87 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Daniel Otero <daniel.otero@appentra.com>
+Date: Thu, 16 Apr 2026 16:12:01 +0200
+Subject: Allow call expressions in derived type definitions
+
+To support macro calls that declare type members
+---
+ grammar.js                 |  4 +++
+ test/corpus/constructs.txt | 53 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+
+diff --git a/grammar.js b/grammar.js
+index 57d9d08..c93b475 100644
+--- a/grammar.js
++++ b/grammar.js
+@@ -811,6 +811,10 @@ module.exports = grammar({
+         $.preproc_call,
+         alias($.preproc_if_in_derived_type, $.preproc_if),
+         alias($.preproc_ifdef_in_derived_type, $.preproc_ifdef),
++        // This is required so that macro function calls are allowed to declare
++        // derived type field. The precedence is required for resolving
++        // ambiguity with
++        prec(-1, $.call_expression),
+       )),
+       optional($.derived_type_procedures),
+       $.end_type_statement,
+diff --git a/test/corpus/constructs.txt b/test/corpus/constructs.txt
+index 719824a..34d5316 100644
+--- a/test/corpus/constructs.txt
++++ b/test/corpus/constructs.txt
+@@ -2837,3 +2837,56 @@ Block Data (Obsolescent)
+       (name
+         (identifier)))
+     (end_of_statement)))
++
++================================================================================
++Derived Type Macro Call Member
++================================================================================
++
++#define BAR(x) integer :: x
++program test
++  type foo
++    BAR(member)
++  end type foo
++end program test
++
++--------------------------------------------------------------------------------
++
++(translation_unit
++  (preproc_function_def
++    (whitespace)
++    (identifier)
++    (preproc_params
++      (identifier))
++    (whitespace)
++    (preproc_arg))
++  (program
++    (program_statement
++      (whitespace)
++      (name
++        (identifier))
++      (end_of_statement))
++    (whitespace)
++    (derived_type_definition
++      (derived_type_statement
++        (whitespace)
++        (type_name
++          (identifier))
++        (end_of_statement))
++      (whitespace)
++      (call_expression
++        (identifier)
++        (argument_list
++          (identifier)))
++      (whitespace)
++      (end_type_statement
++        (whitespace)
++        (whitespace)
++        (name
++          (identifier)))
++      (end_of_statement))
++    (end_program_statement
++      (whitespace)
++      (whitespace)
++      (name
++        (identifier)))
++    (end_of_statement)))

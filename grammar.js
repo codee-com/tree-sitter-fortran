@@ -811,6 +811,10 @@ module.exports = grammar({
         $.preproc_call,
         alias($.preproc_if_in_derived_type, $.preproc_if),
         alias($.preproc_ifdef_in_derived_type, $.preproc_ifdef),
+        // This is required so that macro function calls are allowed to declare
+        // derived type field. The precedence is required for resolving
+        // ambiguity with
+        prec(-1, $.call_expression),
       )),
       optional($.derived_type_procedures),
       $.end_type_statement,

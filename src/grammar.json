@@ -11870,6 +11870,14 @@
                 },
                 "named": true,
                 "value": "preproc_ifdef"
+              },
+              {
+                "type": "PREC",
+                "value": -1,
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "call_expression"
+                }
               }
             ]
           }

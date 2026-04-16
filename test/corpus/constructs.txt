@@ -2837,3 +2837,56 @@ Block Data (Obsolescent)
       (name
         (identifier)))
     (end_of_statement)))
+
+================================================================================
+Derived Type Macro Call Member
+================================================================================
+
+#define BAR(x) integer :: x
+program test
+  type foo
+    BAR(member)
+  end type foo
+end program test
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (preproc_function_def
+    (whitespace)
+    (identifier)
+    (preproc_params
+      (identifier))
+    (whitespace)
+    (preproc_arg))
+  (program
+    (program_statement
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (derived_type_definition
+      (derived_type_statement
+        (whitespace)
+        (type_name
+          (identifier))
+        (end_of_statement))
+      (whitespace)
+      (call_expression
+        (identifier)
+        (argument_list
+          (identifier)))
+      (whitespace)
+      (end_type_statement
+        (whitespace)
+        (whitespace)
+        (name
+          (identifier)))
+      (end_of_statement))
+    (end_program_statement
+      (whitespace)
+      (whitespace)
+      (name
+        (identifier)))
+    (end_of_statement)))
