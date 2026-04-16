@@ -1,0 +1,17 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Diego Alonso <diego.alonso@appentra.com>
+Date: Tue, 14 Apr 2026 14:00:30 +0200
+Subject: Add clang-format
+
+---
+ .clang-format | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 .clang-format
+
+diff --git a/.clang-format b/.clang-format
+new file mode 100644
+index 0000000..39f9642
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1 @@
++IndentWidth: 4
