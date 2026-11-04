@@ -165,6 +165,10 @@
           {
             "type": "SYMBOL",
             "name": "preproc_call"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ibm_noncomment_directive"
           }
         ]
       }
@@ -226,6 +230,10 @@
           {
             "type": "SYMBOL",
             "name": "preproc_call"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ibm_noncomment_directive"
           }
         ]
       }
@@ -246,6 +254,77 @@
           }
         ]
       }
+    },
+    "ibm_noncomment_directive": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "PATTERN",
+                "value": "[eE][jJ][eE][cC][tT]"
+              },
+              "named": false,
+              "value": "eject"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "@[pP][rR][oO][cC][eE][sS][sS]"
+                  },
+                  "named": false,
+                  "value": "@process"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": ".*"
+                  },
+                  "named": true,
+                  "value": "options"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_external_end_of_statement"
+        }
+      ]
+    },
+    "_preprocessor_and_compiler_directives": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "preproc_include"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_def"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_function_def"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "preproc_call"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ibm_noncomment_directive"
+        }
+      ]
     },
     "preproc_include": {
       "type": "SEQ",
@@ -8767,19 +8846,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "preproc_include"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_function_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_call"
+                "name": "_preprocessor_and_compiler_directives"
               },
               {
                 "type": "ALIAS",
@@ -10503,19 +10570,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "preproc_include"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_def"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_function_def"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_call"
+          "name": "_preprocessor_and_compiler_directives"
         }
       ]
     },
@@ -10569,19 +10624,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "preproc_include"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "preproc_def"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "preproc_function_def"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "preproc_call"
+            "name": "_preprocessor_and_compiler_directives"
           },
           {
             "type": "ALIAS",
@@ -11839,19 +11882,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "preproc_include"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_function_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_call"
+                "name": "_preprocessor_and_compiler_directives"
               },
               {
                 "type": "ALIAS",
@@ -14520,19 +14551,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "preproc_include"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_def"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_function_def"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "preproc_call"
+          "name": "_preprocessor_and_compiler_directives"
         },
         {
           "type": "SEQ",
@@ -17297,19 +17316,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "preproc_include"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_function_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_call"
+                "name": "_preprocessor_and_compiler_directives"
               },
               {
                 "type": "ALIAS",
@@ -17421,19 +17428,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "preproc_include"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_function_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_call"
+                "name": "_preprocessor_and_compiler_directives"
               },
               {
                 "type": "ALIAS",
@@ -17545,19 +17540,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "preproc_include"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_function_def"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "preproc_call"
+                "name": "_preprocessor_and_compiler_directives"
               },
               {
                 "type": "ALIAS",

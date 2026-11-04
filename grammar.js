@@ -196,6 +196,30 @@ module.exports = grammar({
       $._statement,
     )),
 
+    // Compiler-specific
+
+    // These directives used in the IBM compiler can appear "bare", i.e., not
+    // in a comment. Based on
+    //   https://www.ibm.com/docs/en/openxl-fortran-aix/17.1.4?topic=directives-noncomment-form
+    // The "include" and "#line" directives are already correctly parsed by
+    // other rules of this grammar and we don't currently need to distinguish
+    // that they are IBM's
+    ibm_noncomment_directive: $ => seq(
+      choice(
+        caseInsensitive("eject"),
+        seq(caseInsensitive("@process"), alias(/.*/, $.options)),
+      ),
+      $._external_end_of_statement,
+    ),
+
+    _preprocessor_and_compiler_directives: $ => choice(
+      $.preproc_include,
+      $.preproc_def,
+      $.preproc_function_def,
+      $.preproc_call,
+      $.ibm_noncomment_directive,
+    ),
+
     // Preprocessor
 
     preproc_include: $ => seq(
@@ -433,10 +457,7 @@ module.exports = grammar({
       repeat(choice(
         $._interface_items,
         $.include_statement,
-        $.preproc_include,
-        $.preproc_def,
-        $.preproc_function_def,
-        $.preproc_call,
+        $._preprocessor_and_compiler_directives,
         alias($.preproc_if_in_interface, $.preproc_if),
         alias($.preproc_ifdef_in_interface, $.preproc_ifdef),
       )),
@@ -604,10 +625,7 @@ module.exports = grammar({
       $.include_statement,
       alias($.preproc_if_in_internal_procedures, $.preproc_if),
       alias($.preproc_ifdef_in_internal_procedures, $.preproc_ifdef),
-      $.preproc_include,
-      $.preproc_def,
-      $.preproc_function_def,
-      $.preproc_call,
+      $._preprocessor_and_compiler_directives,
     ),
 
     // Variable Declarations
@@ -622,10 +640,7 @@ module.exports = grammar({
       // This allows format statements in the specification part,
       // without making the statements rule particularly awkward
       prec(1, seq($.statement_label, $.format_statement, $.end_of_statement)),
-      $.preproc_include,
-      $.preproc_def,
-      $.preproc_function_def,
-      $.preproc_call,
+      $._preprocessor_and_compiler_directives,
       alias($.preproc_if_in_specification_part, $.preproc_if),
       alias($.preproc_ifdef_in_specification_part, $.preproc_ifdef),
       ';',
@@ -805,10 +820,7 @@ module.exports = grammar({
           $.end_of_statement
         ),
         seq($.variable_declaration, $.end_of_statement),
-        $.preproc_include,
-        $.preproc_def,
-        $.preproc_function_def,
-        $.preproc_call,
+        $._preprocessor_and_compiler_directives,
         alias($.preproc_if_in_derived_type, $.preproc_if),
         alias($.preproc_ifdef_in_derived_type, $.preproc_ifdef),
         // This is required so that macro function calls are allowed to declare
@@ -1215,10 +1227,7 @@ module.exports = grammar({
     _statement: $ => choice(
       alias($.preproc_if_in_statements, $.preproc_if),
       alias($.preproc_ifdef_in_statements, $.preproc_ifdef),
-      $.preproc_include,
-      $.preproc_def,
-      $.preproc_function_def,
-      $.preproc_call,
+      $._preprocessor_and_compiler_directives,
       seq(
         optional($.statement_label),
         $._statements,
@@ -1644,10 +1653,7 @@ module.exports = grammar({
       $.end_of_statement,
       repeat(choice(
         $.case_statement,
-        $.preproc_include,
-        $.preproc_def,
-        $.preproc_function_def,
-        $.preproc_call,
+        $._preprocessor_and_compiler_directives,
         alias($.preproc_if_in_select_case, $.preproc_if),
         alias($.preproc_ifdef_in_select_case, $.preproc_ifdef),
       )),
@@ -1662,10 +1668,7 @@ module.exports = grammar({
       $.end_of_statement,
       repeat(choice(
         $.type_statement,
-        $.preproc_include,
-        $.preproc_def,
-        $.preproc_function_def,
-        $.preproc_call,
+        $._preprocessor_and_compiler_directives,
         alias($.preproc_if_in_select_type, $.preproc_if),
         alias($.preproc_ifdef_in_select_type, $.preproc_ifdef),
       )),
@@ -1680,10 +1683,7 @@ module.exports = grammar({
       $.end_of_statement,
       repeat(choice(
         $.rank_statement,
-        $.preproc_include,
-        $.preproc_def,
-        $.preproc_function_def,
-        $.preproc_call,
+        $._preprocessor_and_compiler_directives,
         alias($.preproc_if_in_select_rank, $.preproc_if),
         alias($.preproc_ifdef_in_select_rank, $.preproc_ifdef),
       )),
@@ -2718,6 +2718,7 @@ function normalTopLevelItemInFortranFile($, allowProgram) {
     $.preproc_def,
     $.preproc_function_def,
     $.preproc_call,
+    $.ibm_noncomment_directive,
   ];
   if (allowProgram) {
     items.splice(1, 0, $.program);

@@ -6163,3 +6163,214 @@ end program test
       (name
         (identifier)))
     (end_of_statement)))
+
+================================================================================
+IBM @process
+================================================================================
+
+@PROCESS noopt
+@PROCESS NOOPTimize
+@PROCESS smp=noopt
+@PROCESS SPILL(564)
+@PROCESS SPILLSIZE(5000)
+@process NOHOT
+@process HOT
+@process HOT(NOVECTOR)
+@process STRICT
+@process STRICT(precision)
+@process NOSTRICT
+@process HOT(NOVECTOR) NOSTRICT
+#ifdef __xlC__
+@process nohot
+@process hot
+#endif
+
+program t
+  print *, "Hi"
+end program
+
+! By IBM compiler rules, @PROCESS only appears before statements, but I guess this doesn't hurt
+@process HOT
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (ibm_noncomment_directive
+    (whitespace)
+    (options))
+  (preproc_ifdef
+    (whitespace)
+    (identifier)
+    (ibm_noncomment_directive
+      (whitespace)
+      (options))
+    (ibm_noncomment_directive
+      (whitespace)
+      (options)))
+  (program
+    (program_statement
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (print_statement
+      (whitespace)
+      (format_identifier)
+      (whitespace)
+      (output_item_list
+        (prefixed_string_literal
+          (string_literal))))
+    (end_of_statement)
+    (end_program_statement
+      (whitespace))
+    (end_of_statement))
+  (comment)
+  (ibm_noncomment_directive
+    (whitespace)
+    (options)))
+
+================================================================================
+IBM eject
+================================================================================
+
+eject
+program t
+  type :: t_pair
+    integer :: i = 1
+    eject
+    real :: x = 0.5
+  end type
+
+  eject
+  if (.TRUE.) print *, ""
+
+  contains
+
+  eject
+  subroutine b
+  end subroutine
+  eject
+
+end program
+eject
+
+--------------------------------------------------------------------------------
+
+(translation_unit
+  (ibm_noncomment_directive)
+  (program
+    (program_statement
+      (whitespace)
+      (name
+        (identifier))
+      (end_of_statement))
+    (whitespace)
+    (derived_type_definition
+      (derived_type_statement
+        (whitespace)
+        (whitespace)
+        (type_name
+          (identifier))
+        (end_of_statement))
+      (whitespace)
+      (variable_declaration
+        (intrinsic_type)
+        (whitespace)
+        (whitespace)
+        (init_declarator
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (number_literal)))
+      (end_of_statement)
+      (whitespace)
+      (ibm_noncomment_directive)
+      (whitespace)
+      (variable_declaration
+        (intrinsic_type)
+        (whitespace)
+        (whitespace)
+        (init_declarator
+          (identifier)
+          (whitespace)
+          (whitespace)
+          (number_literal)))
+      (end_of_statement)
+      (whitespace)
+      (end_type_statement
+        (whitespace))
+      (end_of_statement))
+    (whitespace)
+    (ibm_noncomment_directive)
+    (whitespace)
+    (if_statement
+      (inline_if_statement
+        (whitespace)
+        (parenthesized_expression
+          (boolean_literal))
+        (whitespace)
+        (print_statement
+          (whitespace)
+          (format_identifier)
+          (whitespace)
+          (output_item_list
+            (prefixed_string_literal
+              (string_literal))))))
+    (end_of_statement)
+    (whitespace)
+    (internal_procedures
+      (contains_statement)
+      (end_of_statement)
+      (whitespace)
+      (ibm_noncomment_directive)
+      (whitespace)
+      (subroutine
+        (subroutine_statement
+          (whitespace)
+          (name
+            (identifier))
+          (end_of_statement))
+        (whitespace)
+        (end_subroutine_statement
+          (whitespace))
+        (end_of_statement))
+      (whitespace)
+      (ibm_noncomment_directive))
+    (end_program_statement
+      (whitespace))
+    (end_of_statement))
+  (ibm_noncomment_directive))
